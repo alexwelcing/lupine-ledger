@@ -1,0 +1,15 @@
+{
+  "name": "Lupine Library",
+  "short_name": "Lupine Lib",
+  "description": "Research notes, evidence, and MLIP field reports from Lupine Science.",
+  "start_url": "/?v=__VERSION__",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#06070d",
+  "theme_color": "#06070d",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/lupine-science-icon.png", "sizes": "470x470", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

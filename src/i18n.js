@@ -1,0 +1,161 @@
+// Lupine Library — i18n module
+// Provides translation function and language utilities for the SPA.
+
+export const DEFAULT_LANG = 'en';
+export const SUPPORTED_LANGS = ['en', 'zh'];
+
+const STRINGS = {
+  en: {
+    'brand.title': 'Lupine Library',
+    'meta.title': 'Lupine Library — Lupine Science Research',
+    'meta.description': 'Mobile-first reader for Lupine Science research: UQ, benchmarking, MLIPs, and computational materials theory.',
+
+    'home.loading': 'Loading library…',
+    'home.hero': 'Lupine Science <em>Library</em>',
+    'home.hero.sub': 'Mobile-first reader for cutting-edge atomistic prediction research.',
+    'home.stats.reports': 'reports',
+    'home.stats.words': 'words',
+    'home.stats.minutes': 'min of reading',
+    'home.preprint.badge': 'Working paper',
+    'home.preprint.title': 'The Causal Geometry of Prediction Errors in Interatomic Potentials',
+    'home.preprint.sub': 'A hyper-ribbon manifold analysis of cross-potential error. Working paper, in preparation.',
+    'home.continue': 'Continue Reading',
+    'home.error': 'Could not load the library. Please check your connection and try again.',
+    'home.fallbackNotice': 'This article is not yet available in {lang}. Showing the English version.',
+
+    'reader.loading': 'Loading article…',
+    'reader.meta.read': 'min read',
+    'reader.nav.prev': '← Previous',
+    'reader.nav.next': 'Next →',
+    'reader.nav.start': 'Start of library',
+    'reader.nav.end': 'End of library',
+    'reader.error.offline': 'Could not load this article. You may be offline, or the article may have moved.',
+
+    'search.placeholder': 'Search the library…',
+    'search.results.one': '1 result found.',
+    'search.results.many': '{count} results found.',
+    'search.all': 'All articles — type to filter.',
+
+    'settings.title': 'Reader',
+    'settings.lang': 'Language',
+    'settings.textSize': 'Text size',
+    'settings.theme': 'Theme',
+    'settings.lineWidth': 'Line width',
+    'settings.offline': 'Offline',
+    'settings.saveOffline': 'Save entire library for offline',
+    'settings.done': 'Done',
+    'settings.saving': 'Saving…',
+    'settings.saved': 'Saved ✓',
+    'settings.saveFailed': 'Save failed — try again.',
+
+    'aria.back': 'Back to library',
+    'aria.graph': 'Knowledge Graph',
+    'aria.search': 'Search',
+    'aria.settings': 'Reader settings',
+    'aria.closeSearch': 'Close search',
+    'aria.closeGraph': 'Close graph',
+  },
+
+  zh: {
+    'brand.title': 'Lupine 图书馆',
+    'meta.title': 'Lupine 图书馆 — Lupine Science 研究',
+    'meta.description': '面向移动端的 Lupine Science 研究阅读器：不确定性量化、基准测试、MLIP 和计算材料理论。',
+
+    'home.loading': '正在加载图书馆…',
+    'home.hero': 'Lupine Science <em>研究</em>图书馆',
+    'home.hero.sub': '面向前沿材料科学研究的移动优先阅读器。',
+    'home.stats.reports': '篇报告',
+    'home.stats.words': '字',
+    'home.stats.minutes': '分钟阅读',
+    'home.preprint.badge': '工作论文',
+    'home.preprint.title': '原子间势预测误差的因果几何',
+    'home.preprint.sub': '跨势函数误差的超带流形分析。工作论文，撰写中。',
+    'home.continue': '继续阅读',
+    'home.error': '无法加载图书馆，请检查网络连接后重试。',
+    'home.fallbackNotice': '本文暂无{lang}版本，显示英文版。',
+
+    'reader.loading': '正在加载文章…',
+    'reader.meta.read': '分钟阅读',
+    'reader.nav.prev': '← 上一篇',
+    'reader.nav.next': '下一篇 →',
+    'reader.nav.start': '已是第一篇',
+    'reader.nav.end': '已是最后一篇',
+    'reader.error.offline': '无法加载此文章，您可能处于离线状态或文章已移动。',
+
+    'search.placeholder': '搜索图书馆…',
+    'search.results.one': '找到 1 条结果。',
+    'search.results.many': '找到 {count} 条结果。',
+    'search.all': '全部文章 — 输入以筛选。',
+
+    'settings.title': '阅读设置',
+    'settings.lang': '语言',
+    'settings.textSize': '字体大小',
+    'settings.theme': '主题',
+    'settings.lineWidth': '行宽',
+    'settings.offline': '离线',
+    'settings.saveOffline': '保存全部内容以供离线阅读',
+    'settings.done': '完成',
+    'settings.saving': '保存中…',
+    'settings.saved': '已保存 ✓',
+    'settings.saveFailed': '保存失败，请重试。',
+
+    'aria.back': '返回图书馆',
+    'aria.graph': '知识图谱',
+    'aria.search': '搜索',
+    'aria.settings': '阅读设置',
+    'aria.closeSearch': '关闭搜索',
+    'aria.closeGraph': '关闭图谱',
+  },
+};
+
+/**
+ * Translate a key to the requested language, with optional variable substitution.
+ * Falls back to English if the key is not available in the requested language.
+ * @param {string} key
+ * @param {string} [lang]
+ * @param {Record<string, string|number>} [vars]
+ * @returns {string}
+ */
+export function t(key, lang = DEFAULT_LANG, vars) {
+  const l = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
+  if (key && typeof key === 'object') {
+    let str = key[l] || key[DEFAULT_LANG] || '';
+    if (vars) {
+      for (const [k, v] of Object.entries(vars)) {
+        str = str.replaceAll(`{${k}}`, String(v));
+      }
+    }
+    return str;
+  }
+  let str = STRINGS[l]?.[key] || STRINGS[DEFAULT_LANG]?.[key] || key;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      str = str.replaceAll(`{${k}}`, String(v));
+    }
+  }
+  return str;
+}
+
+/**
+ * Detect the user's preferred language from localStorage or navigator.
+ * @returns {string}
+ */
+export function detectLang() {
+  try {
+    const saved = localStorage.getItem('ll.lang');
+    if (saved && SUPPORTED_LANGS.includes(saved)) return saved;
+  } catch { /* ignore */ }
+  const nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+  if (nav.startsWith('zh')) return 'zh';
+  return DEFAULT_LANG;
+}
+
+/**
+ * Persist the user's language choice.
+ * @param {string} lang
+ */
+export function saveLang(lang) {
+  try {
+    localStorage.setItem('ll.lang', lang);
+  } catch { /* ignore */ }
+}

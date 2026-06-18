@@ -1,0 +1,660 @@
+{
+  "schema": "lupine.library.mlip_flywheel_evidence.v1",
+  "evidence_policy": "Render measured artifacts only. Do not synthesize mock cells, placeholder trajectories, or illustrative metrics.",
+  "title": "MLIP Flywheel Visual Review",
+  "subtitle": "Evidence-backed stage, grid, triplet, evaluator, and relaxation review for the current MLIP flywheel.",
+  "why": {
+    "headline": "Autonomous science needs one surface that separates measured wins, blocked claims, and physical run evidence.",
+    "answer": "The current evidence supports using the 25-cell baseline as the reference, promoting the Ni material-family zero-point canary, accepting the support-floor MPtrj canary as a no-regression accuracy candidate, and advancing the row-hybrid v3 replay to a fresh cloud canary.",
+    "decision": "Advance the flywheel as a research cockpit: promote verified canaries, keep v3 row-hybrid in candidate status until Cloud Run confirms it, and keep acceleration separate until accuracy coverage is locked.",
+    "supporting_points": [
+      {
+        "label": "Baseline is real",
+        "metric": "25 / 25 cells",
+        "detail": "Five MLIPs were scored across five physics rows in the cloud baseline report.",
+        "source_id": "cloud_baseline_report"
+      },
+      {
+        "label": "Rejected ribbon taught us",
+        "metric": "10 regressions",
+        "detail": "The full paired Ni run rejected broad transfer and forced a material-family support split.",
+        "source_id": "ni_paired_accuracy_live_summary"
+      },
+      {
+        "label": "Cloud canary is green",
+        "metric": "6 / 6 improved",
+        "detail": "The rebuilt MACE, CHGNet, and ORB Cloud Run jobs improve every Ni promotion-canary pair with no regressions.",
+        "source_id": "ni_paired_accuracy_promotion_canary"
+      },
+      {
+        "label": "Non-Ni transfer canary",
+        "metric": "6 improved / 2 safe holds / 0 regressed",
+        "detail": "Support-floor v2 keeps MACE, ORB, and SevenNet improvements while CHGNet refuses correction safely on broad MPtrj DFT energy and relaxation.",
+        "source_id": "mptrj_broad_dft_promotion_canary"
+      },
+      {
+        "label": "Next ribbon candidate",
+        "metric": "25.6% replay lift",
+        "detail": "Row-hybrid v3 preserves the MPtrj energy wins and increases relaxation lift before any new cloud spend.",
+        "source_id": "mptrj_row_hybrid_v3_replay"
+      },
+      {
+        "label": "Spectral canary signal",
+        "metric": "99%+ energy complement",
+        "detail": "Spectral v4 replay diagnostics show energy-volume correction signal concentrated in the orthogonal complement across four measured MLIPs; this is not a universality claim.",
+        "source_id": "mptrj_spectral_v4_subspace_diagnostic"
+      }
+    ]
+  },
+  "work_guidance": {
+    "headline": "Use the evidence gaps as the work queue.",
+    "principle": "Every next task must name the claim it unlocks and the artifact required before the claim graduates.",
+    "next_moves": [
+      {
+        "priority": "P0",
+        "title": "Scale the green Ni canary to the full accuracy grid",
+        "why": "MACE, CHGNet, and ORB now improve energy and relaxation in Cloud Run with no canary regressions.",
+        "claim_unlocked": "Distill Accuracy improves a material-family lane across multiple MLIPs without changing the MLIP.",
+        "proof_required": "Run the full 5x5 paired accuracy grid with the same zero-point guard and preserve zero-regression gates.",
+        "owner": "Rust Distill runtime plus local MLIP lab",
+        "state": "active"
+      },
+      {
+        "priority": "P0",
+        "title": "Confirm the row-hybrid MPtrj v3 candidate in Cloud Run",
+        "why": "The support-floor v2 canary removed CHGNet negative transfer; local row-hybrid v3 replay preserves the energy wins and increases relaxation lift.",
+        "claim_unlocked": "Distill Accuracy can transfer beyond nickel with row-aware runtime policy while refusing strong baselines safely.",
+        "proof_required": "Run the four-MLIP MPtrj Cloud Run canary with hyperribbon-mptrj-row-hybrid-v3 and require 6 improved, 2 unchanged, 0 regressed pairs.",
+        "owner": "Rust Distill runtime plus Cloud Run MLIP runner",
+        "state": "candidate awaiting cloud canary"
+      },
+      {
+        "priority": "P0",
+        "title": "Lock spectral v4 before projected policy",
+        "why": "Energy-volume residuals are complement-heavy across MACE, CHGNet, ORB, and SevenNet, but the current surface is only four MLIPs and two calculation types.",
+        "claim_unlocked": "A bounded canary claim: energy-volume correction signal concentrates in the orthogonal complement on the measured MPtrj replay surface.",
+        "proof_required": "Keep universal manifold claims blocked; expand diagnostics to forces, stress, elastic constants, and additional MLIPs before using universal language.",
+        "owner": "Rust Distill engine and theorem bridge",
+        "state": "foundation lock active"
+      },
+      {
+        "priority": "P0",
+        "title": "Make equilibrium solve a first-class run",
+        "why": "The CHGNet Al-fcc relaxation artifact shows the visual and scoring contract can carry real physics.",
+        "claim_unlocked": "The viewer can explain how an offset lattice moves toward a known reference result.",
+        "proof_required": "Add NIST/gallery-backed offset configuration, recorded frames, force-call curve, final-distance score, and failure class.",
+        "owner": "Rust runner contract and Three.js viewer",
+        "state": "active"
+      },
+      {
+        "priority": "P1",
+        "title": "Harden the hyperribbon intervention loop",
+        "why": "Energy improvements should transfer only when the runtime can distinguish ordinary bias from same-material zero-point alignment.",
+        "claim_unlocked": "Distill is an in-run accuracy guard rather than a post-hoc evaluator.",
+        "proof_required": "Keep zero-point shifts behind same-material roots, exact support/eval distance, high support lift, and replay-to-cloud promotion.",
+        "owner": "Rust Distill engine",
+        "state": "active"
+      },
+      {
+        "priority": "P1",
+        "title": "Attach Phoenix after artifact truth is stable",
+        "why": "Phoenix should compare runs and evaluators, not own the inner loop.",
+        "claim_unlocked": "Future models can be compared against baseline and Distill variants in the correct project and dataset.",
+        "proof_required": "Verify dataset, experiment names, evaluator packets, trace IDs, and projection back into glim-think.",
+        "owner": "glim-think control plane",
+        "state": "ready after local artifacts"
+      },
+      {
+        "priority": "Hold",
+        "title": "Delay speed-up claims",
+        "why": "The page does not yet contain complete acceleration evidence.",
+        "claim_unlocked": "Accuracy plus speed can be claimed only after accuracy is stable.",
+        "proof_required": "Warm runtime and force-call budget beat Distill Accuracy without degrading normalized score beyond the agreed gate.",
+        "owner": "Cloud run promotion lane",
+        "state": "blocked by accuracy coverage"
+      }
+    ]
+  },
+  "summary": {
+    "baseline_cells_completed": 25,
+    "baseline_cells_total": 25,
+    "numeric_distill_triplets": 6,
+    "promoted_accuracy_cells": 3,
+    "policy_replay_improved_pairs": 6,
+    "policy_replay_regressed_pairs": 0,
+    "policy_canary_improved_pairs": 6,
+    "policy_canary_regressed_pairs": 0,
+    "cloud_confirmed_distill_cells": 14,
+    "local_mace_transfer_cells": 5,
+    "local_mace_transfer_wins": 2,
+    "claim_status": "Ni canary green; MPtrj support-floor v2 cloud canary green; row-hybrid v3 replay improves mean lift and awaits cloud confirmation; 5x5x3 not claimed",
+    "worker_url": "https://glim-think-v1.aw-ab5.workers.dev",
+    "worker_version_id": "95a246de-a1b4-4ff2-b42a-da8844be34dd",
+    "visual_relaxation_artifact": "actual local CHGNet Al-fcc 2x2x2 relaxation run",
+    "mptrj_canary_improved_pairs": 6,
+    "mptrj_canary_regressed_pairs": 0,
+    "mptrj_canary_cells_completed": 16,
+    "mptrj_canary_flagship_eligible": true,
+    "mptrj_row_hybrid_v3_replay_mean_lift_fraction": 0.25565285021976397,
+    "mptrj_row_hybrid_v3_replay_regressed_pairs": 0,
+    "mptrj_spectral_v4_mean_complement_residual_fraction": 0.7253151505437945,
+    "mptrj_spectral_v4_energy_min_complement_residual_fraction": 0.9869584089387414,
+    "mptrj_spectral_v4_energy_cells_measured": 4,
+    "mptrj_spectral_v4_surface_area": "4 MLIPs x 2 calculation types",
+    "mptrj_spectral_v4_universal_manifold_claim_allowed": false
+  },
+  "sources": [
+    {
+      "id": "cloud_baseline_report",
+      "kind": "library_report",
+      "path": "docs/mlip-cloud-baseline-distill-report.md",
+      "description": "May 23, 2026 cloud baseline report with the completed 25-cell MLIP baseline and numeric Distill triplets."
+    },
+    {
+      "id": "cloud_mace_energy_featurefix_canary",
+      "kind": "cloud_run_artifact",
+      "paths": [
+        "reports/assets/mlip/mace-energy-cloud-featurefix-baseline-cell-result.json",
+        "reports/assets/mlip/mace-energy-cloud-featurefix-distill-cell-result.json",
+        "reports/assets/mlip/mace-energy-cloud-featurefix-distill-events.jsonl"
+      ],
+      "description": "May 26, 2026 MACE energy Cloud Run canary after excluding force-derived features from the energy residual ribbon. Baseline error 0.4116144148 eV/atom; Distill Accuracy error 0.2037854862 eV/atom on NVIDIA L4."
+    },
+    {
+      "id": "cloud_mace_transfer_combined_support",
+      "kind": "cloud_run_artifact",
+      "path": "reports/assets/mlip/mace-transfer-cloud-combined-support-summary.json",
+      "original_path": "tmp/cloud-results/frontend-guided-mace-transfer-combined-support-20260526",
+      "schema": "lupine.library.mlip_cloud_transfer_summary.v1",
+      "description": "May 26, 2026 MACE Cloud Run canary using the row-complete support manifest. Energy improves by 50.49%; relaxation improves by 31.02%; both ran on NVIDIA L4."
+    },
+    {
+      "id": "ni_paired_accuracy_promotion_canary",
+      "kind": "cloud_run_live_collector",
+      "path": "reports/assets/mlip/ni-paired-accuracy-promotion-canary-summary.json",
+      "schema": "lupine.library.mlip_paired_accuracy_live_summary.v1",
+      "description": "May 27, 2026 promotion canary for the Ni material-family zero-point policy after rebuilding MACE, CHGNet, and ORB Cloud Run jobs with atlas-distill zero-point gates. All six canary pairs improve with no regressions."
+    },
+    {
+      "id": "mptrj_broad_dft_promotion_canary",
+      "kind": "cloud_run_live_collector",
+      "path": "reports/assets/mlip/mptrj-broad-dft-promotion-canary-summary.json",
+      "schema": "lupine.library.mlip_paired_accuracy_live_summary.v1",
+      "description": "May 27, 2026 non-Ni broad MPtrj/DFT promotion canary for MACE, CHGNet, ORB, and SevenNet after support-floor v2. Six of eight pairs improve, CHGNet stays unchanged by refusing correction, and no pairs regress."
+    },
+    {
+      "id": "ni_paired_accuracy_live_summary",
+      "kind": "cloud_run_live_collector",
+      "path": "reports/assets/mlip/ni-paired-accuracy-live-summary.json",
+      "schema": "lupine.library.mlip_paired_accuracy_live_summary.v1",
+      "description": "May 27, 2026 live collector for the Ni fcc EAM-home-turf paired baseline versus Distill Accuracy campaign. It reads only returned GCS cell artifacts and computes pair deltas only when both artifacts exist."
+    },
+    {
+      "id": "ni_zero_point_policy_replay",
+      "kind": "local_policy_replay",
+      "path": "reports/assets/mlip/ni-paired-accuracy-zero-point-replay-summary.json",
+      "schema": "lupine.library.mlip_policy_replay_summary.v1",
+      "description": "May 27, 2026 local atlas-distill replay of completed Ni canary cloud predictions through the material-family zero-point policy. All six replay pairs improved with no regressions, then the Cloud Run canary confirmed the direction."
+    },
+    {
+      "id": "local_equilibrium_solve_score",
+      "kind": "local_run_artifact",
+      "path": "reports/assets/mlip/chgnet-al-fcc-2x2x2-relax-repro-v2-score-default.json",
+      "original_path": "tmp/mlip-md-local/chgnet-al-fcc-2x2x2-relax-repro-v2-score-default.json",
+      "schema": "lupine.distill.equilibrium_solve_score.v1",
+      "description": "Measured CHGNet Al-fcc 2x2x2 offset relaxation score and viewer frames."
+    },
+    {
+      "id": "local_mace_transfer_combined_support",
+      "kind": "local_run_artifact",
+      "path": "reports/assets/mlip/mace-transfer-local-combined-support-summary.json",
+      "original_path": "tmp/mlip-local/frontend-guided-mace-transfer-accuracy-combined-support-20260525",
+      "schema": "lupine.library.mlip_transfer_summary.v1",
+      "description": "May 26, 2026 local MACE row-transfer run using the row-complete MPtrj-plus-elastic support manifest. Energy and relaxation improve; forces and stress are gated neutral; elastic is runnable but needs refusal-policy tightening."
+    },
+    {
+      "id": "worker_deploy_verification",
+      "kind": "local_verification",
+      "description": "Worker health, workflow descriptors, gated mutation, and telemetry dry-run checks completed before this library view was added."
+    },
+    {
+      "id": "mptrj_row_hybrid_v3_replay",
+      "kind": "local_policy_replay",
+      "path": "reports/assets/mlip/mptrj-broad-dft-row-hybrid-v3-replay-summary.json",
+      "schema": "lupine.library.mlip_policy_replay_summary.v1",
+      "description": "May 27, 2026 local atlas-distill replay of completed MPtrj canary cloud predictions through the row-hybrid v3 candidate. It preserves support-floor v2 energy wins, increases relaxation lift, and reports six improved pairs, two unchanged CHGNet pairs, and zero regressions."
+    },
+    {
+      "id": "mptrj_spectral_v4_subspace_diagnostic",
+      "kind": "local_subspace_diagnostic",
+      "path": "reports/assets/mlip/mptrj-spectral-v4-subspace-diagnostics.json",
+      "schema": "lupine.distill.subspace_diagnostic.v1",
+      "description": "May 27, 2026 local replay diagnostic over completed MPtrj canary baseline artifacts. It measures stiff-axis versus orthogonal-complement residual concentration and shows every measured energy-volume MLIP is complement-heavy. The artifact explicitly blocks universal-manifold claims because the surface is only four MLIPs and two calculation types."
+    }
+  ],
+  "baseline": {
+    "source_id": "cloud_baseline_report",
+    "rows": [
+      {
+        "id": "energy",
+        "label": "Energy",
+        "unit": "eV/atom MAE",
+        "scale": "linear"
+      },
+      {
+        "id": "forces",
+        "label": "Forces",
+        "unit": "eV/A RMSE",
+        "scale": "linear"
+      },
+      {
+        "id": "stress",
+        "label": "Stress",
+        "unit": "GPa MAE",
+        "scale": "log10"
+      },
+      {
+        "id": "elastic",
+        "label": "Elastic",
+        "unit": "GPa MAE",
+        "scale": "log10"
+      },
+      {
+        "id": "relaxation",
+        "label": "Relaxation",
+        "unit": "sealed penalty",
+        "scale": "linear"
+      }
+    ],
+    "mlips": [
+      {
+        "id": "chgnet",
+        "label": "CHGNet"
+      },
+      {
+        "id": "m3gnet",
+        "label": "M3GNet"
+      },
+      {
+        "id": "mace",
+        "label": "MACE"
+      },
+      {
+        "id": "orb",
+        "label": "ORB-v3"
+      },
+      {
+        "id": "sevennet",
+        "label": "SevenNet"
+      }
+    ],
+    "cells": [
+      {
+        "mlip_id": "chgnet",
+        "row_id": "energy",
+        "value": 0.1035
+      },
+      {
+        "mlip_id": "chgnet",
+        "row_id": "forces",
+        "value": 0.1649
+      },
+      {
+        "mlip_id": "chgnet",
+        "row_id": "stress",
+        "value": 0.4311
+      },
+      {
+        "mlip_id": "chgnet",
+        "row_id": "elastic",
+        "value": 48.8708
+      },
+      {
+        "mlip_id": "chgnet",
+        "row_id": "relaxation",
+        "value": 0.0557
+      },
+      {
+        "mlip_id": "m3gnet",
+        "row_id": "energy",
+        "value": 0.4403
+      },
+      {
+        "mlip_id": "m3gnet",
+        "row_id": "forces",
+        "value": 0.6262
+      },
+      {
+        "mlip_id": "m3gnet",
+        "row_id": "stress",
+        "value": 1022.3483
+      },
+      {
+        "mlip_id": "m3gnet",
+        "row_id": "elastic",
+        "value": 21634.7398
+      },
+      {
+        "mlip_id": "m3gnet",
+        "row_id": "relaxation",
+        "value": 0.6683
+      },
+      {
+        "mlip_id": "mace",
+        "row_id": "energy",
+        "value": 0.4116
+      },
+      {
+        "mlip_id": "mace",
+        "row_id": "forces",
+        "value": 0.2644
+      },
+      {
+        "mlip_id": "mace",
+        "row_id": "stress",
+        "value": 0.5669
+      },
+      {
+        "mlip_id": "mace",
+        "row_id": "elastic",
+        "value": 35.5238
+      },
+      {
+        "mlip_id": "mace",
+        "row_id": "relaxation",
+        "value": 0.5604
+      },
+      {
+        "mlip_id": "orb",
+        "row_id": "energy",
+        "value": 0.4295
+      },
+      {
+        "mlip_id": "orb",
+        "row_id": "forces",
+        "value": 0.124
+      },
+      {
+        "mlip_id": "orb",
+        "row_id": "stress",
+        "value": 0.2801
+      },
+      {
+        "mlip_id": "orb",
+        "row_id": "elastic",
+        "value": 16.1451
+      },
+      {
+        "mlip_id": "orb",
+        "row_id": "relaxation",
+        "value": 0.5327
+      },
+      {
+        "mlip_id": "sevennet",
+        "row_id": "energy",
+        "value": 0.3997
+      },
+      {
+        "mlip_id": "sevennet",
+        "row_id": "forces",
+        "value": 0.1957
+      },
+      {
+        "mlip_id": "sevennet",
+        "row_id": "stress",
+        "value": 0.3536
+      },
+      {
+        "mlip_id": "sevennet",
+        "row_id": "elastic",
+        "value": 38.5337
+      },
+      {
+        "mlip_id": "sevennet",
+        "row_id": "relaxation",
+        "value": 0.575
+      }
+    ],
+    "read": "CHGNet is strongest on energy and relaxation, ORB-v3 is strongest on forces, stress, and elastic, and M3GNet stress/elastic are fault-line evidence rather than headline claims."
+  },
+  "distill_triplets": [
+    {
+      "label": "MACE energy",
+      "row_id": "energy",
+      "mlip_id": "mace",
+      "baseline": 0.4116144148,
+      "distill_accuracy": 0.2037854862,
+      "distill_accuracy_accelerate": 0.2038,
+      "verdict": "promote_accuracy",
+      "note": "Cloud-reproduced after the energy ribbon excluded backend-sensitive force features."
+    },
+    {
+      "label": "SevenNet energy",
+      "row_id": "energy",
+      "mlip_id": "sevennet",
+      "baseline": 0.3997,
+      "distill_accuracy": 0.3046,
+      "distill_accuracy_accelerate": 0.2773,
+      "verdict": "promote_accuracy",
+      "note": "Backend-diverse accuracy win."
+    },
+    {
+      "label": "MACE relaxation",
+      "row_id": "relaxation",
+      "mlip_id": "mace",
+      "baseline": 0.5604349339,
+      "distill_accuracy": 0.38657099,
+      "distill_accuracy_accelerate": null,
+      "verdict": "promote_accuracy",
+      "note": "Cloud-reproduced transfer win from the row-complete support manifest."
+    },
+    {
+      "label": "MACE forces",
+      "row_id": "forces",
+      "mlip_id": "mace",
+      "baseline": 0.2643868292,
+      "distill_accuracy": 0.2643868081,
+      "distill_accuracy_accelerate": null,
+      "verdict": "neutral_blocked",
+      "note": "Force correction gate blocked for no support lift; no material accuracy claim."
+    },
+    {
+      "label": "MACE stress",
+      "row_id": "stress",
+      "mlip_id": "mace",
+      "baseline": 0.5669407405,
+      "distill_accuracy": 0.5669405228,
+      "distill_accuracy_accelerate": null,
+      "verdict": "neutral_blocked",
+      "note": "Stress correction gate blocked for no support lift; effectively unchanged."
+    },
+    {
+      "label": "MACE elastic",
+      "row_id": "elastic",
+      "mlip_id": "mace",
+      "baseline": 35.5237066988,
+      "distill_accuracy": 35.5237975227,
+      "distill_accuracy_accelerate": null,
+      "verdict": "revise_policy",
+      "note": "Runnable with combined support, but large feature-distance produced a tiny regression; refusal gate should tighten."
+    }
+  ],
+  "relaxation_artifact": {
+    "source_id": "local_equilibrium_solve_score",
+    "url": "/reports/assets/mlip/chgnet-al-fcc-2x2x2-relax-repro-v2-score-default.json"
+  },
+  "live_campaign_artifact": {
+    "source_id": "ni_paired_accuracy_promotion_canary",
+    "campaign_id": "ni-fcc-eam-home-turf-paired-accuracy-v1",
+    "title": "Ni zero-point promotion canary",
+    "description": "A live collector reads returned GCS cell artifacts from the rebuilt MACE, CHGNet, and ORB canary. Missing cells are rendered as missing, not guessed.",
+    "url": "/reports/assets/mlip/ni-paired-accuracy-promotion-canary-summary.json"
+  },
+  "policy_replay_artifact": {
+    "source_id": "ni_zero_point_policy_replay",
+    "title": "Ni zero-point policy replay gate",
+    "description": "Offline Rust replay against completed promotion-canary cloud artifacts. This was the spend gate that preceded the now-green Cloud Run canary.",
+    "url": "/reports/assets/mlip/ni-paired-accuracy-zero-point-replay-summary.json"
+  },
+  "policy_replay_artifacts": [
+    {
+      "source_id": "ni_zero_point_policy_replay",
+      "title": "Ni zero-point policy replay gate",
+      "description": "Offline Rust replay against completed promotion-canary cloud artifacts. This was the spend gate that preceded the now-green Cloud Run canary.",
+      "url": "/reports/assets/mlip/ni-paired-accuracy-zero-point-replay-summary.json"
+    },
+    {
+      "source_id": "mptrj_row_hybrid_v3_replay",
+      "title": "MPtrj row-hybrid v3 replay gate",
+      "description": "Offline Rust replay against completed MPtrj broad-DFT cloud predictions. This is the spend gate for the next Cloud Run canary, not yet a cloud-confirmed claim.",
+      "url": "/reports/assets/mlip/mptrj-broad-dft-row-hybrid-v3-replay-summary.json"
+    }
+  ],
+  "diagnostic_artifacts": [
+    {
+      "source_id": "mptrj_spectral_v4_subspace_diagnostic",
+      "title": "Spectral v4 residual concentration diagnostic",
+      "description": "Offline replay over completed MPtrj baseline artifacts. It makes a bounded hyper-ribbon prediction visible early: energy-volume correction signal lives in the orthogonal complement across the four measured MLIPs. It explicitly blocks universal-manifold claims.",
+      "url": "/reports/assets/mlip/mptrj-spectral-v4-subspace-diagnostics.json"
+    }
+  ],
+  "long_demo_artifacts": [
+    {
+      "source_id": "mlip_long_horizon_demo_registry",
+      "title": "Long-horizon demo workstreams",
+      "description": "A no-mock registry that splits every compelling demo into a scientific Distill lane and a viewer lane. Planned demos render as awaiting measured artifacts until the runner produces real trajectories and scores.",
+      "url": "/reports/assets/mlip/mlip-long-demo-registry.json"
+    }
+  ],
+  "long_demo_ribbon_prep_artifacts": [
+    {
+      "source_id": "mlip_long_demo_ribbon_prep",
+      "title": "Ribbon prep for real long-horizon runs",
+      "description": "Demo-specific hyper-ribbon prep that defines allowed correction coordinates, reference-lock gates, refusal triggers, acceptance thresholds, and viewer layers before local or cloud spend.",
+      "url": "/reports/assets/mlip/mlip-long-demo-ribbon-prep.json"
+    }
+  ],
+  "stages": [
+    {
+      "id": "runner_contract",
+      "label": "Runner contract",
+      "state": "evidence complete for baseline",
+      "quant": "25 / 25 cloud baseline cells",
+      "qual": "One sealed scoring surface across five MLIPs and five physics rows.",
+      "evidence": [
+        "cloud_baseline_report",
+        "canonical-structures-v2",
+        "distill-b7e84b3bc image tag"
+      ]
+    },
+    {
+      "id": "distill_runtime",
+      "label": "Distill runtime",
+      "state": "Ni and MPtrj canaries green; spectral v4 diagnostic visible",
+      "quant": "Ni improves 6 / 6; MPtrj support-floor v2 improves 6 / 8; row-hybrid v3 replay mean lift 25.6%; spectral v4 energy complement fraction is at least 98.7% on a 4-MLIP x 2-row canary",
+      "qual": "The failed broad transfer run became a policy distinction: v2 learned to refuse already-strong CHGNet, v3 uses row-aware relaxation overrides, and v4 now measures whether the residual correction signal lives off the stiff axis without claiming universality.",
+      "evidence": [
+        "ni_paired_accuracy_promotion_canary",
+        "ni_zero_point_policy_replay",
+        "hyperribbon-ni-eam-support-v1",
+        "mptrj_broad_dft_promotion_canary",
+        "mptrj_row_hybrid_v3_replay",
+        "mptrj_spectral_v4_subspace_diagnostic"
+      ]
+    },
+    {
+      "id": "equilibrium_solve",
+      "label": "Equilibrium solve",
+      "state": "local artifact available",
+      "quant": "CHGNet Al-fcc 2x2x2 improved distance by 0.897381 in 30 force calls",
+      "qual": "The visual trajectory is a measured local relaxation artifact, not an illustrative lattice.",
+      "evidence": [
+        "local_equilibrium_solve_score",
+        "ASE bulk(Al, fcc, a=4.05)",
+        "CHGNet"
+      ]
+    },
+    {
+      "id": "phoenix",
+      "label": "Phoenix evaluation",
+      "state": "not verified in this local shell",
+      "quant": "No live Phoenix relay smoke in this verification pass",
+      "qual": "Phoenix remains the evidence and comparison home; Distill remains the intervention policy owner.",
+      "evidence": [
+        "project/dataset alignment still requires live check"
+      ]
+    },
+    {
+      "id": "publish_gate",
+      "label": "Publish gate",
+      "state": "not claimed",
+      "quant": "5x5x3 superiority not complete",
+      "qual": "The library should show coverage and blockers without turning planned cells into evidence.",
+      "evidence": [
+        "baseline plane complete",
+        "Distill planes partial",
+        "speed win not claimed"
+      ]
+    }
+  ],
+  "evaluators": [
+    {
+      "name": "distill.leakage_guard",
+      "owner": "Rust runtime",
+      "target": "support and eval separation",
+      "kind": "quant",
+      "state": "runtime evidence required"
+    },
+    {
+      "name": "distill.intervention_trace",
+      "owner": "Rust runtime",
+      "target": "actual accept, correct, block, backtrack, or refuse actions",
+      "kind": "qual",
+      "state": "artifact-backed only"
+    },
+    {
+      "name": "distill.accuracy_delta",
+      "owner": "Phoenix evaluator",
+      "target": "sealed score versus baseline",
+      "kind": "quant",
+      "state": "requires correct Phoenix project/dataset verification"
+    },
+    {
+      "name": "distill.speed_delta",
+      "owner": "Phoenix evaluator",
+      "target": "warm runtime and force-call budget",
+      "kind": "quant",
+      "state": "not claimed"
+    },
+    {
+      "name": "physics.relaxation_plausibility",
+      "owner": "Lupine app",
+      "target": "measured trajectory, force curve, and failure class",
+      "kind": "qual",
+      "state": "available for CHGNet Al-fcc local run"
+    },
+    {
+      "name": "theorem.speedup_bound_observed",
+      "owner": "theory bridge",
+      "target": "measured hook versus declared hook",
+      "kind": "quant",
+      "state": "evidence only"
+    }
+  ],
+  "campaign_artifacts": [
+    {
+      "source_id": "ni_paired_accuracy_promotion_canary",
+      "campaign_id": "ni-fcc-eam-home-turf-paired-accuracy-v1",
+      "title": "Ni zero-point promotion canary",
+      "description": "A live collector reads returned GCS cell artifacts from the rebuilt MACE, CHGNet, and ORB canary. Missing cells are rendered as missing, not guessed.",
+      "url": "/reports/assets/mlip/ni-paired-accuracy-promotion-canary-summary.json"
+    },
+    {
+      "source_id": "mptrj_broad_dft_promotion_canary",
+      "campaign_id": "mptrj-dft-broad-paired-accuracy-v1",
+      "title": "MPtrj broad-DFT MLIP promotion canary",
+      "description": "A non-Ni paired canary on broad DFT trajectory structures across MACE, CHGNet, ORB, and SevenNet. Support-floor v2 improves six pairs, holds CHGNet unchanged, and clears the no-regression gate.",
+      "url": "/reports/assets/mlip/mptrj-broad-dft-promotion-canary-summary.json"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+node_modules
+.git
+.github
+content
+src
+scripts
+*.md
+.gitignore
+.dockerignore
+.gcloudignore

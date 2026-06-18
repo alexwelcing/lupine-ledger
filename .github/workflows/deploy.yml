@@ -1,0 +1,65 @@
+name: Deploy library.lupine.site
+
+# Copy-first extraction workflow for the standalone Library reader repo.
+# The deeper content-bundle contract is tracked in docs/extraction-packet.md.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'content/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'Dockerfile'
+      - 'nginx.conf'
+      - 'cloudbuild.yaml'
+      - 'package*.json'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Validate Secrets Pre-flight
+        run: |
+          if [ -z "${{ secrets.GCP_PROJECT_ID }}" ]; then
+            echo "::error::MISSING SECRET: GCP_PROJECT_ID is not defined in GitHub Repo Secrets."
+            exit 1
+          fi
+
+      - name: Build and Deploy via Cloud Build
+        run: |
+          gcloud builds submit . \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --config=cloudbuild.yaml \
+            --ignore-file=.gcloudignore \
+            --substitutions=_AR_PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}",REPO_NAME="${GITHUB_REPOSITORY##*/}",COMMIT_SHA="${GITHUB_SHA}"
+
+
+      - name: Report deploy status
+        if: always()
+        run: |
+          curl -X POST https://glim-think-v1.aw-ab5.workers.dev/ops/report \
+            -H "Content-Type: application/json" \
+            -d "{\"repo\":\"$GITHUB_REPOSITORY\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"status\":\"${{ job.status }}\",\"commit_sha\":\"$GITHUB_SHA\",\"branch\":\"$GITHUB_REF_NAME\",\"service\":\"library.lupine.site\",\"run_url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"started_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" || true
