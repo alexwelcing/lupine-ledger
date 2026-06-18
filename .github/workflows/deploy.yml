@@ -1,12 +1,20 @@
-name: Deploy library.lupine.site
-
-# Copy-first extraction workflow for the standalone Library reader repo.
-# The deeper content-bundle contract is tracked in docs/extraction-packet.md.
+name: Lupine Ledger CI / Deploy
 
 on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'content/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'Dockerfile'
+      - 'nginx.conf'
+      - 'cloudbuild.yaml'
+      - 'package*.json'
+      - '.github/workflows/deploy.yml'
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - 'docs/**'
       - 'README.md'
@@ -20,42 +28,81 @@ on:
       - '.github/workflows/deploy.yml'
   workflow_dispatch: {}
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+concurrency:
+  group: lupine-ledger-${{ github.ref }}
+  cancel-in-progress: true
 
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Google Auth
-        id: auth
-        uses: 'google-github-actions/auth@v2'
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
-          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify content and build
+        run: npm run verify
+
+  deploy:
+    needs: verify
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify content and build
+        run: npm run verify
+
+      - name: Validate deployment secrets
+        run: |
+          miss=0
+          [ -z "${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}" ] && { echo "::error::MISSING SECRET: GCP_WORKLOAD_IDENTITY_PROVIDER"; miss=1; }
+          [ -z "${{ secrets.GCP_SERVICE_ACCOUNT }}" ] && { echo "::error::MISSING SECRET: GCP_SERVICE_ACCOUNT"; miss=1; }
+          [ -z "${{ secrets.GCP_PROJECT_ID }}" ] && { echo "::error::MISSING SECRET: GCP_PROJECT_ID"; miss=1; }
+          exit $miss
+
+      - name: Google auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2'
+        uses: google-github-actions/setup-gcloud@v2
 
-      - name: Validate Secrets Pre-flight
-        run: |
-          if [ -z "${{ secrets.GCP_PROJECT_ID }}" ]; then
-            echo "::error::MISSING SECRET: GCP_PROJECT_ID is not defined in GitHub Repo Secrets."
-            exit 1
-          fi
-
-      - name: Build and Deploy via Cloud Build
+      - name: Build and deploy via Cloud Build
         run: |
           gcloud builds submit . \
             --project="${{ secrets.GCP_PROJECT_ID }}" \
             --config=cloudbuild.yaml \
             --ignore-file=.gcloudignore \
             --substitutions=_AR_PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}",REPO_NAME="${GITHUB_REPOSITORY##*/}",COMMIT_SHA="${GITHUB_SHA}"
-
 
       - name: Report deploy status
         if: always()
