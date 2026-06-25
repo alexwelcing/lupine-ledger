@@ -23,6 +23,7 @@ npm run dev
 
 - [ ] `npm run content:verify` passes.
 - [ ] `npm run build` passes.
+- [ ] `npm run test` passes (health endpoint and static assets).
 - [ ] Shelves render locally.
 - [ ] Search returns expected results.
 - [ ] Representative articles render across at least three shelves.
