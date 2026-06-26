@@ -4,4 +4,4 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /brand.json
 
-Sitemap: https://library.lupine.site/sitemap.xml
+Sitemap: https://library.lupine.science/sitemap.xml

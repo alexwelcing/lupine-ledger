@@ -32,7 +32,7 @@ conditions where it looked accurate.
 | LUPI OMol25 | https://lupi.live/materials/omol25 | OMol25 geometry browser route for real DFT XYZ structures and source-aware labels |
 | LUPI OMol25 molecule geometry | https://lupi.live/materials/omol25-molecule-geometry | Geometry-intent route for OMol25 XYZ structures and data-boundary language |
 | LUPI million-atom viewer | https://lupi.live/materials/million-atom-viewer | Route for browser-controlled million-atom materials visualization |
-| Lupine Library | https://library.lupine.site | Public research corpus and human knowledge surface |
+| Lupine Library | https://library.lupine.science | Public research corpus and human knowledge surface |
 | glim-think | https://glim-think-v1.aw-ab5.workers.dev | Agentic research control plane and ledger |
 
 ## Narrative Spine
@@ -182,7 +182,7 @@ High-intent LUPI routes:
   Describe the 953,312-atom copper lattice as generated FCC geometry used to
   demonstrate browser-controlled scale, not as an experimental property record.
 
-### https://library.lupine.site
+### https://library.lupine.science
 
 Use this as the durable reading route. The Library contains research notes,
 field reports, evidence summaries, status labels, and long-form knowledge.

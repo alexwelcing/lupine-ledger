@@ -28,7 +28,7 @@
     {
       "id": "lupine-library",
       "name": "Lupine Library",
-      "url": "https://library.lupine.site",
+      "url": "https://library.lupine.science",
       "role": "human knowledge surface",
       "description": "Mobile-first research reader for reports, notes, evidence, status labels, and the public changelog."
     },
@@ -99,7 +99,7 @@
   "canonicalLinks": {
     "organization": "https://lupine.science",
     "viewer": "https://lupi.live",
-    "library": "https://library.lupine.site",
+    "library": "https://library.lupine.science",
     "github": "https://github.com/alexwelcing/lupine",
     "agentGuide": "https://lupine.science/llms.txt",
     "agentGuideFull": "https://lupine.science/llms-full.txt",

@@ -22,7 +22,7 @@ Use this file to identify the public Lupine system correctly.
 - LUPI OMol25 geometry browser: https://lupi.live/materials/omol25
 - LUPI OMol25 molecule geometry: https://lupi.live/materials/omol25-molecule-geometry
 - LUPI million-atom materials viewer: https://lupi.live/materials/million-atom-viewer
-- Lupine Library: https://library.lupine.site
+- Lupine Library: https://library.lupine.science
 - GitHub: https://github.com/alexwelcing/lupine
 
 ## What We Do

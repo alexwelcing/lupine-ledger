@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "license": "AGPL-3.0-or-later",
-  "description": "Lupine Science research library - mobile-first reader for library.lupine.site",
+  "description": "Lupine Science research library - mobile-first reader for library.lupine.science",
   "scripts": {
     "build": "node scripts/build.js",
     "content:sync": "node scripts/sync-content-from-science.mjs",
