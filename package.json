@@ -11,6 +11,8 @@
     "content:verify": "node scripts/verify-content.mjs",
     "dev": "node scripts/build.js && node scripts/serve.js",
     "verify": "npm run content:verify && npm run build",
+    "pages:build": "node scripts/pages-build.mjs",
+    "pages:deploy": "npx wrangler pages deploy dist --project-name=lupine-ledger --branch=main --commit-dirty=true",
     "test": "node scripts/test-build.mjs",
     "clean": "rm -rf dist"
   },

@@ -63,16 +63,21 @@ See [docs/content-contract.md](docs/content-contract.md) for the full contract.
 
 ## Deploy
 
-The deploy workflow submits this repo root to Cloud Build. Cloud Build runs:
+The Cloudflare Pages build is wired through `npm run pages:build`. That command
+syncs the local science export from `../lupine-rhizo/exports/library-content/latest`
+when it exists, then verifies the `library-content.v1` bundle and renders `dist/`.
+In CI, where the sibling science repo export is not present, it verifies and builds
+the committed `content/latest/` bundle.
+
+Direct Pages deploy:
 
 ```bash
 npm ci
-npm run content:verify
-npm run build
-docker build ...
-gcloud run services update ...
-gcloud run services update-traffic --to-latest ...
+npm run pages:deploy
 ```
+
+The Pages project is `lupine-ledger`; publish output is `dist/`, configured in
+`wrangler.toml`. The custom domain is `library.lupine.site`.
 
 Deploy status is reported back to `glim-think` `/ops/report` as a non-blocking
 telemetry step. See [docs/operations.md](docs/operations.md) and

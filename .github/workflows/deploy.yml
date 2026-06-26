@@ -11,6 +11,7 @@ on:
       - 'Dockerfile'
       - 'nginx.conf'
       - 'cloudbuild.yaml'
+      - 'wrangler.toml'
       - 'package*.json'
       - '.github/workflows/deploy.yml'
   push:
@@ -24,6 +25,7 @@ on:
       - 'Dockerfile'
       - 'nginx.conf'
       - 'cloudbuild.yaml'
+      - 'wrangler.toml'
       - 'package*.json'
       - '.github/workflows/deploy.yml'
   workflow_dispatch: {}
@@ -51,16 +53,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify content and build
-        run: npm run verify
+      - name: Verify content and build Pages output
+        run: npm run pages:build
 
   deploy:
     needs: verify
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
 
     steps:
       - name: Checkout code
@@ -75,38 +74,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify content and build
-        run: npm run verify
+      - name: Build Pages output
+        run: npm run pages:build
 
       - name: Validate deployment secrets
         run: |
           miss=0
-          [ -z "${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}" ] && { echo "::error::MISSING SECRET: GCP_WORKLOAD_IDENTITY_PROVIDER"; miss=1; }
-          [ -z "${{ secrets.GCP_SERVICE_ACCOUNT }}" ] && { echo "::error::MISSING SECRET: GCP_SERVICE_ACCOUNT"; miss=1; }
-          [ -z "${{ secrets.GCP_PROJECT_ID }}" ] && { echo "::error::MISSING SECRET: GCP_PROJECT_ID"; miss=1; }
+          [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ] && { echo "::error::MISSING SECRET: CLOUDFLARE_ACCOUNT_ID"; miss=1; }
+          [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] && { echo "::error::MISSING SECRET: CLOUDFLARE_API_TOKEN"; miss=1; }
           exit $miss
 
-      - name: Google auth
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Build and deploy via Cloud Build
-        run: |
-          gcloud builds submit . \
-            --project="${{ secrets.GCP_PROJECT_ID }}" \
-            --config=cloudbuild.yaml \
-            --ignore-file=.gcloudignore \
-            --substitutions=_AR_PROJECT_ID="${{ secrets.GCP_PROJECT_ID }}",REPO_NAME="${GITHUB_REPOSITORY##*/}",COMMIT_SHA="${GITHUB_SHA}"
+      - name: Deploy to Cloudflare Pages
+        run: npx wrangler pages deploy dist --project-name=lupine-ledger --branch="$GITHUB_REF_NAME" --commit-dirty=true
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Report deploy status
         if: always()
         run: |
           curl -X POST https://glim-think-v1.aw-ab5.workers.dev/ops/report \
             -H "Content-Type: application/json" \
-            -d "{\"repo\":\"$GITHUB_REPOSITORY\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"status\":\"${{ job.status }}\",\"commit_sha\":\"$GITHUB_SHA\",\"branch\":\"$GITHUB_REF_NAME\",\"service\":\"library.lupine.site\",\"run_url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"started_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" || true
+            -d "{\"repo\":\"$GITHUB_REPOSITORY\",\"workflow\":\"$GITHUB_WORKFLOW\",\"run_id\":\"$GITHUB_RUN_ID\",\"status\":\"${{ job.status }}\",\"commit_sha\":\"$GITHUB_SHA\",\"branch\":\"$GITHUB_REF_NAME\",\"service\":\"library.lupine.site\",\"platform\":\"cloudflare-pages\",\"run_url\":\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\",\"started_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" || true
