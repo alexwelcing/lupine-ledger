@@ -27,8 +27,12 @@ const STRINGS = {
     'home.featured.role.anchor': 'Anchor Result',
     'home.featured.role.newest': 'Newest Evidence',
     'home.featured.role.counter': 'Self-Correction',
-    'home.featured.role.replication': 'Replication Kit',
+    'home.featured.role.replication': 'Paper & replication kit',
     'home.featured.role.default': 'Featured',
+
+    'group.hypotheses': 'Hypothesis ledger',
+    'group.mlip-flywheel': 'MLIP Flywheel arc',
+    'group.extraction': 'Extraction provenance',
 
     'reader.loading': 'Loading article…',
     'reader.meta.read': 'min read',
@@ -87,6 +91,10 @@ const STRINGS = {
     'home.featured.role.counter': '自我纠正',
     'home.featured.role.replication': '复现套件',
     'home.featured.role.default': '精选',
+
+    'group.hypotheses': '假设账本',
+    'group.mlip-flywheel': 'MLIP 飞轮弧线',
+    'group.extraction': '提取来源',
 
     'reader.loading': '正在加载文章…',
     'reader.meta.read': '分钟阅读',

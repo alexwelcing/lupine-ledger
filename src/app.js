@@ -243,7 +243,7 @@ async function renderHome() {
     }
 
     // Featured — max 4 curated callouts with defined roles
-    const featured = (m.articles || []).filter(a => a.featured).slice(0, 4);
+    const featured = (m.articles || []).filter(a => a.featured && a.featuredRole).slice(0, 4);
     if (featured.length) {
       const featuredSec = el('section', { class: 'featured-section' });
       featuredSec.append(el('h2', {}, t('home.featured.title', STATE.settings.lang)));
@@ -333,22 +333,17 @@ async function renderHome() {
           groups[a.group].push(a);
         }
       }
-      const groupNames = {
-        'hypotheses': 'Hypothesis Ledger',
-        'mlip-flywheel': 'MLIP Flywheel Arc',
-        'extraction': 'Extraction Logs',
-      };
-
       const cards = el('div', { class: 'cards' });
       let lastGroup = null;
       for (const a of arts) {
         if (a.group && a.group !== lastGroup && groups[a.group]) {
           const ribbon = el('div', { class: 'group-ribbon' });
-          ribbon.append(el('span', { class: 'group-ribbon-label' }, groupNames[a.group] || a.group));
+          ribbon.append(el('span', { class: 'group-ribbon-label' }, t(`group.${a.group}`, STATE.settings.lang) || a.group));
           ribbon.append(el('span', { class: 'group-ribbon-arrow' }, '→'));
           cards.append(ribbon);
           lastGroup = a.group;
         }
+        if (!a.group) lastGroup = null;
         cards.append(cardFor(a));
       }
       shelf.append(cards);

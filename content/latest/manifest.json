@@ -1,9 +1,9 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-06-27T00:03:34.961Z",
+  "generatedAt": "2026-06-27T00:37:11.935Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "8e9d49c209f63f4ff6a926932fadb662a3970957",
+    "commit": "ce1c04d3375258e4a0b00ce5d44c9d54cf092295",
     "dirty": true,
     "generator": "scripts/export_library_content.mjs"
   },
@@ -16,7 +16,7 @@
         },
         "gloss": {
           "en": "A conjecture we intend to test; no evidence yet.",
-          "zh": "一个我们打算检验的猜想；尚无证据。"
+          "zh": "我们打算测试的猜想；目前尚无证据。"
         },
         "color": "#a855f7"
       },
@@ -27,7 +27,7 @@
         },
         "gloss": {
           "en": "Evidence-backed but not formally proven.",
-          "zh": "有证据支持但未经形式化证明。"
+          "zh": "有证据支持但尚未形式化证明。"
         },
         "color": "#22c55e"
       },
@@ -38,7 +38,7 @@
         },
         "gloss": {
           "en": "Under active investigation; could go either way.",
-          "zh": "正在积极调查中；结果可能向任一方向发展。"
+          "zh": "正在积极调查中；结果尚不确定。"
         },
         "color": "#3b82f6"
       },
@@ -49,7 +49,7 @@
         },
         "gloss": {
           "en": "We tested it and falsified it ourselves.",
-          "zh": "我们已亲自检验并否证了它。"
+          "zh": "我们已测试并自行证伪。"
         },
         "color": "#ef4444"
       },
@@ -60,7 +60,7 @@
         },
         "gloss": {
           "en": "We published it, then found a confounder and retracted the strong form.",
-          "zh": "我们曾发表它，后发现混杂因素并撤回强论断。"
+          "zh": "我们发表后发现了混淆因素，并撤回了较强形式。"
         },
         "color": "#f59e0b"
       },
@@ -71,7 +71,7 @@
         },
         "gloss": {
           "en": "Backed by a machine-checked Lean proof.",
-          "zh": "由机器检验的 Lean 证明支撑。"
+          "zh": "由机器检查的 Lean 证明支持。"
         },
         "color": "#14b8a6"
       },
@@ -96,7 +96,7 @@
         },
         "blurb": {
           "en": "Orientation, shared vocabulary, data provenance, and the research agenda. Start here if you are new.",
-          "zh": "方向、共享词汇、数据来源和研究议程。如果你是新来的，从这里开始。"
+          "zh": "方向、共享词汇、数据来源与研究议程。如果你是新来的，从这里开始。"
         }
       },
       {
@@ -107,7 +107,7 @@
         },
         "blurb": {
           "en": "Every claim we have tested, its lifecycle status, and the evidence behind it. The hypothesis ledger.",
-          "zh": "我们检验过的每一个声明、其生命周期状态以及背后的证据。假设台账。"
+          "zh": "我们测试过的每个声明、其生命周期状态及其背后的证据。假设台账。"
         }
       },
       {
@@ -129,7 +129,7 @@
         },
         "blurb": {
           "en": "Benchmarks, live-lab results, and the MLIP flywheel evidence chain.",
-          "zh": "基准测试、实时实验室结果和 MLIP 飞轮证据链。"
+          "zh": "基准测试、实时实验室结果以及 MLIP 飞轮证据链。"
         }
       },
       {
@@ -140,7 +140,7 @@
         },
         "blurb": {
           "en": "Lean-backed theorem proofs, build-locking contracts, and the formal proof ledger.",
-          "zh": "Lean 支持的定理证明、构建锁定契约和形式化证明台账。"
+          "zh": "Lean 支持的定理证明、构建锁定契约以及形式化证明台账。"
         }
       },
       {
@@ -151,7 +151,7 @@
         },
         "blurb": {
           "en": "What changed, why, and what is next. The narrative spine of the project.",
-          "zh": "改变了什么、为什么以及下一步。项目的叙事主线。"
+          "zh": "改变了什么、为什么以及下一步是什么。项目的叙事主线。"
         }
       },
       {
@@ -161,8 +161,8 @@
           "zh": "评议与参考文献"
         },
         "blurb": {
-          "en": "External literature lineage, funding landscape, and adversarial peer reviews.",
-          "zh": "外部文献谱系、资金格局和对抗性同行评议。"
+          "en": "The literature we build on, the funding context, and the adversarial reviews our claims passed before going public.",
+          "zh": "我们所依据的文献、资金背景以及我们的声明在公开前通过的对抗性评议。"
         }
       },
       {
@@ -172,8 +172,8 @@
           "zh": "构建与运营"
         },
         "blurb": {
-          "en": "How this library was built and how to reproduce every result. Extraction logs, ADRs, and infrastructure.",
-          "zh": "这个库是如何构建的，以及如何复现每一个结果。提取日志、架构决策记录和基础设施。"
+          "en": "How this library was built and how to reproduce every result. Extraction logs, ADRs, and operational fabric.",
+          "zh": "该图书馆是如何构建的，以及如何复现每个结果。提取日志、架构决策记录和运营结构。"
         }
       }
     ],
@@ -185,10 +185,11 @@
           "zh": "初次访问"
         },
         "description": {
-          "en": "Understand what Lupine is, what it claims, and why it matters — without drowning in methods.",
-          "zh": "了解 Lupine 是什么、主张什么、为何重要 — 无需深入方法细节。"
+          "en": "Start with the big picture.",
+          "zh": "从全局开始。"
         },
         "path": [
+          "what-is-an-interatomic-potential",
           "readme",
           "glossary",
           "error-geometry-objects",
@@ -199,14 +200,14 @@
         ]
       },
       {
-        "id": "physicist",
+        "id": "materials-scientist",
         "label": {
           "en": "Show me the physics",
-          "zh": "给我看物理"
+          "zh": "展示物理"
         },
         "description": {
-          "en": "Evaluate the scientific claims against the evidence, from Fisher information to the 16-element benchmark.",
-          "zh": "从 Fisher 信息到 16 元素基准，用证据评估科学主张。"
+          "en": "Evaluate the claims against the evidence.",
+          "zh": "根据证据评估声明。"
         },
         "path": [
           "data-provenance",
@@ -227,8 +228,8 @@
           "zh": "我构建 MLIP"
         },
         "description": {
-          "en": "Understand the flywheel, the correction operator, and how to use the validation infrastructure.",
-          "zh": "了解飞轮、修正算子，以及如何使用验证基础设施。"
+          "en": "Understand the flywheel, the operator, and how to reproduce results.",
+          "zh": "理解飞轮、算子以及如何复现结果。"
         },
         "path": [
           "working-papers",
@@ -249,8 +250,8 @@
           "zh": "这是否严谨？"
         },
         "description": {
-          "en": "Assess epistemic discipline, self-correction culture, and formal backing.",
-          "zh": "评估认识论纪律、自我纠正文化和形式化支持。"
+          "en": "Assess epistemic discipline and formal backing.",
+          "zh": "评估认识论纪律和形式化支持。"
         },
         "path": [
           "internal-science-program",
@@ -266,19 +267,6 @@
       }
     ],
     "entries": [
-      {
-        "id": "interatomic-potentials-primer",
-        "source": "articles/docs/interatomic-potentials-primer.md",
-        "title": "What Is an Interatomic Potential?",
-        "subtitle": "A 5-minute primer before you meet EAM, MLIPs, and error geometry.",
-        "category": "foundations",
-        "tags": [
-          "primer",
-          "onboarding",
-          "reference"
-        ],
-        "originalSource": "docs/interatomic-potentials-primer.md"
-      },
       {
         "id": "readme",
         "source": "articles/README.md",
@@ -1028,8 +1016,8 @@
       {
         "id": "operating-system",
         "source": "articles/docs/operating-system.md",
-        "title": "Research Loop Architecture",
-        "subtitle": "How the pieces fit: the loop, the corpus, and the surfaces around them.",
+        "title": "Lupine Operating System",
+        "subtitle": "How the research loop fits together: agenda, ledger, evidence, and correction.",
         "category": "operations",
         "tags": [
           "meta",
@@ -1041,7 +1029,7 @@
         "id": "resource-fabric",
         "source": "articles/docs/resource-fabric.md",
         "title": "Infrastructure Fabric",
-        "subtitle": "The infrastructure fabric — compute, storage, and deploy surfaces.",
+        "subtitle": "The compute and storage fabric that reproduces every Lupine result.",
         "category": "operations",
         "tags": [
           "meta",
@@ -1126,6 +1114,33 @@
           "pilots"
         ],
         "originalSource": "docs/partnerships.md"
+      },
+      {
+        "id": "what-is-an-interatomic-potential",
+        "source": "articles/docs/what-is-an-interatomic-potential.md",
+        "title": "What Is an Interatomic Potential?",
+        "subtitle": "A five-minute primer on the models that let computers simulate atoms, and why they are necessary but wrong in structured ways.",
+        "category": "foundations",
+        "tags": [
+          "primer",
+          "mlip",
+          "basics"
+        ],
+        "originalSource": "docs/what-is-an-interatomic-potential.md"
+      },
+      {
+        "id": "projection-law-in-plain-language",
+        "source": "articles/docs/projection-law-in-plain-language.md",
+        "title": "The Projection Law in Plain Language",
+        "subtitle": "A 300-word explanation of what the Lupine correction operator does for a materials scientist.",
+        "category": "validation",
+        "tags": [
+          "primer",
+          "projection-law",
+          "mlip"
+        ],
+        "group": "mlip-flywheel",
+        "originalSource": "docs/projection-law-in-plain-language.md"
       }
     ],
     "languages": {
@@ -1140,12 +1155,6 @@
     }
   },
   "files": [
-    {
-      "source": "docs/interatomic-potentials-primer.md",
-      "bundleSource": "articles/docs/interatomic-potentials-primer.md",
-      "bytes": 4532,
-      "sha256": "b213b3145fc58e36548044361e2a1eafa46430c17c391e140531f1c17017ed39"
-    },
     {
       "source": "README.md",
       "bundleSource": "articles/README.md",
@@ -1511,6 +1520,18 @@
       "bundleSource": "articles/docs/partnerships.md",
       "bytes": 2127,
       "sha256": "a457a53f372ced4f5638f8bfa7b1aeb290c369c2beeb782ad4924c29f6670595"
+    },
+    {
+      "source": "docs/what-is-an-interatomic-potential.md",
+      "bundleSource": "articles/docs/what-is-an-interatomic-potential.md",
+      "bytes": 2782,
+      "sha256": "f2af6514039ad935d545f868b47ac1143f94c07540e18e7707991c1d69f61a7a"
+    },
+    {
+      "source": "docs/projection-law-in-plain-language.md",
+      "bundleSource": "articles/docs/projection-law-in-plain-language.md",
+      "bytes": 3270,
+      "sha256": "2ea5c903e4b45996ee6834421c1eced35dc317f0b7793f314de93d55ab0aab81"
     }
   ]
 }
