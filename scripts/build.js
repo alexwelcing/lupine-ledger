@@ -339,6 +339,7 @@ function build() {
       readMinutes: defaultArticle.readMinutes,
       languages,
       featured: !!entry.featured,
+      featuredRole: entry.featuredRole || null,
       status: entry.status || null,
       group: entry.group || null,
     };
@@ -351,6 +352,7 @@ function build() {
     generatedAt: new Date().toISOString(),
     categories: CATALOG.categories,
     statuses: CATALOG.statuses || {},
+    journeys: CATALOG.journeys || [],
     languages: CATALOG.languages || {},
     articles,
   };

@@ -4,6 +4,34 @@
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
 
+const BANNERS = [
+  {
+    role: 'preprint',
+    className: 'callout-preprint',
+    badge: 'Preprint',
+    title: 'IMMI: Interatomic Machine Learning Interface',
+    subtitle: 'A unified, open interface for machine learning interatomic potentials.',
+    href: '/immi_paper.pdf',
+    external: true,
+  },
+  {
+    role: 'report',
+    className: 'callout-featured',
+    badge: 'Interactive theorem demo + live GPU showcase',
+    title: 'Growing the Hyper-Ribbon',
+    subtitle: 'Start with the projected-ribbon theorem gate, then continue to framework, validation, compute log, and observatory.',
+    href: '#/reports',
+  },
+  {
+    role: 'live-lab',
+    className: 'callout-featured callout-live-lab',
+    badge: 'Library Live Lab',
+    title: 'MLIP Flywheel Visual Review',
+    subtitle: 'Stage map, 5x5 baseline surface, Distill triplets, evaluator rubric, and physical relaxation imagery.',
+    href: '#/system/mlip-flywheel',
+  },
+];
+
 const STATE = {
   manifest: null,          // { categories, articles, version }
   articleCache: new Map(), // id -> article (with html)
@@ -196,54 +224,42 @@ async function renderHome() {
     hero.append(stats);
     VIEW.append(hero);
 
-    // Preprint Banner — aligned to the 720px content column via .callout.
-    const paperBanner = el('section', { class: 'callout' });
-    const bannerLink = el('a', { class: 'callout-box callout-preprint', href: '/immi_paper.pdf', target: '_blank' });
-    bannerLink.append(el('span', { style: 'font-size:0.75rem;text-transform:uppercase;color:var(--accent);font-weight:700;letter-spacing:0.05em;' }, t('home.preprint.badge', STATE.settings.lang)));
-    bannerLink.append(el('strong', { style: 'font-size:1.1rem;' }, t('home.preprint.title', STATE.settings.lang)));
-    bannerLink.append(el('span', { style: 'font-size:0.9rem;opacity:0.75;' }, t('home.preprint.sub', STATE.settings.lang)));
-    paperBanner.append(bannerLink);
-    VIEW.append(paperBanner);
+    // Start Here — guided journeys for four personas
+    if (m.journeys && m.journeys.length) {
+      const journeysSec = el('section', { class: 'journeys' });
+      journeysSec.append(el('h2', {}, t('home.journeys.title', STATE.settings.lang)));
+      const journeysGrid = el('div', { class: 'journeys-grid' });
+      for (const j of m.journeys) {
+        const card = el('a', { class: 'journey-card', href: `#/read/${j.path[0]}` });
+        card.append(el('div', { class: 'journey-label' }, t(j.label, STATE.settings.lang)));
+        card.append(el('div', { class: 'journey-desc' }, t(j.description, STATE.settings.lang)));
+        const meta = el('div', { class: 'journey-meta' });
+        meta.append(el('span', {}, `${j.path.length} articles →`));
+        card.append(meta);
+        journeysGrid.append(card);
+      }
+      journeysSec.append(journeysGrid);
+      VIEW.append(journeysSec);
+    }
 
-    // Interactive theory report — a fully typeset, explorable companion to the
-    // preprint (theorem gate, live hyper-ribbon explorer, regulator FSM).
-    const reportBanner = el('section', { class: 'callout' });
-    const reportLink = el('a', { class: 'callout-box callout-featured', href: '/reports/hyper-ribbon-theorem.html' });
-    reportLink.append(el('span', { style: 'font-size:0.75rem;text-transform:uppercase;color:var(--lupine-300);font-weight:700;letter-spacing:0.05em;' }, 'Interactive theorem demo + live GPU showcase'));
-    reportLink.append(el('strong', { style: 'font-size:1.1rem;' }, 'Growing the Hyper-Ribbon'));
-    reportLink.append(el('span', { style: 'font-size:0.9rem;opacity:0.75;' }, 'Start with the projected-ribbon theorem gate, then continue to framework, validation, compute log, and observatory.'));
-    const reportLinks = el('div', { style: 'display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;' });
-    reportLinks.append(el('a', { href: '/reports/hyper-ribbon-theorem.html', style: 'font-size:0.8rem;font-weight:700;color:var(--accent-ink);background:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'Theorem Demo ->'));
-    reportLinks.append(el('a', { href: '/reports/growing-hyper-ribbon.html', style: 'font-size:0.8rem;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'Part 1 →'));
-    reportLinks.append(el('a', { href: '/reports/growing-hyper-ribbon-part-2.html', style: 'font-size:0.8rem;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'Part 2 →'));
-    reportLinks.append(el('a', { href: '/reports/growing-hyper-ribbon-experiments.html', style: 'font-size:0.8rem;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'Compute Log →'));
-    reportLinks.append(el('a', { href: '/reports/growing-hyper-ribbon-observatory.html', style: 'font-size:0.8rem;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'Observatory →'));
-    reportLinks.append(el('a', { href: '#/read/mlip-cloud-baseline-distill', style: 'font-size:0.8rem;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 12px;border-radius:999px;' }, 'MLIP Cloud Run ->'));
-    reportLink.append(reportLinks);
-    reportBanner.append(reportLink);
-    VIEW.append(reportBanner);
-
-    // Live Lab visual review: an interactive comprehension surface for the
-    // MLIP flywheel, not just a prose update.
-    const labBanner = el('section', { class: 'callout' });
-    const labLink = el('a', { class: 'callout-box callout-featured callout-live-lab', href: '#/system/mlip-flywheel' });
-    labLink.append(el('span', { style: 'font-size:0.75rem;text-transform:uppercase;color:var(--cyan);font-weight:700;letter-spacing:0.05em;' }, 'Library Live Lab'));
-    labLink.append(el('strong', { style: 'font-size:1.1rem;' }, 'MLIP Flywheel Visual Review'));
-    labLink.append(el('span', { style: 'font-size:0.9rem;opacity:0.75;' }, 'Stage map, 5x5 baseline surface, Distill triplets, evaluator rubric, and physical relaxation imagery.'));
-    labBanner.append(labLink);
-    VIEW.append(labBanner);
-
-    // Featured — catalog entries flagged featured:true, rendered prominently
-    // so the most important current work is the first thing read.
-    const featured = (m.articles || []).filter(a => a.featured);
-    for (const fa of featured) {
-      const card = el('section', { class: 'callout' });
-      const link = el('a', { class: 'callout-box callout-featured', href: `#/read/${fa.id}` });
-      link.append(el('span', { style: 'font-size:0.75rem;text-transform:uppercase;color:var(--lupine-300);font-weight:700;letter-spacing:0.05em;' }, '★ Featured'));
-      link.append(el('strong', { style: 'font-size:1.1rem;' }, t(fa.title, STATE.settings.lang)));
-      if (fa.subtitle) link.append(el('span', { style: 'font-size:0.9rem;opacity:0.75;' }, t(fa.subtitle, STATE.settings.lang)));
-      card.append(link);
-      VIEW.append(card);
+    // Featured — max 4 curated callouts with defined roles
+    const featured = (m.articles || []).filter(a => a.featured).slice(0, 4);
+    if (featured.length) {
+      const featuredSec = el('section', { class: 'featured-section' });
+      featuredSec.append(el('h2', {}, t('home.featured.title', STATE.settings.lang)));
+      const featuredGrid = el('div', { class: 'featured-grid' });
+      for (const fa of featured) {
+        const roleLabel = fa.featuredRole
+          ? t(`home.featured.role.${fa.featuredRole}`, STATE.settings.lang)
+          : t('home.featured.role.default', STATE.settings.lang);
+        const card = el('a', { class: 'featured-card', href: `#/read/${fa.id}` });
+        card.append(el('span', { class: 'featured-role' }, roleLabel));
+        card.append(el('strong', { class: 'featured-title' }, t(fa.title, STATE.settings.lang)));
+        if (fa.subtitle) card.append(el('span', { class: 'featured-sub' }, t(fa.subtitle, STATE.settings.lang)));
+        featuredGrid.append(card);
+      }
+      featuredSec.append(featuredGrid);
+      VIEW.append(featuredSec);
     }
 
     // Continue reading
@@ -285,6 +301,19 @@ async function renderHome() {
         bar.append(chip(`${t(st.label, STATE.settings.lang)} · ${presentCounts[s]}`, st.color, STATE.statusFilter === s, () => { STATE.statusFilter = s; renderHome(); }));
       }
       VIEW.append(bar);
+      // Gloss line: one-line explanation of each present status
+      const glossParts = presentStatuses
+        .map(s => {
+          const st = statuses[s];
+          if (!st || !st.gloss) return null;
+          const g = t(st.gloss, STATE.settings.lang);
+          if (!g) return null;
+          return `${t(st.label, STATE.settings.lang)} = ${g}`;
+        })
+        .filter(Boolean);
+      if (glossParts.length) {
+        VIEW.append(el('p', { class: 'status-gloss' }, glossParts.join('. ') + '.'));
+      }
     }
 
     // Shelves
@@ -295,8 +324,33 @@ async function renderHome() {
       const shelf = el('section', { class: 'shelf' });
       shelf.append(el('h2', {}, t(cat.label, STATE.settings.lang)));
       if (cat.blurb && !STATE.statusFilter) shelf.append(el('p', { class: 'blurb' }, t(cat.blurb, STATE.settings.lang)));
+
+      // Group ribbons: if articles share a group, render a connector above them
+      const groups = {};
+      for (const a of arts) {
+        if (a.group) {
+          if (!groups[a.group]) groups[a.group] = [];
+          groups[a.group].push(a);
+        }
+      }
+      const groupNames = {
+        'hypotheses': 'Hypothesis Ledger',
+        'mlip-flywheel': 'MLIP Flywheel Arc',
+        'extraction': 'Extraction Logs',
+      };
+
       const cards = el('div', { class: 'cards' });
-      for (const a of arts) cards.append(cardFor(a));
+      let lastGroup = null;
+      for (const a of arts) {
+        if (a.group && a.group !== lastGroup && groups[a.group]) {
+          const ribbon = el('div', { class: 'group-ribbon' });
+          ribbon.append(el('span', { class: 'group-ribbon-label' }, groupNames[a.group] || a.group));
+          ribbon.append(el('span', { class: 'group-ribbon-arrow' }, '→'));
+          cards.append(ribbon);
+          lastGroup = a.group;
+        }
+        cards.append(cardFor(a));
+      }
       shelf.append(cards);
       VIEW.append(shelf);
     }
@@ -441,9 +495,46 @@ function route() {
     renderReader(decodeURIComponent(arg));
   } else if (path === 'system' && arg === 'mlip-flywheel') {
     renderMlipFlywheel();
+  } else if (path === 'reports') {
+    renderReports();
   } else {
     renderHome();
   }
+}
+
+// ───────────────────────────────────────────────────────────────
+// Reports index page
+// ───────────────────────────────────────────────────────────────
+async function renderReports() {
+  clearActiveView();
+  STATE.view = 'reports';
+  document.documentElement.dataset.view = 'reports';
+  BACK_BTN.hidden = false;
+  setProgress(0);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  VIEW.innerHTML = '';
+
+  const heading = el('section', { class: 'hero' });
+  heading.append(el('h1', {}, 'Interactive Demos'));
+  heading.append(el('p', {}, 'Theorem demos, compute logs, and live GPU showcases.'));
+  VIEW.append(heading);
+
+  const grid = el('div', { class: 'cards' });
+  const reports = [
+    { href: '/reports/hyper-ribbon-theorem.html', title: 'Theorem Demo', subtitle: 'Projected-ribbon theorem gate' },
+    { href: '/reports/growing-hyper-ribbon.html', title: 'Part 1', subtitle: 'Growing the Hyper-Ribbon framework' },
+    { href: '/reports/growing-hyper-ribbon-part-2.html', title: 'Part 2', subtitle: 'Validation and extensions' },
+    { href: '/reports/growing-hyper-ribbon-experiments.html', title: 'Compute Log', subtitle: 'Raw experiment logs and timings' },
+    { href: '/reports/growing-hyper-ribbon-observatory.html', title: 'Observatory', subtitle: 'Live observatory dashboard' },
+    { href: '#/read/mlip-cloud-baseline-distill', title: 'MLIP Cloud Run', subtitle: 'Cloud-run baseline distill' },
+  ];
+  for (const r of reports) {
+    const card = el('a', { href: r.href, class: 'card' });
+    card.append(el('div', { class: 'card-title' }, r.title));
+    card.append(el('div', { class: 'card-sub' }, r.subtitle));
+    grid.append(card);
+  }
+  VIEW.append(grid);
 }
 
 // ───────────────────────────────────────────────────────────────
