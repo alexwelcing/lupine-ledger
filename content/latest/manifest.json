@@ -1,10 +1,10 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-06-28T17:55:09.881Z",
+  "generatedAt": "2026-06-28T17:55:36.869Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "3d3b60741d7fc2745cac1f6338a240f16441eaa3",
-    "dirty": true,
+    "commit": "c1cafb5343ce0f4a5db3a6b67e413edee5593037",
+    "dirty": false,
     "generator": "scripts/export_library_content.mjs"
   },
   "catalog": {
