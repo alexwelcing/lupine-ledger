@@ -1,6 +1,6 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-06-29T19:45:01.486781Z",
+  "generatedAt": "2026-06-29T20:29:32.321344Z",
   "source": {
     "repo": "lupine-rhizo",
     "commit": "2322b3cb03a95502f4dde6a4a5d9dc2ecd1ca7fc",
@@ -1231,7 +1231,7 @@
         "id": "projection-law-round2-final",
         "source": "articles/docs/projection-law-round2-final.md",
         "title": "Round 2 Final — The Projection Law Submission Package",
-        "subtitle": "Finalized 16-element 3×3×3 MLIP benchmark, class-aware correction operator, and IMMI submission release.",
+        "subtitle": "Geometric correction operator for MLIP systematic error; TMS 2027 oral abstract in Computational Discovery and Design of Materials.",
         "category": "changelog",
         "tags": [
           "mlip",
@@ -1670,8 +1670,8 @@
     {
       "source": "docs/projection-law-round2-final.md",
       "bundleSource": "articles/docs/projection-law-round2-final.md",
-      "bytes": 3463,
-      "sha256": "ccb8ff365a8c11fc6f4c7044862f43e30758d849756bf15850ae957bfaad3d80"
+      "bytes": 4757,
+      "sha256": "a92ea136e4039dd8985b3217afe73dfff6f27afc365b893852967a2a50d243e5"
     }
   ]
 }

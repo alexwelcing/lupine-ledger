@@ -4,6 +4,22 @@
 
 ---
 
+## In one sentence
+
+Machine-learned interatomic potentials (MLIPs) are now fast enough to screen thousands of materials, yet their predictions still carry systematic errors that model ensembles fail to detect. We introduce a geometric view of this error and a correction strategy that removes shared, family-wide bias without requiring new density-functional calculations.
+
+---
+
+## TMS 2027
+
+This work has been selected for oral presentation at the **TMS 2027 Annual Meeting & Exhibition** (Orlando, FL, March 14–18, 2027) in the **Computational Discovery and Design of Materials** symposium.
+
+> **Abstract:** Using a 128-case elastic-constant benchmark across 16 cubic metals and four leading MLIPs, we show that a simple, transferable one-dimensional correction reduces mean absolute error from 17.8 GPa to 10.4 GPa, with no case made worse. The result suggests that MLIP errors are structured rather than random, opening a path to calibrated, model-family-aware corrections. If broadly applicable, this approach would replace expensive ensemble averaging with a single correction call, accelerating high-throughput screening of metals and alloys.
+>
+> [Read the full abstract file](https://github.com/alexwelcing/lupine/blob/main/paper2/submission_abstracts/TMS2027_oral_abstract.md)
+
+---
+
 ## Submission package
 
 - **GitHub Release:** [`alexwelcing/lupine — projection-law-round2-2026-06-29`](https://github.com/alexwelcing/lupine/releases/tag/projection-law-round2-2026-06-29)
