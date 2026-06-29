@@ -75,7 +75,7 @@
 <header class="hero">
   <div class="eyebrow"><span class="badge">Working papers</span> Lupine Science · Error-Geometry Program · June 2026</div>
   <h1>Two papers, one law, every number traceable.</h1>
-  <p class="deck">The empirical discovery and the law it revealed — distributed as working papers with a public replication kit, three pre-registrations, and a machine-checked theory core. Failures reported as failures.</p>
+  <p class="deck">The empirical discovery, the law it revealed, and the corrected benchmark that tests the law on modern foundation MLIPs — distributed as working papers with a public replication kit, three pre-registrations, and a machine-checked theory core. Failures reported as failures.</p>
   <div class="byline">
     <span><b>Alex Welcing</b> · Lupine Science</span>
     <span>status: working papers, in preparation</span>
@@ -99,13 +99,14 @@
   </div>
 
   <h3>Abstract</h3>
-  <p class="abstract">When many independently constructed models agree, the agreement is routinely read as confidence. We formalize and test the opposite reading: a model family is a projection operator, fitting drives every member toward the point of the family's reachable set nearest the truth, and the shared residual — one direction in observable space — is a fingerprint of whatever constraint binds the family. The theory core is machine-checked (Lean&nbsp;4, zero unproven obligations): normal-cone consensus theorem; participation-ratio gauge; ribbon/consensus decoupling; affine decomposition of closed affine reachable sets; local normal-cone theorem for $C^1$ smooth non-convex immersions; and Hoeffding concentration of the empirical second-moment matrix used by the gauge. We then test the law's sharpest consequence — <i>errors organize by constraint, not by implementation</i> — with pre-registered factorial experiments at three layers of one epistemic stack: classical interatomic potentials, foundation machine-learned potentials (4 architectures × 2 training functionals), and DFT implementations (12 methods, 384 crystals). Each experiment carried an explicit refutation condition; neither was triggered, and four of seven registered predictions failed and are reported as failures. The anisotropy persists at every layer — median participation ratio 1.09, ~1.3, and 1.10 out of 3 — while its direction rotates to the next constraint upstream.</p>
+  <p class="abstract">When many independently constructed models agree, the agreement is routinely read as confidence. We formalize and test the opposite reading: a model family is a projection operator, fitting drives every member toward the point of the family's reachable set nearest the truth, and the shared residual — one direction in observable space — is a fingerprint of whatever constraint binds the family. The theory core is machine-checked (Lean&nbsp;4, zero unproven obligations): normal-cone consensus theorem; participation-ratio gauge; ribbon/consensus decoupling; affine decomposition of closed affine reachable sets; local normal-cone theorem for $C^1$ smooth non-convex immersions; and Hoeffding concentration of the empirical second-moment matrix used by the gauge. We then test the law's sharpest consequence — <i>errors organize by constraint, not by implementation</i> — with pre-registered factorial experiments at three layers of one epistemic stack: classical interatomic potentials, foundation machine-learned potentials (4 architectures × 2 training functionals), and DFT implementations (12 methods, 384 crystals). A complete 3×3×3 supercell benchmark on 16 cubic metals shows that a single 1-D correction direction per functional lowers the foundation-MLIP mean MAE from 17.84&nbsp;GPa to 9.92&nbsp;GPa with zero no-harm violations. Each experiment carried an explicit refutation condition; none was triggered, and four of seven registered predictions failed and are reported as failures. The anisotropy persists at every layer — median participation ratio 1.09, ~1.3, and 1.10 out of 3 — while its direction rotates to the next constraint upstream.</p>
 
   <h3>Key results</h3>
   <div class="kr">
     <div><b>p = 0.029</b>Foundation-model errors cluster by training functional, not architecture (S = +0.317 vs −0.093; exact permutation over all 70 labelings).</div>
     <div><b>p = 0.017</b>DFT-implementation errors cluster by pseudopotential table, not simulation code (S = +0.526 vs +0.265); four independent codes sharing one table align at 0.70–0.87.</div>
     <div><b>69% out-of-sample</b>A correction direction fitted with the corrected model held out removes a median 69% of squared elastic error (154 leave-one-model-out trials).</div>
+    <div><b>17.84 → 9.92 GPa</b>A single 1-D correction per functional applied to the full 3×3×3 MatPES benchmark lowers the mean MAE for every model, with zero no-harm violations across 128 cases.</div>
     <div><b>4 of 7 failed</b>Registered predictions that missed their thresholds, reported as failures — including the clustering effect-size component itself.</div>
   </div>
 
@@ -124,6 +125,38 @@
   <figure>
     <img src="assets/papers/fig4_gauge_decoupling.png" alt="Participation-ratio gauge and the ribbon/consensus decoupling scatter" />
     <figcaption><b>Fig. 4 — The gauge and the two order parameters.</b> (a) The machine-checked PR(ρ) curve with the classical inversion: median PR 1.09 → systematic fraction α ≈ 0.98. (b) Axis concentration stays high for every element while sign coherence spans the full range — the decoupling theorem in live data.</figcaption>
+  </figure>
+  <figure>
+    <img src="assets/papers/fig5_mlip_correction.png" alt="Raw versus 1-D Lupine-corrected MatPES MLIP mean MAE" />
+    <figcaption><b>Fig. 5 — The law as a correction layer.</b> Raw MatPES MLIP predictions versus 1-D Lupine-corrected predictions on the 16-element 3×3×3 benchmark. A single bias vector per functional improves every model: PBE 15.01 → 8.94 GPa and r2SCAN 20.66 → 10.91 GPa.</figcaption>
+  </figure>
+</section>
+
+<!-- ════════════════ PAPER 3 — THE BENCHMARK ════════════════ -->
+<section class="paper" id="layer2-benchmark">
+  <div class="papertag">Paper · The benchmark</div>
+  <h2>Layer-2: A Sub-Core-Hour 3×3×3 Elastic-Constant Reference Benchmark for MatPES MLIPs</h2>
+  <p class="sub">Working paper · June 2026 · 16 cubic metals, 4 foundation potentials, 2 functionals, 128 cases</p>
+
+  <div class="actions">
+    <a class="btn btn-primary" href="/#/read/lupine-layer2-3x3x3-final-paper">Read in the Library →</a>
+    <a class="btn" href="https://github.com/alexwelcing/lupine/blob/main/data/benchmark_layer2_3x3x3_summary.json">Summary JSON →</a>
+  </div>
+
+  <h3>Abstract</h3>
+  <p class="abstract">We present a complete 3×3×3 supercell reference benchmark of cubic-metal elastic constants for four MatPES foundation machine-learned interatomic potentials — CHGNet, M3GNet, QET, and TensorNet — on 16 elements under PBE and approximate r2SCAN targets. The full 128-case matrix costs less than one CPU core-hour. The uncorrected mean C<sub>ij</sub> MAE is 17.84&nbsp;GPa. Applying the Lupine distillation engine as a post-hoc correction layer — a single first-principal-component bias vector per functional, projected onto each residual — lowers the mean MAE to 9.92&nbsp;GPa. The correction improves every model on both functionals and satisfies the no-harm guarantee on every case. The remaining ~10&nbsp;GPa error is concentrated in magnetic and refractory BCC transition metals and in the approximate r2SCAN target, identifying the chemistry-specific errors the next generation of models and training data must address.</p>
+
+  <h3>Key results</h3>
+  <div class="kr">
+    <div><b>17.84 → 9.92 GPa</b>Overall mean C<sub>ij</sub> MAE falls by 44% after the 1-D Lupine correction; zero no-harm violations across all 128 cases.</div>
+    <div><b>Every model improves</b>PBE: CHGNet 17.90 → 10.33, M3GNet 14.13 → 8.18, QET 13.41 → 8.56, TensorNet 14.61 → 8.69 GPa.</div>
+    <div><b>r2SCAN harder</b>r2SCAN: CHGNet 27.94 → 12.47, M3GNet 20.71 → 11.48, QET 15.46 → 8.55, TensorNet 18.54 → 11.14 GPa.</div>
+    <div><b>&lt; 1 core-hour</b>The full factorial matrix runs for under one CPU core-hour, making the reference a practical validation layer for new model releases.</div>
+  </div>
+
+  <figure>
+    <img src="assets/papers/fig5_mlip_correction.png" alt="Raw versus 1-D Lupine-corrected MatPES MLIP mean MAE" />
+    <figcaption><b>Fig. 1 — Raw versus corrected MatPES MLIP predictions.</b> Mean C<sub>ij</sub> MAE by model for the PBE target (left) and the approximate r2SCAN target (right). A single first-principal-component projection per functional reduces error for every model.</figcaption>
   </figure>
 </section>
 
@@ -166,7 +199,7 @@
 <!-- ════════════════ COLOPHON ════════════════ -->
 <section class="colophon" id="provenance">
   <h3>Provenance &amp; verification</h3>
-  <p>Both papers are <b>working papers, in preparation</b> — not yet submitted to any venue. Every headline statistic is verifiable from committed raw data: the <a href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">replication kit</a> (commit-versioned, public) runs Tier&nbsp;1 verification with NumPy alone in seconds (<code>python tier1_analyze.py</code>) and re-derives the raw elastic constants from public model checkpoints in Tier&nbsp;2. Pre-registrations were committed before execution (<code>dffbe595</code>, <code>ebf39e33</code>); the round-2 registration with symmetric kill conditions is included. The theory core — normal-cone consensus theorem, participation-ratio gauge, ribbon/consensus decoupling, affine decomposition, smooth non-convex local normal cone, and finite-sample concentration — is machine-checked within the program's ~225-theorem Lean&nbsp;4 corpus (77 build-locked in <code>Vision.lean</code>, zero <code>sorry</code>, zero new axioms, 2891-job <code>lake build</code> green) and builds from the <a href="https://github.com/alexwelcing/lupine">open repository</a>. An <a href="/#/read/academic-review-projection-law">academic review</a> (2026-06-16) lists strengths and six MUST-FIX gates, and a follow-up <a href="/#/read/adversarial-review-projection-law">adversarial review</a> verified the first-pass fixes and caught additional wording/placeholder issues; both are addressed in the current PDFs.</p>
+  <p>All three papers are <b>working papers, in preparation</b> — not yet submitted to any venue. Every headline statistic is verifiable from committed raw data: the <a href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">replication kit</a> (commit-versioned, public) runs Tier&nbsp;1 verification with NumPy alone in seconds (<code>python tier1_analyze.py</code>) and re-derives the raw elastic constants from public model checkpoints in Tier&nbsp;2. The 3×3×3 MatPES benchmark is reproducible from <code>lupine/data/aggregate_layer2.py</code> and the raw Cloud Run outputs; the corrected MAEs are also generated by <code>atlas-distill mlip-correct</code>. Pre-registrations were committed before execution (<code>dffbe595</code>, <code>ebf39e33</code>); the round-2 registration with symmetric kill conditions is included. The theory core — normal-cone consensus theorem, participation-ratio gauge, ribbon/consensus decoupling, affine decomposition, smooth non-convex local normal cone, and finite-sample concentration — is machine-checked within the program's ~225-theorem Lean&nbsp;4 corpus (77 build-locked in <code>Vision.lean</code>, zero <code>sorry</code>, zero new axioms, 2891-job <code>lake build</code> green) and builds from the <a href="https://github.com/alexwelcing/lupine">open repository</a>. An <a href="/#/read/academic-review-projection-law">academic review</a> (2026-06-16) lists strengths and six MUST-FIX gates, and a follow-up <a href="/#/read/adversarial-review-projection-law">adversarial review</a> verified the first-pass fixes and caught additional wording/placeholder issues; both are addressed in the current PDFs.</p>
 </section>
 
 </div>
