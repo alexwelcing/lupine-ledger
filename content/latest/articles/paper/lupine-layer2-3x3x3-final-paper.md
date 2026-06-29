@@ -217,19 +217,19 @@ The Layer-2 3×3×3 benchmark establishes that foundation MLIPs can deliver a cu
 
 **Figure 1 — Accuracy–cost frontier.** Mean C$_{ij}$ MAE versus total CPU core-hours for each model and functional on the 3×3×3 supercell reference.
 
-![Figure 1](figures/fig1_accuracy_cost_frontier.png)
+![Figure 1](https://raw.githubusercontent.com/alexwelcing/lupine-rhizo/main/paper/figures/fig1_accuracy_cost_frontier.png)
 
 **Figure 2 — Per-element mean MAE.** Elements ordered from lowest to highest mean MAE across all four models and both functionals, colored by chemical/structural class.
 
-![Figure 2](figures/fig2_per_element_mae.png)
+![Figure 2](https://raw.githubusercontent.com/alexwelcing/lupine-rhizo/main/paper/figures/fig2_per_element_mae.png)
 
 **Figure 3 — Functional gap by model.** Mean MAE under PBE and r2SCAN targets for each model.
 
-![Figure 3](figures/fig3_functional_gap.png)
+![Figure 3](https://raw.githubusercontent.com/alexwelcing/lupine-rhizo/main/paper/figures/fig3_functional_gap.png)
 
 **Figure 4 — QET vs TensorNet.** Per-element, per-functional MAE for QET and TensorNet. Points on the dashed line would indicate identical performance.
 
-![Figure 4](figures/fig4_qet_tensornet.png)
+![Figure 4](https://raw.githubusercontent.com/alexwelcing/lupine-rhizo/main/paper/figures/fig4_qet_tensornet.png)
 
 ---
 
