@@ -1,9 +1,9 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-06-29T16:04:20.152Z",
+  "generatedAt": "2026-06-29T19:45:01.486781Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "47bbe0530967bec34b16416f46cc035a9dbb1dcd",
+    "commit": "2322b3cb03a95502f4dde6a4a5d9dc2ecd1ca7fc",
     "dirty": true,
     "generator": "scripts/export_library_content.mjs"
   },
@@ -827,7 +827,7 @@
         "id": "lupine-layer2-3x3x3-final-paper",
         "source": "articles/paper/lupine-layer2-3x3x3-final-paper.md",
         "title": "Layer-2: A Sub-Core-Hour 3×3×3 Elastic-Constant Reference Benchmark for MatPES MLIPs",
-        "subtitle": "16 cubic metals, 4 foundation MLIPs, 2 functionals, 128 cases; raw 17.84 GPa MAE drops to 9.92 GPa after the Lupine 1-D correction with zero no-harm violations.",
+        "subtitle": "16 cubic metals, 4 foundation MLIPs, 2 functionals, 128 cases; raw 17.84 GPa MAE drops to 10.36 GPa after the Lupine class-aware 1-D correction with zero no-harm violations.",
         "category": "validation",
         "tags": [
           "mlip",
@@ -1226,6 +1226,25 @@
         ],
         "group": "mlip-flywheel",
         "originalSource": "docs/projection-law-in-plain-language.md"
+      },
+      {
+        "id": "projection-law-round2-final",
+        "source": "articles/docs/projection-law-round2-final.md",
+        "title": "Round 2 Final — The Projection Law Submission Package",
+        "subtitle": "Finalized 16-element 3×3×3 MLIP benchmark, class-aware correction operator, and IMMI submission release.",
+        "category": "changelog",
+        "tags": [
+          "mlip",
+          "matpes",
+          "elasticity",
+          "projection-law",
+          "release",
+          "featured"
+        ],
+        "featured": true,
+        "featuredRole": "newest",
+        "status": "supported",
+        "originalSource": "docs/projection-law-round2-final.md"
       }
     ],
     "languages": {
@@ -1647,6 +1666,12 @@
       "bundleSource": "articles/docs/projection-law-in-plain-language.md",
       "bytes": 3270,
       "sha256": "2ea5c903e4b45996ee6834421c1eced35dc317f0b7793f314de93d55ab0aab81"
+    },
+    {
+      "source": "docs/projection-law-round2-final.md",
+      "bundleSource": "articles/docs/projection-law-round2-final.md",
+      "bytes": 3463,
+      "sha256": "ccb8ff365a8c11fc6f4c7044862f43e30758d849756bf15850ae957bfaad3d80"
     }
   ]
 }
