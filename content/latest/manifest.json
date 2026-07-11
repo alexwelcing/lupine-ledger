@@ -1,10 +1,10 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-06-29T20:29:32.321344Z",
+  "generatedAt": "2026-07-11T10:35:57.066Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "2322b3cb03a95502f4dde6a4a5d9dc2ecd1ca7fc",
-    "dirty": true,
+    "commit": "481cc69709d5f317132ff1073facde66c23eb3bb",
+    "dirty": false,
     "generator": "scripts/export_library_content.mjs"
   },
   "catalog": {
@@ -740,6 +740,89 @@
         "originalSource": "docs/projection-law-round2-results.md"
       },
       {
+        "id": "environment-error-field-paper",
+        "source": "articles/paper/environment-error-field-2026-07-02.md",
+        "title": "The Environment Error Field — Manuscript",
+        "subtitle": "uMLIP property errors as projections of a smooth coordination field: blind r=0.906, run-time correction, machine-verified claims incl. the nulls.",
+        "category": "validation",
+        "tags": [
+          "mlip",
+          "y-matrix",
+          "environment-field",
+          "isotonic",
+          "lean",
+          "live-lab"
+        ],
+        "featured": true,
+        "featuredRole": "anchor",
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "paper/environment-error-field-2026-07-02.md"
+      },
+      {
+        "id": "y-matrix-preregistration",
+        "source": "articles/docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
+        "title": "Y-Matrix Cross-Property Pre-Registration",
+        "subtitle": "Registered hypotheses, coupling-aware nulls, kill conditions — with preserved amendments including a same-day falsified Fe hypothesis.",
+        "category": "methods",
+        "tags": [
+          "preregistration",
+          "y-matrix",
+          "nulls",
+          "mlip"
+        ],
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md"
+      },
+      {
+        "id": "y-matrix-confirmatory-results",
+        "source": "articles/docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
+        "title": "Y-Matrix Confirmatory Results — Rounds 1–2",
+        "subtitle": "Linear cross-property structure absent under honest nulls; defect/bulk split 15–60×; OMat retraining removes bias, not variance.",
+        "category": "validation",
+        "tags": [
+          "mlip",
+          "y-matrix",
+          "confirmatory",
+          "softening"
+        ],
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "docs/plans/y-matrix-confirmatory-results-2026-07-01.md"
+      },
+      {
+        "id": "mrh-monotone-reparameterization",
+        "source": "articles/docs/mrh-monotone-reparameterization.md",
+        "title": "The Monotone Reparameterization Hypothesis",
+        "subtitle": "Order right, size wrong: the family-owned warp of foundation-model error, its confirmed predictions, and its registered kill conditions.",
+        "category": "conjectures",
+        "tags": [
+          "mrh",
+          "error-geometry",
+          "mlip",
+          "ordinal"
+        ],
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "docs/mrh-monotone-reparameterization.md"
+      },
+      {
+        "id": "formalization-ladder",
+        "source": "articles/docs/formalization-ladder.md",
+        "title": "The Formalization Ladder",
+        "subtitle": "L0 receipts to L3 verified routing: making the proof kernel part of the research loop, with typed claim-shapes replacing threshold theater.",
+        "category": "formalization",
+        "tags": [
+          "lean",
+          "verification",
+          "methodology"
+        ],
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "docs/formalization-ladder.md"
+      },
+      {
         "id": "layer2-supercell-evaluation",
         "source": "articles/docs/layer2_supercell_evaluation.md",
         "title": "Layer 2 Supercell Scaling Evaluation",
@@ -827,7 +910,7 @@
         "id": "lupine-layer2-3x3x3-final-paper",
         "source": "articles/paper/lupine-layer2-3x3x3-final-paper.md",
         "title": "Layer-2: A Sub-Core-Hour 3×3×3 Elastic-Constant Reference Benchmark for MatPES MLIPs",
-        "subtitle": "16 cubic metals, 4 foundation MLIPs, 2 functionals, 128 cases; raw 17.84 GPa MAE drops to 10.36 GPa after the Lupine class-aware 1-D correction with zero no-harm violations.",
+        "subtitle": "16 cubic metals, 4 foundation MLIPs, 2 functionals, 128 cases; raw 17.84 GPa MAE drops to 9.92 GPa after the Lupine 1-D correction with zero no-harm violations.",
         "category": "validation",
         "tags": [
           "mlip",
@@ -1226,25 +1309,6 @@
         ],
         "group": "mlip-flywheel",
         "originalSource": "docs/projection-law-in-plain-language.md"
-      },
-      {
-        "id": "projection-law-round2-final",
-        "source": "articles/docs/projection-law-round2-final.md",
-        "title": "Round 2 Final — The Projection Law Submission Package",
-        "subtitle": "Geometric correction operator for MLIP systematic error; TMS 2027 oral abstract in Computational Discovery and Design of Materials.",
-        "category": "changelog",
-        "tags": [
-          "mlip",
-          "matpes",
-          "elasticity",
-          "projection-law",
-          "release",
-          "featured"
-        ],
-        "featured": true,
-        "featuredRole": "newest",
-        "status": "supported",
-        "originalSource": "docs/projection-law-round2-final.md"
       }
     ],
     "languages": {
@@ -1464,6 +1528,36 @@
       "sha256": "3229ebd59594dea5bd3bb50014633709968b539134bba72f94408680fd5dc77e"
     },
     {
+      "source": "paper/environment-error-field-2026-07-02.md",
+      "bundleSource": "articles/paper/environment-error-field-2026-07-02.md",
+      "bytes": 19690,
+      "sha256": "f9335f6d0cb0a1e5d27c6835e64b131b5c23e37880f905f21f04490207412dea"
+    },
+    {
+      "source": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
+      "bundleSource": "articles/docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
+      "bytes": 12533,
+      "sha256": "6e0c939ad7215a452368ce6f71f0545d13285dc2a57ed229a5661f7f9ab947cf"
+    },
+    {
+      "source": "docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
+      "bundleSource": "articles/docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
+      "bytes": 10272,
+      "sha256": "783142fab61d89b9e209a69276f0a0e10375657272f46d5780c63de85a78041e"
+    },
+    {
+      "source": "docs/mrh-monotone-reparameterization.md",
+      "bundleSource": "articles/docs/mrh-monotone-reparameterization.md",
+      "bytes": 8312,
+      "sha256": "89ed2c717f733f57287e6e2d1061ac5143658a1529c9d6897ad665d7e08b3158"
+    },
+    {
+      "source": "docs/formalization-ladder.md",
+      "bundleSource": "articles/docs/formalization-ladder.md",
+      "bytes": 3338,
+      "sha256": "98dbed278e0f5061d577fd45c9e90aaffe0edd0811378544ba7ac38fd066934d"
+    },
+    {
       "source": "docs/layer2_supercell_evaluation.md",
       "bundleSource": "articles/docs/layer2_supercell_evaluation.md",
       "bytes": 16838,
@@ -1496,8 +1590,8 @@
     {
       "source": "paper/lupine-layer2-3x3x3-final-paper.md",
       "bundleSource": "articles/paper/lupine-layer2-3x3x3-final-paper.md",
-      "bytes": 22504,
-      "sha256": "180cc54e1bee93d6a4c173ffeb74b693ba615750598ae6a27a9819d5ce266936"
+      "bytes": 17455,
+      "sha256": "a8df0eac902d444b3e41aa7971f8c8860e846c55e131a6f75cba824e064938f6"
     },
     {
       "source": "docs/ANNOUNCEMENT-lupine-refinement-sprint-2026-06-27.md",
@@ -1538,14 +1632,14 @@
     {
       "source": "CHANGELOG.md",
       "bundleSource": "articles/CHANGELOG.md",
-      "bytes": 48873,
-      "sha256": "b6700660c28253b599abcc55e0c82e00736d834a52a7eb47e08e40d4e439c057"
+      "bytes": 66404,
+      "sha256": "3addce42ee3724891b9fc26ae7b165cf9f6fe3ef43a28d2d21846cbc9b5b3006"
     },
     {
       "source": "docs/papers-working.md",
       "bundleSource": "articles/docs/papers-working.md",
-      "bytes": 841,
-      "sha256": "2d25eb3e7ee6f4654af33fd79c82f9cfe81bf180ca8df8817103c69d6455326d"
+      "bytes": 951,
+      "sha256": "a74311f230bc5367a2c823e2ec7ba0a485f093bfb5c805fa2f9f5915817e340f"
     },
     {
       "source": "docs/research_evolution_2026_05_05.md",
@@ -1666,12 +1760,6 @@
       "bundleSource": "articles/docs/projection-law-in-plain-language.md",
       "bytes": 3270,
       "sha256": "2ea5c903e4b45996ee6834421c1eced35dc317f0b7793f314de93d55ab0aab81"
-    },
-    {
-      "source": "docs/projection-law-round2-final.md",
-      "bundleSource": "articles/docs/projection-law-round2-final.md",
-      "bytes": 4757,
-      "sha256": "a92ea136e4039dd8985b3217afe73dfff6f27afc365b893852967a2a50d243e5"
     }
   ]
 }
