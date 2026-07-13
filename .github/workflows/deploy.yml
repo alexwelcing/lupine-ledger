@@ -55,6 +55,8 @@ jobs:
 
       - name: Verify content and build Pages output
         run: npm run pages:build
+        env:
+          LIBRARY_BUILD_VERSION: ${{ github.sha }}
 
   deploy:
     needs: verify
@@ -76,6 +78,8 @@ jobs:
 
       - name: Build Pages output
         run: npm run pages:build
+        env:
+          LIBRARY_BUILD_VERSION: ${{ github.sha }}
 
       - name: Validate deployment secrets
         run: |
