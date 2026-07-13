@@ -436,6 +436,7 @@ function build() {
       words: defaultArticle.words,
       readMinutes: defaultArticle.readMinutes,
       languages,
+      source: entry.source,
       featured: !!entry.featured,
       featuredRole: entry.featuredRole || null,
       status: entry.status || null,

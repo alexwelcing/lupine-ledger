@@ -119,25 +119,40 @@ async function fetchManifest() {
   const res = await fetch('/data/library.json', { cache: 'no-cache' });
   if (!res.ok) throw new Error('manifest fetch failed');
   STATE.manifest = await res.json();
+  STATE.sourceToId = buildSourceToIdMap(STATE.manifest);
   return STATE.manifest;
 }
+
+function buildSourceToIdMap(manifest) {
+  const map = new Map();
+  for (const a of manifest.articles || []) {
+    if (a.source) map.set(a.source.replace(/^\/+/, ''), a.id);
+  }
+  return map;
+}
+
+function articleVersionQuery() {
+  return STATE.manifest?.version ? `?v=${encodeURIComponent(STATE.manifest.version)}` : '';
+}
+
 async function fetchArticle(id, preferredLang) {
   const cacheKey = `${id}:${preferredLang || STATE.settings.lang}`;
   if (STATE.articleCache.has(cacheKey)) return STATE.articleCache.get(cacheKey);
 
   const lang = preferredLang || STATE.settings.lang;
+  const q = articleVersionQuery();
   let res = null;
   let triedLang = null;
 
   // Try preferred language variant first
   if (lang !== DEFAULT_LANG) {
-    res = await fetch(`/data/${encodeURIComponent(id)}.${lang}.json`);
+    res = await fetch(`/data/${encodeURIComponent(id)}.${lang}.json${q}`);
     if (res.ok) triedLang = lang;
   }
 
   // Fall back to default
   if (!res || !res.ok) {
-    res = await fetch(`/data/${encodeURIComponent(id)}.json`);
+    res = await fetch(`/data/${encodeURIComponent(id)}.json${q}`);
     triedLang = DEFAULT_LANG;
   }
 
@@ -147,6 +162,28 @@ async function fetchArticle(id, preferredLang) {
   article._requestedLang = lang;
   STATE.articleCache.set(cacheKey, article);
   return article;
+}
+
+function handleArticleLinkClick(e, article) {
+  const a = e.target.closest('a');
+  if (!a) return;
+  const href = a.getAttribute('href') || '';
+  if (!href || href.startsWith('#') || /^[a-z][a-z0-9+.-]:/i.test(href)) return;
+
+  const mdMatch = href.match(/^([^?#]*\.md)(\?[^#]*)?(#.*)?$/i);
+  if (!mdMatch) return;
+
+  e.preventDefault();
+  const [, mdPath, , fragment] = mdMatch;
+  const source = article.source;
+  const base = source ? `https://x/${source}` : 'https://x/';
+  const resolved = new URL(mdPath, base).pathname.replace(/^\/+/, '');
+  const targetId = STATE.sourceToId?.get(resolved);
+  if (targetId) {
+    location.hash = `#/read/${encodeURIComponent(targetId)}${fragment || ''}`;
+  } else {
+    window.open(a.href, '_blank', 'noopener');
+  }
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -419,6 +456,11 @@ async function renderReader(id) {
     const body = el('div', { class: 'content' });
     body.innerHTML = article.html;
     root.append(body);
+
+    // Defense-in-depth: even if a cached article JSON still contains raw .md
+    // links, rewrite clicks to intra-library targets so they don't fall back
+    // to the home view. Unknown .md files open as raw sources.
+    body.addEventListener('click', (e) => handleArticleLinkClick(e, article));
 
     VIEW.append(root);
 
