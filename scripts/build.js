@@ -108,6 +108,53 @@ function escapeHtml(s) {
 }
 
 // ───────────────────────────────────────────────────────────────
+// Internal article link rewriting
+// ───────────────────────────────────────────────────────────────
+
+function buildSourceToIdMap(catalog) {
+  const map = new Map();
+  for (const entry of catalog.entries || []) {
+    if (entry.source) map.set(path.resolve(REPO_ROOT, entry.source), entry.id);
+    if (entry.originalSource) map.set(path.resolve(REPO_ROOT, entry.originalSource), entry.id);
+  }
+  return map;
+}
+
+const SOURCE_TO_ID = buildSourceToIdMap(CATALOG);
+
+function rewriteInternalLinks(html, sourcePath) {
+  const sourceDir = path.dirname(sourcePath || '.');
+  return html.replace(/<a\s+([^>]*)href="([^"]*)"([^>]*)>/gi, (match, before, href, after) => {
+    const rawHref = href.trim();
+    if (!rawHref || rawHref.startsWith('#') || /^[a-z][a-z0-9+.-]:/i.test(rawHref)) {
+      return match;
+    }
+    // Only rewrite local .md references (preserve fragments).
+    const mdMatch = rawHref.match(/^([^?#]*\.md)(\?[^#]*)?(#.*)?$/i);
+    if (!mdMatch) return match;
+
+    const [, mdPath, , fragment] = mdMatch;
+    const resolved = path.resolve(REPO_ROOT, sourceDir, mdPath);
+    const targetId = SOURCE_TO_ID.get(resolved);
+    if (!targetId) {
+      // Unknown markdown source: open raw file in a new tab so the SPA doesn't
+      // route it to the home view.
+      const hasTarget = /\btarget=/i.test(before + after);
+      const hasRel = /\brel=/i.test(before + after);
+      const attrs = hasTarget ? '' : ' target="_blank"';
+      const relAttr = hasRel ? '' : ' rel="noopener"';
+      const hasClass = /\bclass=/i.test(before + after);
+      const classAttr = hasClass ? '' : ' class="ll-raw-source"';
+      return `<a ${before}href="${rawHref}"${after}${attrs}${relAttr}${classAttr}>`;
+    }
+    const newHref = fragment
+      ? `#/read/${encodeURIComponent(targetId)}${fragment}`
+      : `#/read/${encodeURIComponent(targetId)}`;
+    return `<a ${before}href="${newHref}"${after}>`;
+  });
+}
+
+// ───────────────────────────────────────────────────────────────
 // KaTeX math rendering
 // ───────────────────────────────────────────────────────────────
 
@@ -330,7 +377,7 @@ function build() {
     const title = entry.title || extractTitle(md, id);
     const subtitle = entry.subtitle || extractSubtitle(md);
     const { md: mdMath, cells } = extractMath(md);
-    const html = renderMathToHtml(marked.parse(mdMath), cells);
+    const html = rewriteInternalLinks(renderMathToHtml(marked.parse(mdMath), cells), sourcePath);
     const plain = stripTags(html);
     const words = wordCount(plain);
     const toc = headingsToToc(md);
