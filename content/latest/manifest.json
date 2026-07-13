@@ -760,6 +760,25 @@
         "originalSource": "paper/environment-error-field-2026-07-02.md"
       },
       {
+        "id": "softening-is-coordination-loss-paper",
+        "source": "articles/paper/softening-is-coordination-loss-2026-07-13.md",
+        "title": "Softening Is Coordination Loss: Where Foundation Interatomic Potentials Fail, What Can Be Corrected, and What Must Be Refused",
+        "subtitle": "Migration barriers survive to ~10 % while defect formation collapses 40–105 % — yet ordering survives. Validated same-class lattice-constant correction (4.8×/2.4×), ensemble-hull Born refusals, fail-closed licenses; safety caps machine-checked in Lean. With typeset PDF.",
+        "category": "validation",
+        "tags": [
+          "mlip",
+          "softening",
+          "defects",
+          "gates",
+          "licenses",
+          "corrections",
+          "lean"
+        ],
+        "group": "mlip-flywheel",
+        "status": "live",
+        "originalSource": "paper/gates-licenses-paper/manuscript.md"
+      },
+      {
         "id": "y-matrix-preregistration",
         "source": "articles/docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
         "title": "Y-Matrix Cross-Property Pre-Registration",
@@ -1532,6 +1551,12 @@
       "bundleSource": "articles/paper/environment-error-field-2026-07-02.md",
       "bytes": 19690,
       "sha256": "f9335f6d0cb0a1e5d27c6835e64b131b5c23e37880f905f21f04490207412dea"
+    },
+    {
+      "source": "paper/softening-is-coordination-loss-2026-07-13.md",
+      "bundleSource": "articles/paper/softening-is-coordination-loss-2026-07-13.md",
+      "bytes": 26723,
+      "sha256": "9ea4c5a97a2dc6abbb79f703ca0809aa641c5b60d5b10e9aef44e13afbda2f8a"
     },
     {
       "source": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
