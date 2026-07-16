@@ -1,0 +1,3 @@
+# The health endpoint is byte-compared against 'ok\n' by scripts/test-build.mjs;
+# keep LF on every platform.
+src/health text eol=lf
