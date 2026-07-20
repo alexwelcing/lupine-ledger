@@ -1,10 +1,10 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-07-16T02:34:23.755Z",
+  "generatedAt": "2026-07-20T04:34:59.925Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "3bfdc33a670598ca84d08fb9b00508ffac854cea",
-    "dirty": false,
+    "commit": "66408ce6b8e2ec00ea494bab8d25a5c4bc8dd24c",
+    "dirty": true,
     "generator": "scripts/export_library_content.mjs"
   },
   "catalog": {
@@ -632,6 +632,56 @@
           "phonon"
         ],
         "originalSource": "docs/KEY_FINDINGS_SUMMARY.md"
+      },
+      {
+        "id": "z3-adsorption-delta-campaign-round4",
+        "source": "articles/docs/validation/z3-adsorption-delta-campaign-round4-results.md",
+        "title": "Z3 Δ-Learned Adsorption Accuracy — Round-4 Results",
+        "subtitle": "Refuted — 128/128 baseline measurements; every validation-selected correction worsened the holdout (2.27–5.91 eV vs the 0.1 eV gate).",
+        "category": "validation",
+        "tags": [
+          "z3",
+          "adsorption",
+          "delta-learning",
+          "catbench",
+          "round-4",
+          "featured"
+        ],
+        "group": "mlip-flywheel",
+        "status": "refuted",
+        "originalSource": "docs/validation/z3-adsorption-delta-campaign-round4-results.md"
+      },
+      {
+        "id": "z2-abstention-audit-round4",
+        "source": "articles/docs/campaigns/z2-abstention-audit.md",
+        "title": "Z2 Spin-Aware Campaign — Abstention Audit",
+        "subtitle": "No spin-capable runner, panel, or contract exists; four hash-chained abstention rows, zero cloud spend. Full scope returns with a spin runner.",
+        "category": "validation",
+        "tags": [
+          "z2",
+          "magnetism",
+          "abstention",
+          "round-4"
+        ],
+        "group": "mlip-flywheel",
+        "status": "proposed",
+        "originalSource": "docs/campaigns/z2-abstention-audit.md"
+      },
+      {
+        "id": "round4-elastic-correction-results-amendment",
+        "source": "articles/docs/plans/2026-07-19-round4-preregistration-amendment.md",
+        "title": "Round-4 Elastic Correction — Results and Preregistration Amendment",
+        "subtitle": "Confirmatory fail (0/4, 0/1) with the post-lock violation recorded void and repaired; B0 descriptive-only; zero verdict changes.",
+        "category": "validation",
+        "tags": [
+          "round-4",
+          "elastic",
+          "preregistration",
+          "amendment"
+        ],
+        "group": "mlip-flywheel",
+        "status": "refuted",
+        "originalSource": "docs/plans/2026-07-19-round4-preregistration-amendment.md"
       },
       {
         "id": "mlip-cloud-baseline-distill",
@@ -1492,6 +1542,24 @@
       "sha256": "d0c603a181f70094496c865d24397a41a5d91024e9343e8871f4728b6de6410a"
     },
     {
+      "source": "docs/validation/z3-adsorption-delta-campaign-round4-results.md",
+      "bundleSource": "articles/docs/validation/z3-adsorption-delta-campaign-round4-results.md",
+      "bytes": 6495,
+      "sha256": "982ea13e18b25a11db071c0b23ef84327606abc5c11b0cbda593069d4654f281"
+    },
+    {
+      "source": "docs/campaigns/z2-abstention-audit.md",
+      "bundleSource": "articles/docs/campaigns/z2-abstention-audit.md",
+      "bytes": 3478,
+      "sha256": "384401c8b7bd14d843037740bbac0563b348746bcd659064f0f94b200e0148f7"
+    },
+    {
+      "source": "docs/plans/2026-07-19-round4-preregistration-amendment.md",
+      "bundleSource": "articles/docs/plans/2026-07-19-round4-preregistration-amendment.md",
+      "bytes": 7082,
+      "sha256": "cf89b891d02b49a816c90ec1661020751f4578de34a583b490175181898cd4d7"
+    },
+    {
       "source": "docs/mlip-cloud-baseline-distill-report.md",
       "bundleSource": "articles/docs/mlip-cloud-baseline-distill-report.md",
       "bytes": 6669,
@@ -1632,8 +1700,8 @@
     {
       "source": "CHANGELOG.md",
       "bundleSource": "articles/CHANGELOG.md",
-      "bytes": 77656,
-      "sha256": "8cc0d41103ce0e8d4e8d40b5319fdbf6058deb48f1a4ee818edac8c1d03d1908"
+      "bytes": 81501,
+      "sha256": "1e754a094f915d1bebc387b4f5f3297f26422199dd47a491b536ce810358a5af"
     },
     {
       "source": "docs/papers-working.md",
