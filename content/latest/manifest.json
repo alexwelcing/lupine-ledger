@@ -1,10 +1,10 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-07-20T04:34:59.925Z",
+  "generatedAt": "2026-07-20T05:32:13.947Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "66408ce6b8e2ec00ea494bab8d25a5c4bc8dd24c",
-    "dirty": true,
+    "commit": "e79bae389ac0597bf5f216c2433f45fbc79d0c6f",
+    "dirty": false,
     "generator": "scripts/export_library_content.mjs"
   },
   "catalog": {
@@ -632,6 +632,24 @@
           "phonon"
         ],
         "originalSource": "docs/KEY_FINDINGS_SUMMARY.md"
+      },
+      {
+        "id": "z1-barrier-campaign-round4",
+        "source": "articles/docs/validation/z1-barrier-campaign-round4-results.md",
+        "title": "Z1 Barrier-Accurate MLIP Campaign — Round-4 Results (Two Precision Chains)",
+        "subtitle": "Refuted twice — all four models miss the 40 meV gate (135–243 meV) identically under float32 and float64; systematic under-prediction.",
+        "category": "validation",
+        "tags": [
+          "z1",
+          "barriers",
+          "neb",
+          "batteries",
+          "round-4",
+          "featured"
+        ],
+        "group": "mlip-flywheel",
+        "status": "refuted",
+        "originalSource": "docs/validation/z1-barrier-campaign-round4-results.md"
       },
       {
         "id": "z3-adsorption-delta-campaign-round4",
@@ -1540,6 +1558,12 @@
       "bundleSource": "articles/docs/KEY_FINDINGS_SUMMARY.md",
       "bytes": 8700,
       "sha256": "d0c603a181f70094496c865d24397a41a5d91024e9343e8871f4728b6de6410a"
+    },
+    {
+      "source": "docs/validation/z1-barrier-campaign-round4-results.md",
+      "bundleSource": "articles/docs/validation/z1-barrier-campaign-round4-results.md",
+      "bytes": 5322,
+      "sha256": "f88286e5a75a67f188b446adad64254d07c4d5f2031d0d2fa352a6bb361bd47a"
     },
     {
       "source": "docs/validation/z3-adsorption-delta-campaign-round4-results.md",
