@@ -9,7 +9,8 @@ test('knowledge graph explorer exposes ontology mode, freshness, and epistemic c
   const view = read('../src/knowledgeGraphView.js');
   const styles = read('../src/styles.css');
 
-  assert.match(view, /id: 'ontology', label: 'Ontology'/);
+  assert.match(view, /id: 'ontology'/);
+  assert.match(view, /graph\.mode\.\$\{mode\.id\}/);
   assert.match(view, /atlasDate/);
   assert.match(view, /nextReverification/);
   assert.match(view, /proofPackDate/);

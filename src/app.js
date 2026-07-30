@@ -661,6 +661,7 @@ async function renderKnowledgeGraph() {
     fetchKnowledgeGraph,
     initialFocus,
     initialState,
+    lang: STATE.settings.lang,
   });
 }
 
