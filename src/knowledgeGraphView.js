@@ -140,6 +140,7 @@ function setEquals(a, b) {
 
 function initialRelationsFor(mode, relationParam) {
   const allowed = MODE_RELATIONS[mode] || MODE_RELATIONS.overview;
+  if (relationParam === 'none') return new Set(); // explicit empty filter set
   if (!relationParam) return new Set(allowed);
   const requested = String(relationParam)
     .split(',')
@@ -285,7 +286,7 @@ export async function renderKnowledgeGraphView(mount, {
     if (state.mode !== defaultMode) params.set('mode', state.mode);
     if (state.query.trim()) params.set('q', state.query.trim());
     if (!setEquals(state.relations, allowedRelations())) {
-      params.set('rels', [...state.relations].sort().join(','));
+      params.set('rels', state.relations.size ? [...state.relations].sort().join(',') : 'none');
     }
     let hash = '#/graph';
     if (selected?.type === 'article') {

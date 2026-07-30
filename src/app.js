@@ -657,12 +657,20 @@ async function renderKnowledgeGraph() {
   setProgress(0);
   window.scrollTo({ top: 0, behavior: 'instant' });
   const { initialFocus, initialState } = parseKnowledgeGraphHash(location.hash);
-  activeViewCleanup = await renderKnowledgeGraphView(VIEW, {
+  // Render-generation guard: a slow graph fetch must not paint after a
+  // newer render (e.g. a second language switch) has superseded it.
+  const generation = (STATE.renderSeq = (STATE.renderSeq || 0) + 1);
+  const cleanup = await renderKnowledgeGraphView(VIEW, {
     fetchKnowledgeGraph,
     initialFocus,
     initialState,
     lang: STATE.settings.lang,
   });
+  if (generation === STATE.renderSeq && STATE.view === 'graph') {
+    activeViewCleanup = cleanup;
+  } else if (typeof cleanup === 'function') {
+    cleanup();
+  }
 }
 
 // Scroll-tracked progress
@@ -848,7 +856,7 @@ function syncSettingsUI() {
 settingsDialog.addEventListener('click', (e) => {
   const t = e.target.closest('button');
   if (!t) return;
-  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'tags') renderTags(); else if (STATE.view === 'reader' && STATE.currentId) renderReader(STATE.currentId); }
+  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'tags') renderTags(); else if (STATE.view === 'graph') renderKnowledgeGraph(); else if (STATE.view === 'reader' && STATE.currentId) renderReader(STATE.currentId); }
   if (t.dataset.size)  { STATE.settings.size = t.dataset.size;   saveSettings(); syncSettingsUI(); }
   if (t.dataset.theme) { STATE.settings.theme = t.dataset.theme; saveSettings(); syncSettingsUI(); }
   if (t.dataset.width) { STATE.settings.width = t.dataset.width; saveSettings(); syncSettingsUI(); }

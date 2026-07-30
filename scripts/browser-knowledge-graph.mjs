@@ -9,13 +9,19 @@ import path from 'node:path';
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 const PORT = 41739;
 const ORIGIN = `http://127.0.0.1:${PORT}`;
+// Resolve Chrome across platforms/install names instead of one Linux path.
+const CHROME_BIN =
+  process.env.CHROME_BIN ||
+  ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome']
+    .find((p) => fs.existsSync(p)) ||
+  'google-chrome';
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'lupine-graph-chrome-'));
 const server = spawn(process.execPath, ['scripts/serve.js'], {
   cwd: ROOT,
   env: { ...process.env, PORT: String(PORT) },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
-const chrome = spawn('/usr/bin/google-chrome', [
+const chrome = spawn(CHROME_BIN, [
   '--headless=new',
   '--no-sandbox',
   '--disable-gpu',
