@@ -178,6 +178,7 @@ export async function renderKnowledgeGraphView(mount, {
   initialFocus = '',
   initialState = {},
   lang = 'en',
+  isCurrent = () => true,
 } = {}) {
   mount.innerHTML = `<div class="loading">${t('graph.loading', lang)}</div>`;
 
@@ -185,10 +186,12 @@ export async function renderKnowledgeGraphView(mount, {
   try {
     graph = await fetchKnowledgeGraph();
   } catch (error) {
+    if (!isCurrent()) return () => {};
     console.error(error);
     mount.innerHTML = `<div class="empty">${t('graph.error', lang)}</div>`;
     return () => {};
   }
+  if (!isCurrent()) return () => {};
 
   const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
   const linksByNode = new Map();

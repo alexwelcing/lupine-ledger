@@ -157,6 +157,16 @@ function articleVersionQuery() {
   return STATE.manifest?.version ? `?v=${encodeURIComponent(STATE.manifest.version)}` : '';
 }
 
+async function parseJsonResponse(res) {
+  const contentType = res.headers.get('content-type') || '';
+  if (!/\bapplication\/(?:[\w.+-]+\+)?json\b/i.test(contentType)) return null;
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 async function fetchArticle(id, preferredLang) {
   const cacheKey = `${id}:${preferredLang || STATE.settings.lang}`;
   if (STATE.articleCache.has(cacheKey)) return STATE.articleCache.get(cacheKey);
@@ -164,22 +174,30 @@ async function fetchArticle(id, preferredLang) {
   const lang = preferredLang || STATE.settings.lang;
   const q = articleVersionQuery();
   let res = null;
+  let article = null;
   let triedLang = null;
 
   // Try preferred language variant first
   if (lang !== DEFAULT_LANG) {
-    res = await fetch(`/data/${encodeURIComponent(id)}.${lang}.json${q}`);
-    if (res.ok) triedLang = lang;
+    try {
+      res = await fetch(`/data/${encodeURIComponent(id)}.${lang}.json${q}`);
+      if (res.ok) {
+        article = await parseJsonResponse(res);
+        if (article) triedLang = lang;
+      }
+    } catch {
+      // A missing localized asset may surface as a network failure; use the default.
+    }
   }
 
   // Fall back to default
-  if (!res || !res.ok) {
+  if (!article) {
     res = await fetch(`/data/${encodeURIComponent(id)}.json${q}`);
     triedLang = DEFAULT_LANG;
+    if (res.ok) article = await parseJsonResponse(res);
   }
 
-  if (!res.ok) throw new Error(`article ${id} fetch failed`);
-  const article = await res.json();
+  if (!res.ok || !article) throw new Error(`article ${id} fetch failed`);
   article._displayLang = triedLang;
   article._requestedLang = lang;
   STATE.articleCache.set(cacheKey, article);
@@ -665,6 +683,7 @@ async function renderKnowledgeGraph() {
     initialFocus,
     initialState,
     lang: STATE.settings.lang,
+    isCurrent: () => generation === STATE.renderSeq && STATE.view === 'graph',
   });
   if (generation === STATE.renderSeq && STATE.view === 'graph') {
     activeViewCleanup = cleanup;
