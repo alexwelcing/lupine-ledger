@@ -41,6 +41,7 @@ const BANNERS = [
 
 const STATE = {
   manifest: null,          // { categories, articles, version }
+  searchIndex: null,       // deterministic metadata from /data/search-index.json
   articleCache: new Map(), // id -> article (with html)
   view: 'home',
   currentId: null,
@@ -134,6 +135,14 @@ async function fetchKnowledgeGraph() {
   const res = await fetch('/data/knowledge-graph.json', { cache: 'no-cache' });
   if (!res.ok) throw new Error('knowledge graph fetch failed');
   return res.json();
+}
+
+async function fetchSearchIndex() {
+  if (STATE.searchIndex) return STATE.searchIndex;
+  const res = await fetch('/data/search-index.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('search index fetch failed');
+  STATE.searchIndex = await res.json();
+  return STATE.searchIndex;
 }
 
 function buildSourceToIdMap(manifest) {
@@ -740,7 +749,7 @@ document.getElementById('search-close').addEventListener('click', () => searchDi
 searchDialog.addEventListener('click', (e) => { if (e.target === searchDialog) searchDialog.close(); });
 
 async function openSearch() {
-  await fetchManifest();
+  await Promise.all([fetchManifest(), fetchSearchIndex()]);
   searchInput.value = '';
   renderSearchResults('');
   if (typeof searchDialog.showModal === 'function') searchDialog.showModal();
@@ -749,16 +758,16 @@ async function openSearch() {
 }
 searchInput?.addEventListener('input', () => renderSearchResults(searchInput.value.trim()));
 function renderSearchResults(q) {
-  const m = STATE.manifest;
-  if (!m) return;
+  const index = STATE.searchIndex;
+  if (!index) return;
   const ql = q.toLowerCase();
   const list = q
-    ? m.articles
+    ? index.articles
         .map(a => ({ a, score: scoreMatch(a, ql) }))
         .filter(x => x.score > 0)
         .sort((x, y) => y.score - x.score)
         .map(x => x.a)
-    : m.articles;
+    : index.articles;
   searchResults.innerHTML = '';
   if (!list.length) {
     searchHint.textContent = `No results for “${q}”.`;

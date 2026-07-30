@@ -14,7 +14,7 @@
     "verify": "npm run content:verify && npm run build",
     "pages:build": "node scripts/pages-build.mjs",
     "pages:deploy": "npx wrangler pages deploy dist --project-name=lupine-ledger --branch=main --commit-dirty=true",
-    "test": "node --test scripts/libraryFilters.test.mjs scripts/test-knowledge-graph*.mjs && node scripts/test-build.mjs && node scripts/check-graph.js",
+    "test": "node --test scripts/libraryFilters.test.mjs scripts/test-knowledge-graph*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js",
     "clean": "rm -rf dist"
   },
   "dependencies": {
