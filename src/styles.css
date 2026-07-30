@@ -979,6 +979,141 @@ body {
   opacity: 0.6;
 }
 
+/* ─── Tag index + compound facets ── */
+.tags-browse-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 12px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.tag-browser {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+  min-width: 0;
+}
+.tag-browser-head h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  line-height: 1.1;
+}
+.tag-browser-head p {
+  max-width: 52ch;
+  margin-top: 8px;
+  color: var(--text-dim);
+}
+.facet-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--glass-1);
+  min-width: 0;
+}
+.facet-control {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.facet-control > span {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.facet-control select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 34px 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-raised);
+  color: var(--text);
+  font: inherit;
+}
+.facet-control select:focus-visible,
+.facet-clear:focus-visible,
+.tag-index-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.facet-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.tag-index-section,
+.tag-results { margin-top: 26px; min-width: 0; }
+.tag-index-section h2,
+.tag-results h2 {
+  margin-bottom: 12px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tag-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+.tag-index-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--glass-1);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.tag-index-link span {
+  flex: none;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--glass-3);
+  color: var(--text);
+}
+.tag-index-link:hover,
+.tag-index-link.active {
+  border-color: var(--accent);
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+@media (max-width: 560px) {
+  .tag-browser { padding-inline: 14px; }
+  .facet-controls { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  .tag-index-link { min-height: 44px; }
+}
+
 /* MLIP Flywheel visual review */
 [data-view="flywheel"] .bg-fx .orb { opacity: 0.1; }
 
