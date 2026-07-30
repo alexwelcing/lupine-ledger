@@ -125,8 +125,52 @@ try {
     () => cdp.evaluate(`location.origin === ${JSON.stringify(ORIGIN)} && document.readyState === 'complete'`),
     'initial browser navigation',
   );
-  await cdp.evaluate(`localStorage.setItem('ll.lang', 'zh'); location.hash = '#/graph?mode=ontology'`);
+  await cdp.evaluate(`(() => {
+    const originalFetch = window.fetch.bind(window);
+    window.__qaGraphRequests = 0;
+    window.__qaConsoleErrors = [];
+    const originalConsoleError = console.error.bind(console);
+    console.error = (...args) => {
+      window.__qaConsoleErrors.push(args.map(String).join(' '));
+      originalConsoleError(...args);
+    };
+    window.fetch = async (...args) => {
+      const url = String(args[0]);
+      if (url.includes('/data/readme.zh.json')) {
+        return new Response('<!DOCTYPE html><title>SPA fallback</title>', {
+          status: 200,
+          headers: { 'content-type': 'text/html; charset=utf-8' },
+        });
+      }
+      if (url.includes('/data/glossary.zh.json')) {
+        throw new TypeError('simulated localized article network failure');
+      }
+      if (url.includes('/data/knowledge-graph.json')) {
+        window.__qaGraphRequests += 1;
+        const requestNumber = window.__qaGraphRequests;
+        const response = await originalFetch(...args);
+        await new Promise(resolve => setTimeout(resolve, requestNumber === 1 ? 700 : 20));
+        return response;
+      }
+      return originalFetch(...args);
+    };
+    document.querySelector('button[data-lang="en"]')?.click();
+    location.hash = '#/graph?mode=ontology';
+  })()`);
+  await delay(60);
+  await cdp.evaluate(`document.querySelector('button[data-lang="zh"]')?.click()`);
   await waitFor(() => cdp.evaluate(`document.querySelector('.kg h1')?.textContent === '知识图谱'`), 'Chinese graph view');
+  await delay(800);
+  assert.deepEqual(
+    await cdp.evaluate(`({
+      requests: window.__qaGraphRequests,
+      lang: document.documentElement.lang,
+      title: document.querySelector('.kg h1')?.textContent,
+      ontology: document.querySelector('.kg-mode.active')?.textContent,
+    })`),
+    { requests: 2, lang: 'zh', title: '知识图谱', ontology: '本体' },
+    'a stale English graph request must not overwrite the newer Chinese render',
+  );
 
   const chromeState = await cdp.evaluate(`(() => ({
     title: document.querySelector('.kg h1')?.textContent,
@@ -199,7 +243,29 @@ try {
     'restored ontology mode',
   );
 
-  console.log('[ok] graph browser history, zh chrome, and 390px touch checks passed.');
+  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/readme'`);
+  await waitFor(() => cdp.evaluate(`Boolean(document.querySelector('.reader .content'))`), 'reader fallback article');
+  const readerFallback = await cdp.evaluate(`({
+    notice: document.querySelector('.reader .lang-fallback')?.textContent || '',
+    title: document.querySelector('.reader-title')?.textContent || '',
+    body: document.querySelector('.reader .content')?.textContent.trim() || '',
+    errors: window.__qaConsoleErrors,
+  })`);
+  assert.ok(readerFallback.notice, 'missing zh JSON should render the language fallback notice');
+  assert.equal(readerFallback.title, 'Lupine — Project README');
+  assert.match(readerFallback.body, /Lupine Rhizo/);
+  assert.deepEqual(readerFallback.errors, [], `reader fallback console errors: ${readerFallback.errors}`);
+
+  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/glossary'`);
+  await waitFor(() => cdp.evaluate(`document.querySelector('.reader-title')?.textContent === 'Glossary'`), 'network-error reader fallback');
+  const networkFallback = await cdp.evaluate(`({
+    notice: document.querySelector('.reader .lang-fallback')?.textContent || '',
+    errors: window.__qaConsoleErrors,
+  })`);
+  assert.ok(networkFallback.notice, 'localized network failure should render the language fallback notice');
+  assert.deepEqual(networkFallback.errors, [], `network fallback console errors: ${networkFallback.errors}`);
+
+  console.log('[ok] graph race/history/zh/touch and reader HTML fallback browser checks passed.');
 } finally {
   cdp?.close();
   chrome.kill('SIGTERM');
