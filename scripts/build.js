@@ -461,7 +461,9 @@ function build() {
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
   writeOntology();
-  writeKnowledgeGraph();
+  // Build the graph from the same bundle the articles were rendered from —
+  // a LIBRARY_CONTENT_BUNDLE override must not produce a graph/articles mismatch.
+  writeKnowledgeGraph({ manifestPath: path.join(REPO_ROOT, 'manifest.json') });
 
   // Copy static src -> dist, substituting __VERSION__ placeholder.
   for (const name of fs.readdirSync(SRC)) {

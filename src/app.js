@@ -868,6 +868,9 @@ cacheBtn.addEventListener('click', async () => {
         fetches.push(fetch(`/data/${a.id}.${lng}.json`, { cache: 'reload' }));
       }
     }
+    // New required data files: search + knowledge graph must work offline too.
+    fetches.push(fetch('/data/search-index.json', { cache: 'reload' }));
+    fetches.push(fetch('/data/knowledge-graph.json', { cache: 'reload' }));
     await Promise.all(fetches);
     cacheBtn.textContent = t('settings.saved', STATE.settings.lang);
     cacheBtn.classList.add('done');
