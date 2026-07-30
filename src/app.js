@@ -657,12 +657,20 @@ async function renderKnowledgeGraph() {
   setProgress(0);
   window.scrollTo({ top: 0, behavior: 'instant' });
   const { initialFocus, initialState } = parseKnowledgeGraphHash(location.hash);
-  activeViewCleanup = await renderKnowledgeGraphView(VIEW, {
+  // Render-generation guard: a slow graph fetch must not paint after a
+  // newer render (e.g. a second language switch) has superseded it.
+  const generation = (STATE.renderSeq = (STATE.renderSeq || 0) + 1);
+  const cleanup = await renderKnowledgeGraphView(VIEW, {
     fetchKnowledgeGraph,
     initialFocus,
     initialState,
     lang: STATE.settings.lang,
   });
+  if (generation === STATE.renderSeq && STATE.view === 'graph') {
+    activeViewCleanup = cleanup;
+  } else if (typeof cleanup === 'function') {
+    cleanup();
+  }
 }
 
 // Scroll-tracked progress
