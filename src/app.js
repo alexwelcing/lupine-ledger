@@ -3,6 +3,7 @@
 
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
+import { parseHashRoute, parseKnowledgeGraphHash, renderKnowledgeGraphView } from './knowledgeGraphView.js';
 
 const BANNERS = [
   {
@@ -121,6 +122,12 @@ async function fetchManifest() {
   STATE.manifest = await res.json();
   STATE.sourceToId = buildSourceToIdMap(STATE.manifest);
   return STATE.manifest;
+}
+
+async function fetchKnowledgeGraph() {
+  const res = await fetch('/data/knowledge-graph.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('knowledge graph fetch failed');
+  return res.json();
 }
 
 function buildSourceToIdMap(manifest) {
@@ -506,6 +513,22 @@ async function renderMlipFlywheel() {
   activeViewCleanup = renderMlipFlywheelView(VIEW);
 }
 
+async function renderKnowledgeGraph() {
+  clearActiveView();
+  STATE.view = 'graph';
+  document.documentElement.dataset.view = 'graph';
+  STATE.currentId = null;
+  BACK_BTN.hidden = false;
+  setProgress(0);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  const { initialFocus, initialState } = parseKnowledgeGraphHash(location.hash);
+  activeViewCleanup = await renderKnowledgeGraphView(VIEW, {
+    fetchKnowledgeGraph,
+    initialFocus,
+    initialState,
+  });
+}
+
 // Scroll-tracked progress
 function onScroll() {
   const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -527,9 +550,11 @@ function setProgress(pct) {
 // ───────────────────────────────────────────────────────────────
 function route() {
   const hash = location.hash || '#/';
-  const [, path, arg] = hash.match(/^#\/?([^/]*)\/?(.*)?$/) || [];
+  const { path, arg } = parseHashRoute(hash);
   if (path === 'read' && arg) {
     renderReader(decodeURIComponent(arg));
+  } else if (path === 'graph') {
+    renderKnowledgeGraph();
   } else if (path === 'system' && arg === 'mlip-flywheel') {
     renderMlipFlywheel();
   } else if (path === 'reports') {

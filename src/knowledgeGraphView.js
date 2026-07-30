@@ -155,6 +155,25 @@ function defaultModeForFocus(focusId) {
   return focusId === 'library:root' ? 'overview' : 'local';
 }
 
+export function parseHashRoute(hash) {
+  const hashPath = String(hash || '#/').split('?')[0];
+  const [, path = '', arg = ''] = hashPath.match(/^#\/?([^/]*)\/?(.*)?$/) || [];
+  return { path, arg };
+}
+
+export function parseKnowledgeGraphHash(hash) {
+  const raw = String(hash || '#/graph').replace(/^#/, '');
+  const url = new URL(raw.startsWith('/') ? raw : `/${raw}`, 'https://library.lupine.site');
+  const match = url.pathname.match(/^\/graph(?:\/([^/]+))?$/);
+  const initialFocus = match?.[1] ? decodeURIComponent(match[1]) : '';
+  const initialState = {};
+  if (url.searchParams.has('mode')) initialState.mode = url.searchParams.get('mode');
+  if (url.searchParams.has('q')) initialState.query = url.searchParams.get('q');
+  if (url.searchParams.has('rels')) initialState.relations = url.searchParams.get('rels');
+  if (url.searchParams.has('focus')) initialState.focusNodeId = url.searchParams.get('focus');
+  return { initialFocus, initialState };
+}
+
 export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, initialFocus = '', initialState = {} } = {}) {
   mount.innerHTML = '<div class="loading">Mapping library graph...</div>';
 

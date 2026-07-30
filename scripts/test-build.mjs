@@ -36,6 +36,7 @@ assertContent('health', 'ok\n', 'health endpoint');
 // ── Core SPA files ──
 assertExists('index.html', 'index.html');
 assertExists('app.js', 'app.js');
+assertExists('knowledgeGraphView.js', 'knowledge graph view');
 assertExists('styles.css', 'styles.css');
 assertExists('sw.js', 'service worker');
 
@@ -46,6 +47,7 @@ assertExists('llms.txt', 'llms.txt');
 
 // ── Data layer ──
 assertExists('data/library.json', 'library manifest');
+assertExists('data/knowledge-graph.json', 'knowledge graph');
 
 // ── Branding ──
 assertExists('lupine-science-icon.png', 'icon');
@@ -57,4 +59,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`[ok] lupine-ledger post-build verification passed (${8} checks).`);
+console.log(`[ok] lupine-ledger post-build verification passed (${13} checks).`);

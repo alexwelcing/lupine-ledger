@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
 import { CATALOG as FALLBACK_CATALOG } from './catalog.js';
+import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -456,6 +457,7 @@ function build() {
     articles,
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
+  writeKnowledgeGraph();
 
   // Copy static src -> dist, substituting __VERSION__ placeholder.
   for (const name of fs.readdirSync(SRC)) {

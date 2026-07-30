@@ -58,6 +58,9 @@ jobs:
         env:
           LIBRARY_BUILD_VERSION: ${{ github.sha }}
 
+      - name: Test build and knowledge graph
+        run: npm test
+
   deploy:
     needs: verify
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
