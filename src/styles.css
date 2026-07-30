@@ -2438,6 +2438,39 @@ body {
 }
 
 /* ─── Knowledge graph explorer ────────────────────────────────── */
+.kg-freshness {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--gold) 34%, var(--border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  color: var(--text-dim);
+  font: 0.7rem var(--font-mono);
+}
+
+.kg-freshness strong { color: var(--gold); }
+
+.kg-epistemic {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--glass-1);
+}
+
+.kg-epistemic div { display: grid; grid-template-columns: 78px 1fr; gap: 8px; }
+.kg-epistemic dt { color: var(--text-dim); font: 0.64rem var(--font-mono); text-transform: uppercase; }
+.kg-epistemic dd { margin: 0; font-size: 0.76rem; overflow-wrap: anywhere; }
+.kg-marker dd { color: var(--cyan); font-family: var(--font-mono); font-weight: 700; }
+.kg-readiness dd { color: var(--gold); }
+.kg-confidence dd { color: var(--lupine-300); }
+.kg-node.ontology circle { fill: color-mix(in srgb, var(--lupine-400) 72%, var(--bg)); }
+
 .kg {
   width: min(1440px, 100%);
   margin: 0 auto;

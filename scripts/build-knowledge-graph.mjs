@@ -2,10 +2,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normalizeOntology } from './build-ontology.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_MANIFEST_PATH = path.join(ROOT, 'content', 'latest', 'manifest.json');
+const DEFAULT_ONTOLOGY_PATH = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
 const DEFAULT_OUTPUT_PATH = path.join(ROOT, 'dist', 'data', 'knowledge-graph.json');
 const SCHEMA = 'lupine-library-knowledge-graph-v1';
 const RELATIONS = ['program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic'];
@@ -71,7 +73,7 @@ function link(relation, source, target, details = {}) {
   };
 }
 
-export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null } = {}) {
+export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, ontology: atlas = null } = {}) {
   const categories = [...(catalog.categories || [])].sort((a, b) => a.id.localeCompare(b.id));
   const entries = [...(catalog.entries || [])].sort((a, b) => a.id.localeCompare(b.id));
   const usedStatusIds = [...new Set(entries.map((entry) => entry.status).filter(Boolean))].sort();
@@ -82,7 +84,7 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
   }
   const tagIds = [...tagCounts.keys()].sort();
 
-  const nodes = [
+  const libraryNodes = [
     {
       id: 'library:root',
       type: 'corpus',
@@ -145,33 +147,33 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
     })),
   ].sort(compareId);
 
-  const links = [];
+  const libraryLinks = [];
   for (const category of categories) {
-    links.push(link('program', 'library:root', `category:${category.id}`, {
+    libraryLinks.push(link('program', 'library:root', `category:${category.id}`, {
       label: 'program area',
       provenance: provenance('catalog.categories', 'declared category membership', 'declared'),
     }));
   }
   for (const entry of entries) {
     const articleId = `article:${entry.id}`;
-    links.push(link('contains', `category:${entry.category}`, articleId, {
+    libraryLinks.push(link('contains', `category:${entry.category}`, articleId, {
       label: 'contains article',
       provenance: provenance(`catalog.entries.${entry.id}.category`, 'declared catalog field', 'declared'),
     }));
     for (const tag of [...new Set(entry.tags || [])].sort()) {
-      links.push(link('tagged', articleId, `tag:${tag}`, {
+      libraryLinks.push(link('tagged', articleId, `tag:${tag}`, {
         label: 'tagged',
         provenance: provenance(`catalog.entries.${entry.id}.tags`, 'declared catalog field', 'declared'),
       }));
     }
     if (entry.status) {
-      links.push(link('lifecycle', articleId, `status:${entry.status}`, {
+      libraryLinks.push(link('lifecycle', articleId, `status:${entry.status}`, {
         label: 'lifecycle status',
         provenance: provenance(`catalog.entries.${entry.id}.status`, 'declared catalog field', 'declared'),
       }));
     }
     if (entry.group) {
-      links.push(link('grouped', articleId, `group:${entry.group}`, {
+      libraryLinks.push(link('grouped', articleId, `group:${entry.group}`, {
         label: 'catalog group',
         provenance: provenance(`catalog.entries.${entry.id}.group`, 'declared catalog field', 'declared'),
       }));
@@ -191,7 +193,7 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
     }
   }
   for (const item of [...coTopics.values()].filter((item) => item.articles.length >= 2).sort((a, b) => `${a.left}\u0000${a.right}`.localeCompare(`${b.left}\u0000${b.right}`))) {
-    links.push(link('co-topic', `tag:${item.left}`, `tag:${item.right}`, {
+    libraryLinks.push(link('co-topic', `tag:${item.left}`, `tag:${item.right}`, {
       label: 'co-occurs in articles',
       weight: item.articles.length,
       evidence: `${item.articles.length} shared articles`,
@@ -204,7 +206,7 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
     for (let right = left + 1; right < entries.length; right += 1) {
       const shared = [...new Set(entries[right].tags || [])].filter((tag) => leftTags.has(tag)).sort();
       if (shared.length < 2) continue;
-      links.push(link('related', `article:${entries[left].id}`, `article:${entries[right].id}`, {
+      libraryLinks.push(link('related', `article:${entries[left].id}`, `article:${entries[right].id}`, {
         label: 'shared topics',
         weight: shared.length,
         evidence: shared.join(', '),
@@ -217,21 +219,37 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
     }
   }
 
-  links.sort(compareId);
-  const relationCounts = Object.fromEntries(RELATIONS.map((relation) => [
+  const ontologyNodes = (atlas?.nodes || []).map((node) => ({
+    ...node,
+    id: `ontology:${node.id}`,
+    ontologyId: node.id,
+    position: positionFor(`ontology:${node.id}`, node.type),
+  }));
+  const ontologyLinks = (atlas?.links || []).map((item) => ({
+    ...item,
+    id: `ontology:${item.id}`,
+    source: `ontology:${item.source}`,
+    target: `ontology:${item.target}`,
+  }));
+  const nodes = [...libraryNodes, ...ontologyNodes].sort(compareId);
+  const links = [...libraryLinks, ...ontologyLinks].sort(compareId);
+  const relationNames = atlas ? [...new Set([...RELATIONS, ...atlas.edgeLabels])].sort() : RELATIONS;
+  const relationCounts = Object.fromEntries(relationNames.map((relation) => [
     relation,
     links.filter((item) => item.relation === relation).length,
   ]));
 
   return {
     schema: SCHEMA,
-    scope: 'library-only',
+    scope: atlas ? 'library+ontology' : 'library-only',
     generatedAt,
     source: {
       repo: source.repo || 'lupine-rhizo',
       commit: source.commit || null,
       manifest: 'content/latest/manifest.json',
     },
+    freshness: atlas?.freshness || null,
+    ontologyExceptions: atlas?.exceptions || [],
     ontology: {
       nodeTypes: {
         corpus: 'Library corpus root',
@@ -241,8 +259,12 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
         tag: 'Declared catalog topic tag',
         article: 'Library article',
       },
-      relationTypes: Object.fromEntries(RELATIONS.map((relation) => [relation, RELATION_DESCRIPTIONS[relation]])),
+      relationTypes: Object.fromEntries(relationNames.map((relation) => [
+        relation,
+        RELATION_DESCRIPTIONS[relation] || `Lupine Ontological Atlas relation: ${relation}`,
+      ])),
       confidenceValues: CONFIDENCE_VALUES,
+      atlasRelationDefinitions: atlas?.relations || [],
     },
     perspectives: [
       { id: 'overview', label: 'Overview', relations: ['program', 'contains', 'tagged'] },
@@ -258,6 +280,10 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null }
       statusCount: usedStatusIds.length,
       groupCount: usedGroupIds.length,
       tagCount: tagIds.length,
+      ...(atlas ? {
+        ontologyNodeCount: ontologyNodes.length,
+        ontologyLinkCount: ontologyLinks.length,
+      } : {}),
       relationCounts,
     },
     nodes,
@@ -280,9 +306,11 @@ export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outp
   if (manifest.schemaVersion !== 'library-content.v1') {
     throw new Error(`Unsupported Library content schema: ${manifest.schemaVersion}`);
   }
+  const atlasSource = JSON.parse(fs.readFileSync(DEFAULT_ONTOLOGY_PATH, 'utf8'));
   const graph = buildKnowledgeGraph(manifest.catalog, {
     source: manifest.source,
     generatedAt: manifest.generatedAt,
+    ontology: normalizeOntology(atlasSource),
   });
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, `${JSON.stringify(graph, null, 2)}\n`);

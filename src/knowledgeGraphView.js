@@ -4,6 +4,7 @@ const MODES = [
   { id: 'overview', label: 'Overview' },
   { id: 'topics', label: 'Topics' },
   { id: 'lifecycle', label: 'Lifecycle' },
+  { id: 'ontology', label: 'Ontology' },
   { id: 'local', label: 'Local' },
 ];
 
@@ -11,6 +12,7 @@ const MODE_RELATIONS = {
   overview: new Set(['program', 'contains', 'tagged']),
   topics: new Set(['tagged', 'co-topic']),
   lifecycle: new Set(['program', 'contains', 'lifecycle', 'grouped']),
+  ontology: new Set(['isA', 'partOf', 'inheritsErrorFrom', 'readinessJudgedBy', 'chain.gatedBy', 'markedAs']),
   local: new Set(['program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic']),
 };
 
@@ -152,6 +154,7 @@ function initialRelationsFor(mode, relationParam) {
 }
 
 function defaultModeForFocus(focusId) {
+  if (String(focusId).startsWith('ontology:')) return 'ontology';
   return focusId === 'library:root' ? 'overview' : 'local';
 }
 
@@ -215,6 +218,14 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     el('h1', {}, 'Knowledge Graph'),
     el('p', { class: 'kg-sub' }, 'A deterministic map of articles, program areas, tags, lifecycle states, and explicit corpus relationships.')
   );
+  if (graph.freshness) {
+    const { atlasDate, nextReverification, proofPackDate, proofPackStatus } = graph.freshness;
+    head.append(el('aside', { class: 'kg-freshness', role: 'status' },
+      el('strong', {}, `Atlas ${atlasDate}`),
+      el('span', {}, `Next re-verification ${nextReverification}`),
+      el('span', {}, `Proof Pack ${proofPackStatus} ${proofPackDate}`),
+    ));
+  }
 
   const toolbar = el('div', { class: 'kg-toolbar' });
   const search = el('input', {
@@ -335,6 +346,10 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
       for (const node of graph.nodes) {
         if (node.type === 'category' || node.type === 'status' || node.type === 'group' || node.type === 'article') ids.add(node.id);
       }
+    } else if (state.mode === 'ontology') {
+      for (const node of graph.nodes) {
+        if (node.ontologyId) ids.add(node.id);
+      }
     } else {
       const selected = nodeById.get(state.selectedId) || nodeById.get('library:root');
         addNeighbors(selected.id, state.relations);
@@ -383,7 +398,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
   function selectNode(nodeId) {
     if (!nodeById.has(nodeId)) return;
     state.selectedId = nodeId;
-    if (state.mode !== 'local' && nodeById.get(nodeId)?.type !== 'corpus') {
+    if (state.mode !== 'local' && state.mode !== 'ontology' && nodeById.get(nodeId)?.type !== 'corpus') {
       state.mode = 'local';
       resetRelationsForMode();
     }
@@ -465,7 +480,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
       if (!node.position) continue;
       const r = nodeRadius(node);
       const group = svgEl('g', {
-        class: `kg-node kg-node--${node.type}${node.id === state.selectedId ? ' selected' : ''}`,
+        class: `kg-node kg-node--${node.type}${node.ontologyId ? ' ontology' : ''}${node.id === state.selectedId ? ' selected' : ''}`,
         transform: `translate(${node.position.x} ${node.position.y})`,
         tabindex: '0',
         role: 'button',
@@ -526,6 +541,14 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     );
     if (selected.subtitle) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.subtitle));
     if (selected.blurb) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.blurb));
+    if (selected.ontologyId) {
+      selectedPanel.append(el('dl', { class: 'kg-epistemic', 'aria-label': 'Epistemic status' },
+        el('div', { class: 'kg-marker' }, el('dt', {}, 'Marker'), el('dd', {}, selected.marker)),
+        el('div', { class: 'kg-readiness' }, el('dt', {}, 'Readiness'), el('dd', {}, `${selected.readiness.grade} — ${selected.readiness.annotation}`)),
+        el('div', { class: 'kg-confidence' }, el('dt', {}, 'Confidence'), el('dd', {}, `${selected.confidence.grade} — ${selected.confidence.annotation}`)),
+        el('div', {}, el('dt', {}, 'As of'), el('dd', {}, selected.asOf)),
+      ));
+    }
     if (selected.type === 'article') {
       selectedPanel.append(el('a', { class: 'kg-read-link', href: `#/read/${selected.articleId}` }, 'Read article'));
     }

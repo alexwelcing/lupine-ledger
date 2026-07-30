@@ -54,7 +54,7 @@ export function validateKnowledgeGraph(graph, catalog) {
   const unknownConfidence = links.filter((link) => !CONFIDENCE_VALUES.has(link.provenance?.confidence));
 
   if (graph.schema !== 'lupine-library-knowledge-graph-v1') errors.push(issue('unexpected graph schema', { schema: graph.schema }));
-  if (graph.scope !== 'library-only') errors.push(issue('graph scope must stay library-only', { scope: graph.scope }));
+  if (!['library-only', 'library+ontology'].includes(graph.scope)) errors.push(issue('unexpected graph scope', { scope: graph.scope }));
   if (duplicateNodes.length) errors.push(issue('duplicate node ids', duplicateNodes));
   if (badLinks.length) errors.push(issue('links reference missing nodes', badLinks.slice(0, 10)));
   if (missingPositions.length) errors.push(issue('nodes missing deterministic positions', missingPositions.slice(0, 10).map((node) => node.id)));

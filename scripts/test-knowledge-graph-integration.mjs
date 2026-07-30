@@ -14,9 +14,13 @@ test('knowledge graph build, validation, CI, route assets, and styles stay wired
   const styles = read('../src/styles.css');
 
   assert.match(packageJson.scripts['graph:build'], /build-knowledge-graph\.mjs/);
+  assert.match(packageJson.scripts['ontology:build'], /build-ontology\.mjs/);
   assert.match(packageJson.scripts.test, /test-knowledge-graph/);
+  assert.match(packageJson.scripts.test, /test-ontology/);
   assert.match(packageJson.scripts.test, /check-graph\.js/);
+  assert.match(packageJson.scripts.test, /check-ontology\.mjs/);
   assert.match(build, /writeKnowledgeGraph/);
+  assert.match(build, /writeOntology/);
   assert.match(buildTest, /knowledge-graph\.json/);
   assert.match(buildTest, /knowledgeGraphView\.js/);
   assert.match(workflow, /run: npm (?:run )?test/);

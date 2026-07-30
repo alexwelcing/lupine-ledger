@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
 import { CATALOG as FALLBACK_CATALOG } from './catalog.js';
+import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
 
@@ -459,6 +460,7 @@ function build() {
     articles,
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
+  writeOntology();
   writeKnowledgeGraph();
 
   // Copy static src -> dist, substituting __VERSION__ placeholder.

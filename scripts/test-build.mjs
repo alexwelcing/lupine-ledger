@@ -93,6 +93,7 @@ if (!appSource.includes("fetch('/data/search-index.json'")) {
   errors.push('search dialog does not consume the generated search index');
 }
 
+assertExists('data/ontology.json', 'normalized ontology');
 
 // ── Branding ──
 assertExists('lupine-science-icon.png', 'icon');
