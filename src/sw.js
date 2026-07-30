@@ -36,6 +36,8 @@ const SHELL_ASSETS = [
   '/llms-full.txt',
   '/brand.json',
   '/data/library.json',
+  '/data/search-index.json',
+  '/data/knowledge-graph.json',
   '/reports/assets/mlip/mlip-flywheel-evidence.json',
   '/reports/assets/mlip/ni-paired-accuracy-live-summary.json',
   '/reports/assets/mlip/ni-paired-accuracy-promotion-canary-summary.json',

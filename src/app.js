@@ -3,6 +3,13 @@
 
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
+import { parseHashRoute, parseKnowledgeGraphHash, renderKnowledgeGraphView } from './knowledgeGraphView.js';
+import {
+  buildTagIndex,
+  filterAndSortArticles,
+  parseLibraryHash,
+  serializeLibraryHash,
+} from './libraryFilters.js';
 
 const BANNERS = [
   {
@@ -34,6 +41,7 @@ const BANNERS = [
 
 const STATE = {
   manifest: null,          // { categories, articles, version }
+  searchIndex: null,       // deterministic metadata from /data/search-index.json
   articleCache: new Map(), // id -> article (with html)
   view: 'home',
   currentId: null,
@@ -121,6 +129,20 @@ async function fetchManifest() {
   STATE.manifest = await res.json();
   STATE.sourceToId = buildSourceToIdMap(STATE.manifest);
   return STATE.manifest;
+}
+
+async function fetchKnowledgeGraph() {
+  const res = await fetch('/data/knowledge-graph.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('knowledge graph fetch failed');
+  return res.json();
+}
+
+async function fetchSearchIndex() {
+  if (STATE.searchIndex) return STATE.searchIndex;
+  const res = await fetch('/data/search-index.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('search index fetch failed');
+  STATE.searchIndex = await res.json();
+  return STATE.searchIndex;
 }
 
 function buildSourceToIdMap(manifest) {
@@ -259,6 +281,7 @@ async function renderHome() {
     stats.append(el('span', { html: `<strong>${totalWords.toLocaleString()}</strong> ${t('home.stats.words', STATE.settings.lang)}` }));
     stats.append(el('span', { html: `≈<strong>${totalMin}</strong> ${t('home.stats.minutes', STATE.settings.lang)}` }));
     hero.append(stats);
+    hero.append(el('a', { class: 'tags-browse-link', href: '#/tags' }, t('tags.index', STATE.settings.lang), ' →'));
     VIEW.append(hero);
 
     // Start Here — guided journeys for four personas
@@ -396,6 +419,125 @@ async function renderHome() {
 }
 
 // ───────────────────────────────────────────────────────────────
+// Tags / faceted library browser
+// ───────────────────────────────────────────────────────────────
+async function renderTags() {
+  clearActiveView();
+  STATE.view = 'tags';
+  document.documentElement.dataset.view = 'tags';
+  STATE.currentId = null;
+  BACK_BTN.hidden = false;
+  setProgress(0);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  VIEW.innerHTML = `<div class="loading">${t('home.loading', STATE.settings.lang)}</div>`;
+
+  try {
+    const m = await fetchManifest();
+    const state = parseLibraryHash(location.hash);
+    const tagIndex = buildTagIndex(m.articles);
+    const results = filterAndSortArticles(m.articles, state, STATE.settings.lang);
+    VIEW.innerHTML = '';
+
+    const root = el('div', { class: 'tag-browser' });
+    const heading = el('header', { class: 'tag-browser-head' });
+    heading.append(el('h1', {}, t('tags.title', STATE.settings.lang)));
+    heading.append(el('p', {}, t('tags.subtitle', STATE.settings.lang)));
+    root.append(heading);
+
+    const setState = (key, value) => {
+      location.hash = serializeLibraryHash({ ...state, [key]: value });
+    };
+    const countsFor = (key) => {
+      const counts = new Map();
+      for (const article of m.articles) {
+        const value = article[key];
+        if (value) counts.set(value, (counts.get(value) || 0) + 1);
+      }
+      return counts;
+    };
+    const selectControl = (name, label, options) => {
+      const wrapper = el('label', { class: 'facet-control' });
+      wrapper.append(el('span', {}, label));
+      const select = el('select', { name, 'aria-label': label });
+      select.append(el('option', { value: '' }, t('tags.all', STATE.settings.lang)));
+      for (const option of options) {
+        select.append(el('option', { value: option.value }, `${option.label} · ${option.count}`));
+      }
+      select.value = state[name] || '';
+      select.addEventListener('change', () => setState(name, select.value));
+      wrapper.append(select);
+      return wrapper;
+    };
+
+    const statusCounts = countsFor('status');
+    const categoryCounts = countsFor('category');
+    const groupCounts = countsFor('group');
+    const controls = el('form', { class: 'facet-controls', 'aria-label': t('tags.title', STATE.settings.lang) });
+    controls.addEventListener('submit', (event) => event.preventDefault());
+    controls.append(selectControl('status', t('tags.facet.status', STATE.settings.lang),
+      [...statusCounts].map(([value, count]) => ({
+        value,
+        count,
+        label: t(m.statuses?.[value]?.label || value, STATE.settings.lang),
+      }))));
+    controls.append(selectControl('category', t('tags.facet.category', STATE.settings.lang),
+      m.categories.filter((category) => categoryCounts.has(category.id)).map((category) => ({
+        value: category.id,
+        count: categoryCounts.get(category.id),
+        label: t(category.label, STATE.settings.lang),
+      }))));
+    controls.append(selectControl('group', t('tags.facet.group', STATE.settings.lang),
+      [...groupCounts].map(([value, count]) => ({
+        value,
+        count,
+        label: t(`group.${value}`, STATE.settings.lang),
+      }))));
+    controls.append(selectControl('tag', t('tags.facet.tag', STATE.settings.lang),
+      tagIndex.map(({ tag, count }) => ({ value: tag, count, label: tag }))));
+    controls.append(selectControl('sort', t('tags.sort.label', STATE.settings.lang), [
+      { value: 'title', label: t('tags.sort.title', STATE.settings.lang), count: m.articles.length },
+      { value: 'words', label: t('tags.sort.words', STATE.settings.lang), count: m.articles.length },
+      { value: 'readMinutes', label: t('tags.sort.readMinutes', STATE.settings.lang), count: m.articles.length },
+    ]));
+    const clear = el('a', { class: 'facet-clear', href: '#/tags' }, t('tags.clear', STATE.settings.lang));
+    controls.append(clear);
+    root.append(controls);
+
+    const indexSection = el('section', { class: 'tag-index-section' });
+    indexSection.append(el('h2', {}, `${t('tags.index', STATE.settings.lang)} · ${tagIndex.length}`));
+    const index = el('div', { class: 'tag-index' });
+    for (const item of tagIndex) {
+      const href = serializeLibraryHash({ ...state, tag: item.tag });
+      index.append(el('a', {
+        class: 'tag-index-link' + (state.tag === item.tag ? ' active' : ''),
+        href,
+        'aria-current': state.tag === item.tag ? 'true' : null,
+      }, item.tag, el('span', {}, String(item.count))));
+    }
+    indexSection.append(index);
+    root.append(indexSection);
+
+    const resultSection = el('section', { class: 'tag-results' });
+    const resultLabel = results.length === 1
+      ? t('tags.results.one', STATE.settings.lang)
+      : t('tags.results', STATE.settings.lang, { count: results.length });
+    resultSection.append(el('h2', {}, resultLabel));
+    if (!results.length) {
+      resultSection.append(el('div', { class: 'empty' }, t('tags.empty', STATE.settings.lang)));
+    } else {
+      const cards = el('div', { class: 'cards' });
+      for (const article of results) cards.append(cardFor(article, { showCategory: true }));
+      resultSection.append(cards);
+    }
+    root.append(resultSection);
+    VIEW.append(root);
+  } catch (error) {
+    console.error(error);
+    VIEW.innerHTML = `<div class="empty">${t('home.error', STATE.settings.lang)}</div>`;
+  }
+}
+
+// ───────────────────────────────────────────────────────────────
 // Reader
 // ───────────────────────────────────────────────────────────────
 async function renderReader(id) {
@@ -506,6 +648,22 @@ async function renderMlipFlywheel() {
   activeViewCleanup = renderMlipFlywheelView(VIEW);
 }
 
+async function renderKnowledgeGraph() {
+  clearActiveView();
+  STATE.view = 'graph';
+  document.documentElement.dataset.view = 'graph';
+  STATE.currentId = null;
+  BACK_BTN.hidden = false;
+  setProgress(0);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  const { initialFocus, initialState } = parseKnowledgeGraphHash(location.hash);
+  activeViewCleanup = await renderKnowledgeGraphView(VIEW, {
+    fetchKnowledgeGraph,
+    initialFocus,
+    initialState,
+  });
+}
+
 // Scroll-tracked progress
 function onScroll() {
   const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -527,9 +685,13 @@ function setProgress(pct) {
 // ───────────────────────────────────────────────────────────────
 function route() {
   const hash = location.hash || '#/';
-  const [, path, arg] = hash.match(/^#\/?([^/]*)\/?(.*)?$/) || [];
+  const { path, arg } = parseHashRoute(hash);
   if (path === 'read' && arg) {
     renderReader(decodeURIComponent(arg));
+  } else if (path === 'graph') {
+    renderKnowledgeGraph();
+  } else if (path === 'tags') {
+    renderTags();
   } else if (path === 'system' && arg === 'mlip-flywheel') {
     renderMlipFlywheel();
   } else if (path === 'reports') {
@@ -587,7 +749,7 @@ document.getElementById('search-close').addEventListener('click', () => searchDi
 searchDialog.addEventListener('click', (e) => { if (e.target === searchDialog) searchDialog.close(); });
 
 async function openSearch() {
-  await fetchManifest();
+  await Promise.all([fetchManifest(), fetchSearchIndex()]);
   searchInput.value = '';
   renderSearchResults('');
   if (typeof searchDialog.showModal === 'function') searchDialog.showModal();
@@ -596,16 +758,16 @@ async function openSearch() {
 }
 searchInput?.addEventListener('input', () => renderSearchResults(searchInput.value.trim()));
 function renderSearchResults(q) {
-  const m = STATE.manifest;
-  if (!m) return;
+  const index = STATE.searchIndex;
+  if (!index) return;
   const ql = q.toLowerCase();
   const list = q
-    ? m.articles
+    ? index.articles
         .map(a => ({ a, score: scoreMatch(a, ql) }))
         .filter(x => x.score > 0)
         .sort((x, y) => y.score - x.score)
         .map(x => x.a)
-    : m.articles;
+    : index.articles;
   searchResults.innerHTML = '';
   if (!list.length) {
     searchHint.textContent = `No results for “${q}”.`;
@@ -685,7 +847,7 @@ function syncSettingsUI() {
 settingsDialog.addEventListener('click', (e) => {
   const t = e.target.closest('button');
   if (!t) return;
-  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'reader' && STATE.currentId) renderReader(STATE.currentId); }
+  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'tags') renderTags(); else if (STATE.view === 'reader' && STATE.currentId) renderReader(STATE.currentId); }
   if (t.dataset.size)  { STATE.settings.size = t.dataset.size;   saveSettings(); syncSettingsUI(); }
   if (t.dataset.theme) { STATE.settings.theme = t.dataset.theme; saveSettings(); syncSettingsUI(); }
   if (t.dataset.width) { STATE.settings.width = t.dataset.width; saveSettings(); syncSettingsUI(); }
@@ -706,6 +868,9 @@ cacheBtn.addEventListener('click', async () => {
         fetches.push(fetch(`/data/${a.id}.${lng}.json`, { cache: 'reload' }));
       }
     }
+    // New required data files: search + knowledge graph must work offline too.
+    fetches.push(fetch('/data/search-index.json', { cache: 'reload' }));
+    fetches.push(fetch('/data/knowledge-graph.json', { cache: 'reload' }));
     await Promise.all(fetches);
     cacheBtn.textContent = t('settings.saved', STATE.settings.lang);
     cacheBtn.classList.add('done');

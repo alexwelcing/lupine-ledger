@@ -9,10 +9,14 @@ import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
 import { CATALOG as FALLBACK_CATALOG } from './catalog.js';
+import { writeOntology } from './build-ontology.mjs';
+import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
+import { writeMachineIndexes } from './generate-indexes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_CONTENT_BUNDLE = path.join(ROOT, 'content', 'latest');
+const ONTOLOGY_PATH = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
 
 function loadContentConfig() {
   const bundleRoot = process.env.LIBRARY_CONTENT_BUNDLE
@@ -456,6 +460,10 @@ function build() {
     articles,
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
+  writeOntology();
+  // Build the graph from the same bundle the articles were rendered from —
+  // a LIBRARY_CONTENT_BUNDLE override must not produce a graph/articles mismatch.
+  writeKnowledgeGraph({ manifestPath: path.join(REPO_ROOT, 'manifest.json') });
 
   // Copy static src -> dist, substituting __VERSION__ placeholder.
   for (const name of fs.readdirSync(SRC)) {
@@ -471,6 +479,12 @@ function build() {
       fs.copyFileSync(s, d);
     }
   }
+
+  if (!fs.existsSync(ONTOLOGY_PATH)) {
+    throw new Error(`Lupine ontology not found: ${ONTOLOGY_PATH}`);
+  }
+  const ontology = JSON.parse(fs.readFileSync(ONTOLOGY_PATH, 'utf8'));
+  writeMachineIndexes({ catalog: CATALOG, ontology, outputRoot: DIST });
 
   // Bundle KaTeX CSS + fonts so math renders offline and on the deployed site.
   const KATEX_DIST = path.join(ROOT, 'node_modules', 'katex', 'dist');
