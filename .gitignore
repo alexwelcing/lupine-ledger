@@ -3,3 +3,4 @@ dist
 .DS_Store
 # 9MB binary asset bundle for the ontological atlas; dataset + provenance ship, binaries do not
 content/ontology/atlas_assets/
+.worktrees/

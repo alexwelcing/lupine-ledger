@@ -1,11 +1,13 @@
+import { t } from './i18n.js';
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 const MODES = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'topics', label: 'Topics' },
-  { id: 'lifecycle', label: 'Lifecycle' },
-  { id: 'ontology', label: 'Ontology' },
-  { id: 'local', label: 'Local' },
+  { id: 'overview' },
+  { id: 'topics' },
+  { id: 'lifecycle' },
+  { id: 'ontology' },
+  { id: 'local' },
 ];
 
 const MODE_RELATIONS = {
@@ -16,15 +18,6 @@ const MODE_RELATIONS = {
   local: new Set(['program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic']),
 };
 
-const RELATION_LABELS = {
-  program: 'Programs',
-  contains: 'Contains',
-  tagged: 'Tags',
-  lifecycle: 'Lifecycle',
-  grouped: 'Groups',
-  related: 'Related',
-  'co-topic': 'Co-topics',
-};
 
 function el(tag, attrs = {}, ...children) {
   const node = document.createElement(tag);
@@ -129,8 +122,10 @@ function otherEnd(link, nodeId) {
   return link.source === nodeId ? link.target : link.source;
 }
 
-function relationLabel(link) {
-  return link.label || link.relation || 'relation';
+function relationLabel(link, lang) {
+  const key = `graph.relation.${link.relation}`;
+  const localized = t(key, lang);
+  return localized === key ? (link.label || link.relation || 'relation') : localized;
 }
 
 function compareNodeLabels(a, b) {
@@ -177,15 +172,20 @@ export function parseKnowledgeGraphHash(hash) {
   return { initialFocus, initialState };
 }
 
-export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, initialFocus = '', initialState = {} } = {}) {
-  mount.innerHTML = '<div class="loading">Mapping library graph...</div>';
+export async function renderKnowledgeGraphView(mount, {
+  fetchKnowledgeGraph,
+  initialFocus = '',
+  initialState = {},
+  lang = 'en',
+} = {}) {
+  mount.innerHTML = `<div class="loading">${t('graph.loading', lang)}</div>`;
 
   let graph;
   try {
     graph = await fetchKnowledgeGraph();
   } catch (error) {
     console.error(error);
-    mount.innerHTML = '<div class="empty">The knowledge graph could not be loaded.</div>';
+    mount.innerHTML = `<div class="empty">${t('graph.error', lang)}</div>`;
     return () => {};
   }
 
@@ -214,30 +214,30 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
   const root = el('section', { class: 'kg' });
   const head = el('header', { class: 'kg-head' });
   head.append(
-    el('p', { class: 'kg-kicker' }, 'Knowledge Graph'),
-    el('h1', {}, 'Knowledge Graph'),
-    el('p', { class: 'kg-sub' }, 'A deterministic map of articles, program areas, tags, lifecycle states, and explicit corpus relationships.')
+    el('p', { class: 'kg-kicker' }, t('graph.title', lang)),
+    el('h1', {}, t('graph.title', lang)),
+    el('p', { class: 'kg-sub' }, t('graph.subtitle', lang))
   );
   if (graph.freshness) {
     const { atlasDate, nextReverification, proofPackDate, proofPackStatus } = graph.freshness;
     head.append(el('aside', { class: 'kg-freshness', role: 'status' },
-      el('strong', {}, `Atlas ${atlasDate}`),
-      el('span', {}, `Next re-verification ${nextReverification}`),
-      el('span', {}, `Proof Pack ${proofPackStatus} ${proofPackDate}`),
+      el('strong', {}, t('graph.freshness.atlas', lang, { date: atlasDate })),
+      el('span', {}, t('graph.freshness.next', lang, { date: nextReverification })),
+      el('span', {}, t('graph.freshness.proofPack', lang, { status: proofPackStatus, date: proofPackDate })),
     ));
   }
 
   const toolbar = el('div', { class: 'kg-toolbar' });
   const search = el('input', {
     type: 'search',
-    placeholder: 'Focus MLIP, Lean, funding, topology...',
+    placeholder: t('graph.search.placeholder', lang),
     autocomplete: 'off',
-    'aria-label': 'Search graph nodes',
+    'aria-label': t('graph.search.aria', lang),
   });
-  const modeRow = el('div', { class: 'kg-mode-row', role: 'group', 'aria-label': 'Graph mode' });
+  const modeRow = el('div', { class: 'kg-mode-row', role: 'group', 'aria-label': t('graph.mode.aria', lang) });
   toolbar.append(el('div', { class: 'kg-search' }, search), modeRow);
   head.append(toolbar);
-  const relationRow = el('div', { class: 'kg-relation-filter', role: 'group', 'aria-label': 'Relation filters' });
+  const relationRow = el('div', { class: 'kg-relation-filter', role: 'group', 'aria-label': t('graph.relationFilters.aria', lang) });
   head.append(relationRow);
   search.value = state.query;
 
@@ -250,14 +250,14 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     class: 'kg-svg',
     viewBox: '0 0 1000 680',
     role: 'img',
-    'aria-label': 'Knowledge graph map',
+    'aria-label': t('graph.canvas.aria', lang),
     preserveAspectRatio: 'xMidYMid meet',
   });
   const legend = el('div', { class: 'kg-legend' },
-    el('span', { class: 'kg-legend-item kg-legend-article' }, 'Article'),
-    el('span', { class: 'kg-legend-item kg-legend-topic' }, 'Tag'),
-    el('span', { class: 'kg-legend-item kg-legend-area' }, 'Area'),
-    el('span', { class: 'kg-legend-item kg-legend-state' }, 'Status')
+    el('span', { class: 'kg-legend-item kg-legend-article' }, t('graph.legend.article', lang)),
+    el('span', { class: 'kg-legend-item kg-legend-topic' }, t('graph.legend.tag', lang)),
+    el('span', { class: 'kg-legend-item kg-legend-area' }, t('graph.legend.area', lang)),
+    el('span', { class: 'kg-legend-item kg-legend-state' }, t('graph.legend.status', lang))
   );
   canvas.append(svg, legend);
   const inspector = el('aside', { class: 'kg-inspector' });
@@ -278,7 +278,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     state.relations = new Set(allowedRelations());
   }
 
-  function syncUrl() {
+  function syncUrl({ replace = false } = {}) {
     const selected = nodeById.get(state.selectedId);
     const params = new URLSearchParams();
     const defaultMode = defaultModeForFocus(state.selectedId);
@@ -297,7 +297,8 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     if (query) hash += `?${query}`;
     const next = `${location.pathname}${location.search}${hash}`;
     if (`${location.pathname}${location.search}${location.hash}` !== next) {
-      history.replaceState(null, '', next);
+      if (replace) history.replaceState(null, '', next);
+      else history.pushState(null, '', next);
     }
   }
 
@@ -419,7 +420,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
           syncUrl();
           update();
         },
-      }, mode.label);
+      }, t(`graph.mode.${mode.id}`, lang));
       modeRow.append(button);
     }
   }
@@ -428,31 +429,32 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     relationRow.innerHTML = '';
     for (const relation of allowedRelations()) {
       const active = state.relations.has(relation);
+      const label = t(`graph.relation.${relation}`, lang);
       relationRow.append(el('button', {
         type: 'button',
         class: `kg-relation-chip${active ? ' active' : ''}`,
         'aria-pressed': active ? 'true' : 'false',
-        'aria-label': `${active ? 'Hide' : 'Show'} ${RELATION_LABELS[relation] || relation} relations`,
+        'aria-label': t(active ? 'graph.relation.hide' : 'graph.relation.show', lang, { relation: label }),
         onClick: () => {
           if (state.relations.has(relation)) state.relations.delete(relation);
           else state.relations.add(relation);
           syncUrl();
           update();
         },
-      }, RELATION_LABELS[relation] || relation));
+      }, label));
     }
   }
 
   function renderStats(visible) {
     statbar.innerHTML = '';
     statbar.append(
-      el('span', { html: `<strong>${compactNumber(graph.stats.nodes)}</strong> nodes` }),
+      el('span', { html: `<strong>${compactNumber(graph.stats.nodes)}</strong> ${t('graph.stats.nodes', lang)}` }),
       ' ',
-      el('span', { html: `<strong>${compactNumber(graph.stats.links)}</strong> links` }),
+      el('span', { html: `<strong>${compactNumber(graph.stats.links)}</strong> ${t('graph.stats.links', lang)}` }),
       ' ',
-      el('span', { html: `<strong>${compactNumber(graph.stats.articleCount)}</strong> articles` }),
+      el('span', { html: `<strong>${compactNumber(graph.stats.articleCount)}</strong> ${t('graph.stats.articles', lang)}` }),
       ' ',
-      el('span', { html: `<strong>${compactNumber(visible.nodes.length)}</strong> visible` })
+      el('span', { html: `<strong>${compactNumber(visible.nodes.length)}</strong> ${t('graph.stats.visible', lang)}` })
     );
   }
 
@@ -472,7 +474,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
         x2: target.position.x,
         y2: target.position.y,
         'stroke-width': Math.min(3.4, 0.7 + Math.sqrt(link.weight || 1) * 0.45).toFixed(2),
-      }, svgEl('title', {}, `${source.label} -> ${target.label}: ${relationLabel(link)}${link.evidence ? ` (${link.evidence})` : ''}`));
+      }, svgEl('title', {}, `${source.label} -> ${target.label}: ${relationLabel(link, lang)}${link.evidence ? ` (${link.evidence})` : ''}`));
       edgeLayer.append(line);
     }
 
@@ -487,7 +489,12 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
         'aria-label': `${node.type}: ${node.label}`,
       });
       group.append(
-        svgEl('circle', { r }),
+        svgEl('circle', {
+          class: 'kg-node-hit',
+          r,
+          'vector-effect': 'non-scaling-stroke',
+        }),
+        svgEl('circle', { class: 'kg-node-dot', r }),
         svgEl('title', {}, `${node.label}${node.count ? ` (${node.count})` : ''}`)
       );
       group.addEventListener('click', () => selectNode(node.id));
@@ -517,8 +524,8 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     if (node.category) parts.push(node.category);
     if (node.status) parts.push(node.status);
     if (node.group) parts.push(node.group);
-    if (node.count && node.type !== 'article') parts.push(`${compactNumber(node.count)} items`);
-    if (node.words) parts.push(`${compactNumber(node.words)} words`);
+    if (node.count && node.type !== 'article') parts.push(`${compactNumber(node.count)} ${t('graph.meta.items', lang)}`);
+    if (node.words) parts.push(`${compactNumber(node.words)} ${t('graph.meta.words', lang)}`);
     return parts.join(' / ');
   }
 
@@ -535,29 +542,29 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     inspector.innerHTML = '';
     const selectedPanel = el('section', { class: 'kg-inspector-section' });
     selectedPanel.append(
-      el('p', { class: 'kg-inspector-kicker' }, 'Selected'),
+      el('p', { class: 'kg-inspector-kicker' }, t('graph.inspector.selected', lang)),
       el('h2', {}, selected.label),
       el('p', { class: 'kg-node-meta' }, metaLine(selected))
     );
     if (selected.subtitle) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.subtitle));
     if (selected.blurb) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.blurb));
     if (selected.ontologyId) {
-      selectedPanel.append(el('dl', { class: 'kg-epistemic', 'aria-label': 'Epistemic status' },
-        el('div', { class: 'kg-marker' }, el('dt', {}, 'Marker'), el('dd', {}, selected.marker)),
-        el('div', { class: 'kg-readiness' }, el('dt', {}, 'Readiness'), el('dd', {}, `${selected.readiness.grade} — ${selected.readiness.annotation}`)),
-        el('div', { class: 'kg-confidence' }, el('dt', {}, 'Confidence'), el('dd', {}, `${selected.confidence.grade} — ${selected.confidence.annotation}`)),
-        el('div', {}, el('dt', {}, 'As of'), el('dd', {}, selected.asOf)),
+      selectedPanel.append(el('dl', { class: 'kg-epistemic', 'aria-label': t('graph.epistemic.aria', lang) },
+        el('div', { class: 'kg-marker' }, el('dt', {}, t('graph.epistemic.marker', lang)), el('dd', {}, selected.marker)),
+        el('div', { class: 'kg-readiness' }, el('dt', {}, t('graph.epistemic.readiness', lang)), el('dd', {}, `${selected.readiness.grade} — ${selected.readiness.annotation}`)),
+        el('div', { class: 'kg-confidence' }, el('dt', {}, t('graph.epistemic.confidence', lang)), el('dd', {}, `${selected.confidence.grade} — ${selected.confidence.annotation}`)),
+        el('div', {}, el('dt', {}, t('graph.epistemic.asOf', lang)), el('dd', {}, selected.asOf)),
       ));
     }
     if (selected.type === 'article') {
-      selectedPanel.append(el('a', { class: 'kg-read-link', href: `#/read/${selected.articleId}` }, 'Read article'));
+      selectedPanel.append(el('a', { class: 'kg-read-link', href: `#/read/${selected.articleId}` }, t('graph.readArticle', lang)));
     }
     inspector.append(selectedPanel);
 
     const relationPanel = el('section', { class: 'kg-inspector-section' });
-    relationPanel.append(el('p', { class: 'kg-inspector-kicker' }, 'Relations'));
+    relationPanel.append(el('p', { class: 'kg-inspector-kicker' }, t('graph.relations', lang)));
     if (!links.length) {
-      relationPanel.append(el('p', { class: 'kg-muted' }, 'No explicit relations yet.'));
+      relationPanel.append(el('p', { class: 'kg-muted' }, t('graph.relations.empty', lang)));
     } else {
       const list = el('div', { class: 'kg-relation-list' });
       for (const { link, other } of links.slice(0, 22)) {
@@ -567,7 +574,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
           onClick: () => selectNode(other.id),
         },
           el('span', { class: 'kg-relation-label' }, other.label),
-          el('span', { class: 'kg-relation-kind' }, `${relationLabel(link)}${link.evidence ? `: ${link.evidence}` : ''}`)
+          el('span', { class: 'kg-relation-kind' }, `${relationLabel(link, lang)}${link.evidence ? `: ${link.evidence}` : ''}`)
         ));
       }
       relationPanel.append(list);
@@ -575,7 +582,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
     inspector.append(relationPanel);
 
     const matchPanel = el('section', { class: 'kg-inspector-section' });
-    matchPanel.append(el('p', { class: 'kg-inspector-kicker' }, matches.length ? 'Matches' : 'Graph Scope'));
+    matchPanel.append(el('p', { class: 'kg-inspector-kicker' }, t(matches.length ? 'graph.matches' : 'graph.scope', lang)));
     if (matches.length) {
       const list = el('div', { class: 'kg-match-list' });
       for (const { node } of matches.slice(0, 12)) {
@@ -591,7 +598,7 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
       matchPanel.append(list);
     } else {
       matchPanel.append(el('p', { class: 'kg-muted' },
-        'This map is generated from catalog metadata, tags, lifecycle labels, groups, and high-confidence overlap. It avoids hidden NLP claims until the extraction layer is ready.'
+        t('graph.scope.description', lang)
       ));
     }
     inspector.append(matchPanel);
@@ -609,11 +616,11 @@ export async function renderKnowledgeGraphView(mount, { fetchKnowledgeGraph, ini
 
   search.addEventListener('input', () => {
     state.query = search.value;
-    syncUrl();
+    syncUrl({ replace: true });
     update();
   });
 
-  syncUrl();
+  syncUrl({ replace: true });
   update();
   return () => {};
 }

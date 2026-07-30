@@ -2629,26 +2629,32 @@ body {
 .kg-link--related { stroke: color-mix(in srgb, var(--accent) 32%, transparent); }
 
 .kg-node { cursor: pointer; }
-.kg-node circle {
+.kg-node-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 0;
+  pointer-events: none;
+}
+.kg-node-dot {
   fill: var(--slate-300);
   stroke: color-mix(in srgb, var(--bg) 75%, transparent);
   stroke-width: 2px;
   transition: filter 150ms ease, stroke-width 150ms ease;
 }
-.kg-node:hover circle,
-.kg-node:focus-visible circle,
-.kg-node.selected circle {
+.kg-node:hover .kg-node-dot,
+.kg-node:focus-visible .kg-node-dot,
+.kg-node.selected .kg-node-dot {
   filter: drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 70%, transparent));
   stroke: var(--text);
   stroke-width: 3px;
   outline: none;
 }
-.kg-node--corpus circle { fill: var(--accent); }
-.kg-node--category circle { fill: var(--gold); }
-.kg-node--status circle { fill: var(--green); }
-.kg-node--group circle { fill: #c084fc; }
-.kg-node--tag circle { fill: var(--cyan); }
-.kg-node--article circle { fill: var(--slate-300); }
+.kg-node--corpus .kg-node-dot { fill: var(--accent); }
+.kg-node--category .kg-node-dot { fill: var(--gold); }
+.kg-node--status .kg-node-dot { fill: var(--green); }
+.kg-node--group .kg-node-dot { fill: #c084fc; }
+.kg-node--tag .kg-node-dot { fill: var(--cyan); }
+.kg-node--article .kg-node-dot { fill: var(--slate-300); }
 
 .kg-node-label {
   fill: var(--text-dim);
@@ -2777,10 +2783,32 @@ body {
 }
 
 @media (max-width: 560px) {
-  .kg { padding-top: 14px; }
+  .kg {
+    padding-top: 14px;
+    overflow-x: clip;
+  }
   .kg-head { padding: 16px 13px; }
+  .kg-toolbar,
+  .kg-search,
+  .kg-mode-row,
+  .kg-relation-filter {
+    min-width: 0;
+    max-width: 100%;
+  }
   .kg-mode-row { width: 100%; }
   .kg-mode { flex: 1 1 calc(50% - 6px); }
+  .kg-mode,
+  .kg-relation-chip,
+  .kg-relation-item,
+  .kg-match-item {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  .kg-relation-chip { overflow-wrap: anywhere; }
+  .kg-node-hit {
+    stroke-width: 44px;
+    pointer-events: stroke;
+  }
   .kg-canvas,
   .kg-svg { min-height: 420px; }
   .kg-legend { left: 8px; right: 8px; justify-content: center; }
