@@ -592,9 +592,10 @@
   },
   "formalProof": {
     "system": "Lean 4 + Mathlib",
-    "modules": 8,
-    "theorems": 77,
-    "declarations": "~225",
+    "inventoryAsOf": "2026-08-01",
+    "modules": 79,
+    "theorems": 284,
+    "declarations": 499,
     "sorryCount": 0,
     "families": [
       "ordering claims (kernel-checked inequalities)",
