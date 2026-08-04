@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { normalizeOntology } from './build-ontology.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relativePath) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
@@ -33,21 +34,13 @@ test('ontology provenance is portable and its content hashes verify', () => {
 
 test('ontology formal-proof inventory matches the current Lean evidence plane', () => {
   const ontology = JSON.parse(read('content/ontology/lupine-ontology.json'));
+  const generated = JSON.parse(read('content/ontology/lean-count.json'));
+  const formalProof = normalizeOntology(ontology).nodes.find((node) => node.id === 'formalProof:FP1');
 
-  assert.deepEqual(ontology.formalProof, {
-    system: 'Lean 4 + Mathlib',
-    inventoryAsOf: '2026-08-01',
-    modules: 79,
-    theorems: 284,
-    declarations: 499,
-    sorryCount: 0,
-    families: [
-      'ordering claims (kernel-checked inequalities)',
-      'isotonic correction bounds',
-      'impossibility proofs with counterexample witnesses',
-    ],
-    kernelRejectedClaim: '27/36 → 26/36 at 10⁻⁴ J/m² integer precision (one cell margin exactly zero)',
-    barrierTheorems: 'Conditional: under ErrorField decomposition + coordination-ordering hypotheses, softened models provably under-read barriers; corrected barriers provably equal reference',
-    repository: 'github.com/alexwelcing/lupine-rhizo (AGPL-3.0)',
-  });
+  assert.equal(ontology.formalProof.inventorySource, 'content/ontology/lean-count.json');
+  assert.equal(ontology.formalProof.theorems, undefined);
+  assert.equal(formalProof.theorems, generated.count);
+  assert.equal(formalProof.inventoryAsOf, generated.counted_at);
+  assert.equal(formalProof.sorryCount, 0);
+  assert.equal(generated.zero_sorry, true);
 });

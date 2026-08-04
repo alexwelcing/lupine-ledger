@@ -51,6 +51,27 @@ function clone(value) {
   return value == null ? value : JSON.parse(JSON.stringify(value));
 }
 
+function hydrateFormalProofInventory(source) {
+  const hydrated = clone(source);
+  const inventorySource = hydrated.formalProof?.inventorySource;
+  if (!inventorySource) return hydrated;
+
+  const inventoryPath = path.resolve(ROOT, inventorySource);
+  const inventory = JSON.parse(fs.readFileSync(inventoryPath, 'utf8'));
+  if (!Number.isSafeInteger(inventory.count) || inventory.count < 1 || inventory.zero_sorry !== true) {
+    throw new Error(`invalid generated Lean inventory: ${inventoryPath}`);
+  }
+  hydrated.formalProof = {
+    ...hydrated.formalProof,
+    inventoryAsOf: inventory.counted_at,
+    theorems: inventory.count,
+    sorryCount: 0,
+    inventoryRule: inventory.rule,
+    inventoryCommit: inventory.source_commit,
+  };
+  return hydrated;
+}
+
 function labelFor(value, id) {
   if (typeof value === 'string') return value;
   return value.name || value.title || value.failureMode || value.test || value.capability || value.event ||
@@ -91,6 +112,7 @@ function normalizeRelation(row) {
 }
 
 export function normalizeOntology(source) {
+  source = hydrateFormalProofInventory(source);
   const asOf = source.freshnessLayer.atlasDate;
   const nodes = [];
   const addNode = (section, type, sourceId, value) => {
