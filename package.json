@@ -9,6 +9,7 @@
     "build": "node scripts/build.js",
     "graph:build": "node scripts/build-knowledge-graph.mjs",
     "ontology:build": "node scripts/build-ontology.mjs",
+    "ontology:lean-count": "node scripts/generate-lean-count.mjs",
     "content:sync": "node scripts/sync-content-from-science.mjs",
     "content:verify": "node scripts/verify-content.mjs",
     "dev": "node scripts/build.js && node scripts/serve.js",
