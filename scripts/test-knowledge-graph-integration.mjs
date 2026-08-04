@@ -24,6 +24,9 @@ test('knowledge graph build, validation, CI, route assets, and styles stay wired
   assert.match(buildTest, /knowledge-graph\.json/);
   assert.match(buildTest, /knowledgeGraphView\.js/);
   assert.match(workflow, /run: npm (?:run )?test/);
+  assert.match(workflow, /pull_request:[\s\S]*?- 'docs\/\*\*'/);
+  assert.doesNotMatch(workflow, /push:[\s\S]*?- 'docs\/\*\*'[\s\S]*?workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /push:[\s\S]*?- 'README\.md'[\s\S]*?workflow_dispatch:/);
   assert.match(app, /renderKnowledgeGraphView/);
   assert.match(app, /path === 'graph'/);
 

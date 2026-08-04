@@ -17,8 +17,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/**'
-      - 'README.md'
       - 'content/**'
       - 'src/**'
       - 'scripts/**'
