@@ -1,8 +1,8 @@
 {
-  "count": 836,
+  "count": 888,
   "zero_sorry": true,
   "counted_at": "2026-08-03",
   "source": "lupine-rhizo/lean-spec/OpenDistillationFactory{,.lean} (vendored packages excluded)",
-  "source_commit": "8e6abb4",
-  "rule": "top-level declarations: lines matching /^(theorem|lemma)\\s/ in *.lean under OpenDistillationFactory{,.lean}, excluding /packages/ and /.lake/; regenerate with scripts/generate-lean-count.mjs — never hand-edit"
+  "source_sha256": "e94b9276820f9d74a00a98ae82bc7483adc35a30a9fcf5ee7f929e537bdee31a",
+  "rule": "theorem/lemma declarations after stripping nested comments and strings; supports attributes, whitespace, and declaration modifiers; every active sorry token fails; regenerate with scripts/generate-lean-count.mjs — never hand-edit"
 }

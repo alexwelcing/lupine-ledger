@@ -3,6 +3,7 @@
 // The ontology references this file; do not hand-type theorem totals into FP1.
 
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -11,9 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEAN_SPEC = path.resolve(process.argv[2] ?? path.join(ROOT, '..', 'lupine-rhizo', 'lean-spec'));
 const TARGET = path.join(LEAN_SPEC, 'OpenDistillationFactory');
 const OUT = path.join(ROOT, 'content', 'ontology', 'lean-count.json');
-const DECL_RE = /^(theorem|lemma)\s/;
-const SORRY_RE = /:=\s*sorry\b|\bby\s+sorry\b|^\s*sorry\s*$/;
-const COMMENT_RE = /^\s*(--|\/-|\*)/;
+const DECL_RE = /^[ \t]*(?:@\[[^\n]*\][ \t]*)*(?:(?:private|protected|noncomputable|unsafe)[ \t]+)*(?:theorem|lemma)\b/gm;
 
 function leanFiles(root) {
   const files = [];
@@ -31,24 +30,73 @@ function leanFiles(root) {
   return files.sort();
 }
 
+function stripLeanTrivia(source) {
+  let out = '';
+  let blockDepth = 0;
+  let inString = false;
+  for (let i = 0; i < source.length; i += 1) {
+    const ch = source[i];
+    const next = source[i + 1];
+    if (blockDepth > 0) {
+      if (ch === '/' && next === '-') { blockDepth += 1; out += '  '; i += 1; }
+      else if (ch === '-' && next === '/') { blockDepth -= 1; out += '  '; i += 1; }
+      else out += ch === '\n' ? '\n' : ' ';
+    } else if (inString) {
+      if (ch === '\\') { out += '  '; i += 1; }
+      else if (ch === '"') { inString = false; out += ' '; }
+      else out += ch === '\n' ? '\n' : ' ';
+    } else if (ch === '-' && next === '-') {
+      const end = source.indexOf('\n', i);
+      if (end === -1) { out += ' '.repeat(source.length - i); break; }
+      out += ' '.repeat(end - i); i = end - 1;
+    } else if (ch === '/' && next === '-') { blockDepth = 1; out += '  '; i += 1; }
+    else if (ch === '"') { inString = true; out += ' '; }
+    else out += ch;
+  }
+  if (blockDepth !== 0 || inString) throw new Error('unterminated Lean comment or string');
+  return out;
+}
+
+const parserProbe = stripLeanTrivia(`
+theorem plain : True := by trivial
+@[simp] theorem attributed : True := by trivial
+private theorem hidden : True := by trivial
+  protected lemma indented : True := by trivial
+-- theorem commented : True := by sorry
+/- lemma blocked : True := by sorry -/
+def quoted := "sorry"
+`);
+if ([...parserProbe.matchAll(DECL_RE)].length !== 4 || /\bsorry\b/.test(parserProbe)) {
+  throw new Error('Lean inventory parser self-check failed');
+}
+
 const files = leanFiles(TARGET);
 if (!files.length) throw new Error(`no .lean files found under ${TARGET}; pass the active lean-spec path as argv[2]`);
 let count = 0;
 let sorryCount = 0;
+const sourceHash = createHash('sha256');
 for (const file of files) {
-  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
-    if (DECL_RE.test(line)) count += 1;
-    if (SORRY_RE.test(line) && !COMMENT_RE.test(line)) sorryCount += 1;
-  }
+  const source = fs.readFileSync(file, 'utf8');
+  const relative = path.relative(LEAN_SPEC, file).split(path.sep).join('/');
+  sourceHash.update(relative).update('\0').update(source).update('\0');
+  const code = stripLeanTrivia(source);
+  count += [...code.matchAll(DECL_RE)].length;
+  sorryCount += [...code.matchAll(/\bsorry\b/g)].length;
 }
+
+const countedAt = execSync(
+  'git log -1 --format=%cs -- OpenDistillationFactory OpenDistillationFactory.lean',
+  { cwd: LEAN_SPEC, encoding: 'utf8' },
+).trim();
+if (!/^\d{4}-\d{2}-\d{2}$/.test(countedAt)) throw new Error('could not derive Lean source as-of date');
 
 const inventory = {
   count,
   zero_sorry: sorryCount === 0,
-  counted_at: new Date().toISOString().slice(0, 10),
+  counted_at: countedAt,
   source: 'lupine-rhizo/lean-spec/OpenDistillationFactory{,.lean} (vendored packages excluded)',
-  source_commit: execSync('git rev-parse --short HEAD', { cwd: LEAN_SPEC, encoding: 'utf8' }).trim(),
-  rule: 'top-level declarations: lines matching /^(theorem|lemma)\\s/ in *.lean under OpenDistillationFactory{,.lean}, excluding /packages/ and /.lake/; regenerate with scripts/generate-lean-count.mjs — never hand-edit',
+  source_sha256: sourceHash.digest('hex'),
+  rule: 'theorem/lemma declarations after stripping nested comments and strings; supports attributes, whitespace, and declaration modifiers; every active sorry token fails; regenerate with scripts/generate-lean-count.mjs — never hand-edit',
 };
 fs.writeFileSync(OUT, `${JSON.stringify(inventory, null, 2)}\n`);
 console.log(`generate-lean-count: ${count} declarations (sorry hits in proof code: ${sorryCount}) → ${path.relative(ROOT, OUT)}`);
