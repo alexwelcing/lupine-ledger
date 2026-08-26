@@ -1,9 +1,9 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-07-24T20:51:11.386Z",
+  "generatedAt": "2026-08-25T22:06:58.391Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "2ead4a1e2d9c3bd9e0dcc57efbb018f13168deaa",
+    "commit": "efb8237f55940312ce0ad848a5e5cd9b4bdc9b0c",
     "dirty": true,
     "generator": "scripts/export_library_content.mjs"
   },
@@ -637,7 +637,7 @@
         "id": "z1-barrier-campaign-round4",
         "source": "articles/docs/validation/z1-barrier-campaign-round4-results.md",
         "title": "Z1 Barrier-Accurate MLIP Campaign — Round-4 Results (Two Precision Chains)",
-        "subtitle": "Refuted twice — all four models miss the 40 meV gate (135–243 meV) identically under float32 and float64; systematic under-prediction.",
+        "subtitle": "Refuted twice — all four models miss the 40 meV gate (135–243 meV) identically under float32 and float64; signed-error imbalance is model-dependent, not universal.",
         "category": "validation",
         "tags": [
           "z1",
@@ -673,7 +673,7 @@
         "id": "z2-abstention-audit-round4",
         "source": "articles/docs/campaigns/z2-abstention-audit.md",
         "title": "Z2 Spin-Aware Campaign — Abstention Audit",
-        "subtitle": "No spin-capable runner, panel, or contract exists; four hash-chained abstention rows, zero cloud spend. Full scope returns with a spin runner.",
+        "subtitle": "Spin runner, locked panel, and ClaimContract exist; this four-row pipeline smoke deliberately abstains with zero scientific executions while the SOC/Tc campaign remains owner-gated.",
         "category": "validation",
         "tags": [
           "z2",
@@ -1014,7 +1014,7 @@
         "id": "formal-vision",
         "source": "articles/docs/formal-vision.md",
         "title": "The Open Distillation Factory — Executable Vision",
-        "subtitle": "Current status is machine-generated in the Lean theorem-count inventory, with a build-locking epistemic contract.",
+        "subtitle": "Current status: 899 machine-inventoried Lean theorem/lemma declarations, zero active sorry, and a build-locking epistemic contract.",
         "category": "formalization",
         "tags": [
           "lean",
@@ -1834,20 +1834,20 @@
     {
       "source": "docs/validation/z1-barrier-campaign-round4-results.md",
       "bundleSource": "articles/docs/validation/z1-barrier-campaign-round4-results.md",
-      "bytes": 5322,
-      "sha256": "f88286e5a75a67f188b446adad64254d07c4d5f2031d0d2fa352a6bb361bd47a"
+      "bytes": 5428,
+      "sha256": "45e06c1489887ea39c3c9e8f27abfa4d809c562ae645ef1a7f9c05cbe3ad0eb2"
     },
     {
       "source": "docs/validation/z3-adsorption-delta-campaign-round4-results.md",
       "bundleSource": "articles/docs/validation/z3-adsorption-delta-campaign-round4-results.md",
-      "bytes": 6495,
-      "sha256": "982ea13e18b25a11db071c0b23ef84327606abc5c11b0cbda593069d4654f281"
+      "bytes": 6558,
+      "sha256": "a3f102f2348157e4fe4e93214985762815338f0653ce9aa48f422a33a3e5fded"
     },
     {
       "source": "docs/campaigns/z2-abstention-audit.md",
       "bundleSource": "articles/docs/campaigns/z2-abstention-audit.md",
-      "bytes": 3478,
-      "sha256": "384401c8b7bd14d843037740bbac0563b348746bcd659064f0f94b200e0148f7"
+      "bytes": 3017,
+      "sha256": "87e9631aeb5a3b675a6edbf782c89b93aeb4496c6f5c26ad65d0bc962d53127e"
     },
     {
       "source": "docs/plans/2026-07-19-round4-preregistration-amendment.md",
@@ -1966,8 +1966,8 @@
     {
       "source": "docs/formal-vision.md",
       "bundleSource": "articles/docs/formal-vision.md",
-      "bytes": 6793,
-      "sha256": "3e1aafc467e6ff565e7db54b9809c47c015c5ca20c3768516aab4398a9760007"
+      "bytes": 6737,
+      "sha256": "2bf85d9703404a7df9211b3340565bf82d6fb04840078a987d304e8d2ef0820d"
     },
     {
       "source": "docs/formal-methodology.md",
@@ -2200,8 +2200,8 @@
     {
       "source": "docs/analysis/z1-union-campaign-verdict.md",
       "bundleSource": "articles/docs/analysis/z1-union-campaign-verdict.md",
-      "bytes": 3005,
-      "sha256": "51a6cf8681d156a5e68d2370417177b2cc64200f538306f4763c17dbc931435f"
+      "bytes": 3077,
+      "sha256": "863999a1a0e9b7e7ceac020d6c4c63f04ebb3e5c2990e800259dca92454961d6"
     },
     {
       "source": "docs/analysis/z1-union-cost-ledger.md",
