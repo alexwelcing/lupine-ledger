@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
-import { CATALOG as FALLBACK_CATALOG } from './catalog.js';
+import { CATALOG as FALLBACK_CATALOG, LEAN_INVENTORY } from './catalog.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
@@ -345,13 +345,19 @@ function estimateReadMinutes(words) {
   return Math.max(1, Math.round(words / 220));
 }
 
+function hydrateLeanInventory(source) {
+  return source.replaceAll('{{LEAN_DECLARATION_COUNT}}', String(LEAN_INVENTORY.count));
+}
+
 function copyDir(src, dst) {
   fs.mkdirSync(dst, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const s = path.join(src, entry.name);
     const d = path.join(dst, entry.name);
     if (entry.isDirectory()) copyDir(s, d);
-    else fs.copyFileSync(s, d);
+    else if (/\.(?:html|json|js|md|txt|vtt)$/.test(entry.name)) {
+      fs.writeFileSync(d, hydrateLeanInventory(fs.readFileSync(s, 'utf8')));
+    } else fs.copyFileSync(s, d);
   }
 }
 
@@ -375,7 +381,7 @@ function build() {
       console.warn(`[skip] ${sourcePath} not found`);
       return null;
     }
-    const rawMd = fs.readFileSync(absPath, 'utf8');
+    const rawMd = hydrateLeanInventory(fs.readFileSync(absPath, 'utf8'));
     const md = preprocess(rawMd, sourcePath);
     const id = entry.id || slugify(path.basename(sourcePath, path.extname(sourcePath)));
     const title = entry.title || extractTitle(md, id);
@@ -473,7 +479,7 @@ function build() {
     if (stat.isDirectory()) {
       copyDir(s, d);
     } else if (/\.(html|js|css|webmanifest)$/.test(name)) {
-      const content = fs.readFileSync(s, 'utf8').replaceAll('__VERSION__', version);
+      const content = hydrateLeanInventory(fs.readFileSync(s, 'utf8')).replaceAll('__VERSION__', version);
       fs.writeFileSync(d, content);
     } else {
       fs.copyFileSync(s, d);
