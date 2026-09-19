@@ -1,0 +1,573 @@
+{
+  "warmup": "One GET /v1/models before the local server begins listening; inference still uses a 1200 ms deadline.",
+  "results": [
+    {
+      "port": 4319,
+      "text": "What did the sparse anchor campaign actually cost in electricity and compute?",
+      "httpStatus": 200,
+      "elapsedMs": 425,
+      "result": {
+        "source": "jev",
+        "elapsedMs": 417,
+        "response": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "article": {
+              "type": "choice",
+              "choice": "z1-union-cost-ledger",
+              "confidence": 0.97,
+              "probabilities": {
+                "formal-audit": 0,
+                "partnerships": 0,
+                "internal-science-program": 0,
+                "adr-0001-storage": 0,
+                "layer2-supercell-evaluation": 0,
+                "hyp-hyper-ribbon-mlip-transfer": 0,
+                "savings-electronic-surrogates": 0,
+                "savings-active-learning": 0,
+                "round4-elastic-correction-results-amendment": 0,
+                "changelog": 0,
+                "key-findings": 0,
+                "y-matrix-confirmatory-results": 0,
+                "gnn-error-prediction": 0,
+                "hyp-bccfcc-causal-shield": 0,
+                "formal-hypotheses": 0,
+                "research-index": 0,
+                "public-approach": 0,
+                "citation-verification-2026-07-21": 0,
+                "z1-union-campaign-verdict": 0,
+                "resource-fabric": 0,
+                "savings-path-sampling-algorithms": 0,
+                "t1-niggli-audit": 0,
+                "z1-barrier-campaign-round4": 0,
+                "no_match": 0,
+                "funding-landscape": 0,
+                "lit-review-error-structure": 0,
+                "savings-abstention-economics": 0,
+                "hyp-hyper-ribbon-universality": 0,
+                "supercomputing-atomistic-history": 0,
+                "conjecture-ledger": 0,
+                "t1-wander-gate": 0,
+                "formal-proof-ledger": 0,
+                "z1-union-cost-ledger": 0.98,
+                "hyp-cross-mlip-orthogonal-errors": 0,
+                "academic-review-projection-law": 0,
+                "projection-law-round2-results": 0,
+                "hyp-fe-persistent-outlier": 0,
+                "bayesian-active-learning": 0,
+                "what-is-an-interatomic-potential": 0,
+                "y-matrix-preregistration": 0,
+                "projection-law-in-plain-language": 0,
+                "methodology": 0,
+                "lupine-layer2-3x3x3-final-paper": 0,
+                "working-papers": 0,
+                "projection-law-round2-preregistration": 0,
+                "z3-adsorption-delta-campaign-round4": 0,
+                "weather-climate-ensembles": 0,
+                "info-theoretic": 0,
+                "navigation": 0,
+                "tda-error-landscapes": 0,
+                "hyp-meam-intrinsic-2d": 0,
+                "mrh-monotone-reparameterization": 0,
+                "environment-error-field-paper": 0,
+                "mlip-flywheel-readiness": 0,
+                "mlip-elastic-benchmark-preprint": 0,
+                "born-screening-re-audit": 0,
+                "mlip-ni-paired-accuracy-live": 0,
+                "glossary": 0,
+                "hyp-au-mlip-escape": 0,
+                "formalization-ladder": 0,
+                "savings-techniques-synthesis-2026-07-21": 0,
+                "savings-surrogate-neb": 0,
+                "mlip-ni-zero-point-policy-replay": 0,
+                "extraction-notes": 0,
+                "mlip-elastic-operator-failure-diagnosis": 0,
+                "z1-union-anchor-economics": 0.02,
+                "extraction-report": 0,
+                "savings-dft-systems": 0,
+                "z2-abstention-audit-round4": 0,
+                "formal-vision": 0,
+                "data-provenance": 0,
+                "sloppy-models": 0,
+                "hyp-dband-correlation": 0,
+                "mlip-mptrj-broad-dft-canary": 0,
+                "extraction-complete": 0,
+                "mlip-cloud-baseline-distill": 0,
+                "mlip-elastic-benchmark-protocol": 0,
+                "formal-methodology": 0,
+                "references": 0,
+                "phonon-benchmarking": 0,
+                "t1-wander-mechanism": 0,
+                "operating-system": 0,
+                "savings-delta-multifidelity": 0,
+                "research-compute-resourcing": 0,
+                "readme": 0,
+                "research-evolution": 0,
+                "rg-coarsegraining": 0,
+                "foundation-model-trust-layers": 0,
+                "reproduce": 0,
+                "error-geometry-objects": 0,
+                "glimmer-multifidelity-uq": 0,
+                "layer2-research-paper": 0,
+                "lupine-refinement-sprint-announcement": 0,
+                "phoenix-observability": 0,
+                "adversarial-review-projection-law": 0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 6869,
+            "output_tokens": 1252
+          }
+        },
+        "accepted": true,
+        "confidence": 0.97,
+        "results": [
+          {
+            "article": {
+              "id": "z1-union-cost-ledger",
+              "title": "Z1 Union Campaign \u2014 Measured Cost Ledger (2026-07-24)",
+              "subtitle": "129 anchors in 61.0 wall-hours (mean 28.4 min/anchor), 244 vCPU-hours \u2192 $14.65 cloud-equivalent plus $0.60 local electricity, with per-path wall-hours.",
+              "category": "validation",
+              "status": "supported",
+              "tags": [
+                "z1",
+                "union-anchor",
+                "sparse-dft",
+                "economics",
+                "cost-ledger"
+              ],
+              "source": "articles/docs/analysis/z1-union-cost-ledger.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/z1-union-cost-ledger",
+              "extracted_knowledge": {}
+            },
+            "probability": 0.98
+          },
+          {
+            "article": {
+              "id": "z1-union-anchor-economics",
+              "title": "Z1 Sparse-DFT Pilot \u2014 Union-Anchor Economics",
+              "subtitle": "Cross-model cost analysis from recorded campaign artifacts: 558 naive vs 154 union anchors (72.4% fewer evaluations, 3.62\u00d7); union cost scales 139.5\u2192154 from one to four models.",
+              "category": "validation",
+              "status": null,
+              "tags": [
+                "savings-stack",
+                "z1",
+                "union-anchor",
+                "sparse-dft",
+                "economics"
+              ],
+              "source": "articles/docs/analysis/z1-union-anchor-economics.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "savings-stack",
+              "route": "#/read/z1-union-anchor-economics",
+              "extracted_knowledge": {}
+            },
+            "probability": 0.02
+          }
+        ],
+        "baseline": [
+          {
+            "article": {
+              "id": "z2-abstention-audit-round4",
+              "title": "Z2 Spin-Aware Campaign \u2014 Abstention Audit",
+              "subtitle": "Spin runner, locked panel, and ClaimContract exist; this four-row pipeline smoke deliberately abstains with zero scientific executions while the SOC/Tc campaign remains owner-gated.",
+              "category": "validation",
+              "status": "proposed",
+              "tags": [
+                "z2",
+                "magnetism",
+                "abstention",
+                "round-4"
+              ],
+              "source": "articles/docs/campaigns/z2-abstention-audit.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/z2-abstention-audit-round4",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "savings-abstention-economics",
+              "title": "Uncertainty-Gated Selective DFT and the Economics of Abstention",
+              "subtitle": "Measured DFT-call budgets, labeling and abstention fractions, and accuracy-per-call pricing.",
+              "category": "references",
+              "status": null,
+              "tags": [
+                "literature-review",
+                "savings-stack",
+                "abstention",
+                "uncertainty"
+              ],
+              "source": "articles/lit-review/savings-abstention-economics.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "savings-stack",
+              "route": "#/read/savings-abstention-economics",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "savings-techniques-synthesis-2026-07-21",
+              "title": "The Savings Stack and the Theorem Commons",
+              "subtitle": "Synthesis of the nine digests: seven layers of compute savings, each with the same hole \u2014 the missing correctness certificate.",
+              "category": "references",
+              "status": null,
+              "tags": [
+                "literature-review",
+                "savings-stack",
+                "synthesis",
+                "correctness-certificate"
+              ],
+              "source": "articles/lit-review/savings-techniques-synthesis-2026-07-21.md",
+              "featured": true,
+              "featuredRole": "newest",
+              "group": "savings-stack",
+              "route": "#/read/savings-techniques-synthesis-2026-07-21",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "mlip-cloud-baseline-distill",
+              "title": "MLIP Cloud Baseline and Distill: First Real 5x5 Results",
+              "subtitle": "Cloud Run completed the 25-cell MLIP baseline and produced the first backend-diverse Distill energy wins.",
+              "category": "validation",
+              "status": "supported",
+              "tags": [
+                "mlip",
+                "cloud-run",
+                "distill",
+                "baseline",
+                "featured"
+              ],
+              "source": "articles/docs/mlip-cloud-baseline-distill-report.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/mlip-cloud-baseline-distill",
+              "extracted_knowledge": {}
+            },
+            "score": 3.5
+          },
+          {
+            "article": {
+              "id": "working-papers",
+              "title": "Working Papers: The Projection Law & The Causal Geometry of Prediction Errors",
+              "subtitle": "Web + print editions: abstracts, figures, key results, typeset PDFs, and the public replication kit.",
+              "category": "changelog",
+              "status": null,
+              "tags": [
+                "papers",
+                "projection-law",
+                "replication",
+                "featured"
+              ],
+              "source": "articles/docs/papers-working.md",
+              "featured": true,
+              "featuredRole": "replication",
+              "group": null,
+              "route": "#/read/working-papers",
+              "extracted_knowledge": {}
+            },
+            "score": 3.5
+          }
+        ]
+      }
+    },
+    {
+      "port": 4319,
+      "text": "What did the sparse anchor campaign actually cost in electricity and compute?",
+      "httpStatus": 200,
+      "elapsedMs": 7,
+      "result": {
+        "source": "cache",
+        "elapsedMs": 1,
+        "response": {
+          "model": "jev-1.13.0",
+          "answers": {
+            "article": {
+              "type": "choice",
+              "choice": "z1-union-cost-ledger",
+              "confidence": 0.97,
+              "probabilities": {
+                "formal-audit": 0,
+                "partnerships": 0,
+                "internal-science-program": 0,
+                "adr-0001-storage": 0,
+                "layer2-supercell-evaluation": 0,
+                "hyp-hyper-ribbon-mlip-transfer": 0,
+                "savings-electronic-surrogates": 0,
+                "savings-active-learning": 0,
+                "round4-elastic-correction-results-amendment": 0,
+                "changelog": 0,
+                "key-findings": 0,
+                "y-matrix-confirmatory-results": 0,
+                "gnn-error-prediction": 0,
+                "hyp-bccfcc-causal-shield": 0,
+                "formal-hypotheses": 0,
+                "research-index": 0,
+                "public-approach": 0,
+                "citation-verification-2026-07-21": 0,
+                "z1-union-campaign-verdict": 0,
+                "resource-fabric": 0,
+                "savings-path-sampling-algorithms": 0,
+                "t1-niggli-audit": 0,
+                "z1-barrier-campaign-round4": 0,
+                "no_match": 0,
+                "funding-landscape": 0,
+                "lit-review-error-structure": 0,
+                "savings-abstention-economics": 0,
+                "hyp-hyper-ribbon-universality": 0,
+                "supercomputing-atomistic-history": 0,
+                "conjecture-ledger": 0,
+                "t1-wander-gate": 0,
+                "formal-proof-ledger": 0,
+                "z1-union-cost-ledger": 0.98,
+                "hyp-cross-mlip-orthogonal-errors": 0,
+                "academic-review-projection-law": 0,
+                "projection-law-round2-results": 0,
+                "hyp-fe-persistent-outlier": 0,
+                "bayesian-active-learning": 0,
+                "what-is-an-interatomic-potential": 0,
+                "y-matrix-preregistration": 0,
+                "projection-law-in-plain-language": 0,
+                "methodology": 0,
+                "lupine-layer2-3x3x3-final-paper": 0,
+                "working-papers": 0,
+                "projection-law-round2-preregistration": 0,
+                "z3-adsorption-delta-campaign-round4": 0,
+                "weather-climate-ensembles": 0,
+                "info-theoretic": 0,
+                "navigation": 0,
+                "tda-error-landscapes": 0,
+                "hyp-meam-intrinsic-2d": 0,
+                "mrh-monotone-reparameterization": 0,
+                "environment-error-field-paper": 0,
+                "mlip-flywheel-readiness": 0,
+                "mlip-elastic-benchmark-preprint": 0,
+                "born-screening-re-audit": 0,
+                "mlip-ni-paired-accuracy-live": 0,
+                "glossary": 0,
+                "hyp-au-mlip-escape": 0,
+                "formalization-ladder": 0,
+                "savings-techniques-synthesis-2026-07-21": 0,
+                "savings-surrogate-neb": 0,
+                "mlip-ni-zero-point-policy-replay": 0,
+                "extraction-notes": 0,
+                "mlip-elastic-operator-failure-diagnosis": 0,
+                "z1-union-anchor-economics": 0.02,
+                "extraction-report": 0,
+                "savings-dft-systems": 0,
+                "z2-abstention-audit-round4": 0,
+                "formal-vision": 0,
+                "data-provenance": 0,
+                "sloppy-models": 0,
+                "hyp-dband-correlation": 0,
+                "mlip-mptrj-broad-dft-canary": 0,
+                "extraction-complete": 0,
+                "mlip-cloud-baseline-distill": 0,
+                "mlip-elastic-benchmark-protocol": 0,
+                "formal-methodology": 0,
+                "references": 0,
+                "phonon-benchmarking": 0,
+                "t1-wander-mechanism": 0,
+                "operating-system": 0,
+                "savings-delta-multifidelity": 0,
+                "research-compute-resourcing": 0,
+                "readme": 0,
+                "research-evolution": 0,
+                "rg-coarsegraining": 0,
+                "foundation-model-trust-layers": 0,
+                "reproduce": 0,
+                "error-geometry-objects": 0,
+                "glimmer-multifidelity-uq": 0,
+                "layer2-research-paper": 0,
+                "lupine-refinement-sprint-announcement": 0,
+                "phoenix-observability": 0,
+                "adversarial-review-projection-law": 0
+              }
+            }
+          },
+          "usage": {
+            "input_tokens": 6869,
+            "output_tokens": 1252
+          }
+        },
+        "accepted": true,
+        "confidence": 0.97,
+        "results": [
+          {
+            "article": {
+              "id": "z1-union-cost-ledger",
+              "title": "Z1 Union Campaign \u2014 Measured Cost Ledger (2026-07-24)",
+              "subtitle": "129 anchors in 61.0 wall-hours (mean 28.4 min/anchor), 244 vCPU-hours \u2192 $14.65 cloud-equivalent plus $0.60 local electricity, with per-path wall-hours.",
+              "category": "validation",
+              "status": "supported",
+              "tags": [
+                "z1",
+                "union-anchor",
+                "sparse-dft",
+                "economics",
+                "cost-ledger"
+              ],
+              "source": "articles/docs/analysis/z1-union-cost-ledger.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/z1-union-cost-ledger",
+              "extracted_knowledge": {}
+            },
+            "probability": 0.98
+          },
+          {
+            "article": {
+              "id": "z1-union-anchor-economics",
+              "title": "Z1 Sparse-DFT Pilot \u2014 Union-Anchor Economics",
+              "subtitle": "Cross-model cost analysis from recorded campaign artifacts: 558 naive vs 154 union anchors (72.4% fewer evaluations, 3.62\u00d7); union cost scales 139.5\u2192154 from one to four models.",
+              "category": "validation",
+              "status": null,
+              "tags": [
+                "savings-stack",
+                "z1",
+                "union-anchor",
+                "sparse-dft",
+                "economics"
+              ],
+              "source": "articles/docs/analysis/z1-union-anchor-economics.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "savings-stack",
+              "route": "#/read/z1-union-anchor-economics",
+              "extracted_knowledge": {}
+            },
+            "probability": 0.02
+          }
+        ],
+        "baseline": [
+          {
+            "article": {
+              "id": "z2-abstention-audit-round4",
+              "title": "Z2 Spin-Aware Campaign \u2014 Abstention Audit",
+              "subtitle": "Spin runner, locked panel, and ClaimContract exist; this four-row pipeline smoke deliberately abstains with zero scientific executions while the SOC/Tc campaign remains owner-gated.",
+              "category": "validation",
+              "status": "proposed",
+              "tags": [
+                "z2",
+                "magnetism",
+                "abstention",
+                "round-4"
+              ],
+              "source": "articles/docs/campaigns/z2-abstention-audit.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/z2-abstention-audit-round4",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "savings-abstention-economics",
+              "title": "Uncertainty-Gated Selective DFT and the Economics of Abstention",
+              "subtitle": "Measured DFT-call budgets, labeling and abstention fractions, and accuracy-per-call pricing.",
+              "category": "references",
+              "status": null,
+              "tags": [
+                "literature-review",
+                "savings-stack",
+                "abstention",
+                "uncertainty"
+              ],
+              "source": "articles/lit-review/savings-abstention-economics.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "savings-stack",
+              "route": "#/read/savings-abstention-economics",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "savings-techniques-synthesis-2026-07-21",
+              "title": "The Savings Stack and the Theorem Commons",
+              "subtitle": "Synthesis of the nine digests: seven layers of compute savings, each with the same hole \u2014 the missing correctness certificate.",
+              "category": "references",
+              "status": null,
+              "tags": [
+                "literature-review",
+                "savings-stack",
+                "synthesis",
+                "correctness-certificate"
+              ],
+              "source": "articles/lit-review/savings-techniques-synthesis-2026-07-21.md",
+              "featured": true,
+              "featuredRole": "newest",
+              "group": "savings-stack",
+              "route": "#/read/savings-techniques-synthesis-2026-07-21",
+              "extracted_knowledge": {}
+            },
+            "score": 4
+          },
+          {
+            "article": {
+              "id": "mlip-cloud-baseline-distill",
+              "title": "MLIP Cloud Baseline and Distill: First Real 5x5 Results",
+              "subtitle": "Cloud Run completed the 25-cell MLIP baseline and produced the first backend-diverse Distill energy wins.",
+              "category": "validation",
+              "status": "supported",
+              "tags": [
+                "mlip",
+                "cloud-run",
+                "distill",
+                "baseline",
+                "featured"
+              ],
+              "source": "articles/docs/mlip-cloud-baseline-distill-report.md",
+              "featured": false,
+              "featuredRole": null,
+              "group": "mlip-flywheel",
+              "route": "#/read/mlip-cloud-baseline-distill",
+              "extracted_knowledge": {}
+            },
+            "score": 3.5
+          },
+          {
+            "article": {
+              "id": "working-papers",
+              "title": "Working Papers: The Projection Law & The Causal Geometry of Prediction Errors",
+              "subtitle": "Web + print editions: abstracts, figures, key results, typeset PDFs, and the public replication kit.",
+              "category": "changelog",
+              "status": null,
+              "tags": [
+                "papers",
+                "projection-law",
+                "replication",
+                "featured"
+              ],
+              "source": "articles/docs/papers-working.md",
+              "featured": true,
+              "featuredRole": "replication",
+              "group": null,
+              "route": "#/read/working-papers",
+              "extracted_knowledge": {}
+            },
+            "score": 3.5
+          }
+        ]
+      }
+    }
+  ]
+}
