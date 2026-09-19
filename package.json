@@ -20,7 +20,10 @@
     "pretest": "npm run build",
     "test": "node scripts/check-stale-lean-counts.mjs && node --test scripts/libraryFilters.test.mjs scripts/reproducibility.test.mjs scripts/test-knowledge-graph*.mjs scripts/test-ontology*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js && node scripts/check-ontology.mjs",
     "clean": "rm -rf dist",
-    "test:browser": "npm run build && node scripts/browser-knowledge-graph.mjs"
+    "test:browser": "npm run build && node scripts/browser-knowledge-graph.mjs",
+    "demo:jev": "node tools/jev/demo.mjs",
+    "test:jev": "node --test tools/jev/*.test.mjs",
+    "bench:jev": "node tools/jev/benchmark.mjs"
   },
   "dependencies": {
     "force-graph": "^1.51.4",
