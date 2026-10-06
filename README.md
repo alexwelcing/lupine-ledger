@@ -93,7 +93,9 @@ the reviewed release snapshot, with an explicit offline/unavailable label.
 The panel labels tested infrastructure changes as **Workflow repair**, separately
 from archived-data analyses and research discussions. The current repair binds
 prospective loaded-model identity to cached predictions; offline checks are not
-a completed model run or new performance evidence.
+a completed model run or new performance evidence. The subsequent completed source audit stops the proposed independent MPtrj validation before execution because checkpoint-specific split eligibility and reference compatibility remain unestablished; this is not proof of exact-row contamination. The next planned step is a distinct descriptive analysis of shared errors in the existing archives.
+
+[Read the completed eligibility decision and next planned test](https://github.com/alexwelcing/lupine-rhizo/blob/29bf23d9ea1bb4b1a8e84c2c2dc301519ac9d505/docs/research-progress/2026-10-06-roster-readiness.md).
 
 Only allowlisted, reviewed public records are accepted. Raw predictions, private
 PI packets, device details and private agenda payloads are never read by the
