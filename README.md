@@ -93,9 +93,9 @@ the reviewed release snapshot, with an explicit offline/unavailable label.
 The panel labels tested infrastructure changes as **Workflow repair**, separately
 from archived-data analyses and research discussions. The current repair binds
 prospective loaded-model identity to cached predictions; offline checks are not
-a completed model run or new performance evidence. The subsequent completed source audit stops the proposed independent MPtrj validation before execution because checkpoint-specific split eligibility and reference compatibility remain unestablished; this is not proof of exact-row contamination. The next planned step is a distinct descriptive analysis of shared errors in the existing archives.
+a completed model run or new performance evidence. The subsequent completed source audit stops the proposed independent MPtrj validation before execution because checkpoint-specific split eligibility and reference compatibility remain unestablished; this is not proof of exact-row contamination. The subsequent archived diagnostic passes its fixed common-error criterion: aligned shared residuals carry 71.00 percent and 76.52 percent of error on average across original configurations in MatPES and OMat24. Exact arithmetic is checked; reference mismatch and shared model limitations remain competing explanations.
 
-[Read the completed eligibility decision and next planned test](https://github.com/alexwelcing/lupine-rhizo/blob/29bf23d9ea1bb4b1a8e84c2c2dc301519ac9d505/docs/research-progress/2026-10-06-roster-readiness.md).
+[Read the checked common-error result and planned final archive control](https://github.com/alexwelcing/lupine-rhizo/blob/28a0fb8e464b61a88aa158621850fe2366415c5e/docs/research-progress/2026-10-06-common-error.md).
 
 Only allowlisted, reviewed public records are accepted. Raw predictions, private
 PI packets, device details and private agenda payloads are never read by the
