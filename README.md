@@ -90,6 +90,11 @@ the last successful live check is shown separately. Evidence older than six
 hours is labeled accordingly. A network failure retains valid saved evidence or
 the reviewed release snapshot, with an explicit offline/unavailable label.
 
+The panel labels tested infrastructure changes as **Workflow repair**, separately
+from archived-data analyses and research discussions. The current repair binds
+prospective loaded-model identity to cached predictions; offline checks are not
+a completed model run or new performance evidence.
+
 Only allowlisted, reviewed public records are accepted. Raw predictions, private
 PI packets, device details and private agenda payloads are never read by the
 Library. See [the activity contract](docs/research-activity.md).

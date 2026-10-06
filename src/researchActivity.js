@@ -59,7 +59,7 @@ export function validateActivity(value, now = Date.now()) {
   object(value, RECORD_KEYS);
   if (value.schema !== RECORD_SCHEMA) fail();
   id(value.id); id(value.activityId);
-  choice(value.evidenceKind, ['archived_analysis', 'research_cycle']);
+  choice(value.evidenceKind, ['archived_analysis', 'research_cycle', 'workflow_repair']);
   choice(value.state, ['planned', 'running', 'completed', 'failed', 'blocked']);
   choice(value.verification, ['pending', 'arithmetic_checked', 'source_checked']);
   text(value.title, 160); text(value.summary, 1200); text(value.nextStep, 600);

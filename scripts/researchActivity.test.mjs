@@ -21,6 +21,12 @@ test('accepts the producer contract and actual reviewed bundle', () => {
   const published = JSON.parse(fs.readFileSync(new URL('../content/research-activity.json', import.meta.url)));
   assert.ok(validateFeed(published).items.length > 0);
 });
+test('workflow repairs retain their explicit kind without scientific receipts', () => {
+  const repair = { ...record(), evidenceKind: 'workflow_repair', verification: 'source_checked', datasets: [] };
+  assert.equal(validateActivity(repair, NOW).evidenceKind, 'workflow_repair');
+  assert.throws(() => validateActivity({ ...repair, evidenceKind: 'unknown_kind' }, NOW));
+  assert.throws(() => validateActivity({ ...repair, receipt: 'fabricated' }, NOW));
+});
 test('rejects private fields, paths, identifiers, tokens and malformed shapes', () => {
   const mutations = [
     r => { r.stdout = 'private model log'; }, r => { r.summary = '/Users/person/private/result.json'; },
