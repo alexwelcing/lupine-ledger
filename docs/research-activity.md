@@ -49,6 +49,12 @@ request updates only the separate last-check time. The panel labels observations
 older than six hours as older evidence; this describes recency, not scientific
 validity or a failed worker. Planned steps, research discussions and completed
 archived analyses retain their separate states and verification labels.
+`workflow_repair` displays as Workflow repair and describes a tested research
+infrastructure change, not a scientific result or completed model cycle. Its
+limitations must identify fixture-only tests and any unverified real runtime.
+Deploy this consumer before publishing that kind; older open clients may need
+a reload. Unknown kinds remain rejected. Once this kind enters the immutable
+feed, a rollback must retain its consumer support.
 
 ## Verification
 

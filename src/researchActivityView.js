@@ -20,7 +20,7 @@ function renderRecord(record, index) {
   const card = node('article', 'research-activity-card');
   const meta = node('div', 'research-activity-tags');
   meta.append(node('span', `research-state research-state-${record.state}`, record.state));
-  meta.append(node('span', '', record.evidenceKind === 'archived_analysis' ? 'Archived-data analysis' : 'Research discussion'));
+  meta.append(node('span', '', { archived_analysis: 'Archived-data analysis', research_cycle: 'Research discussion', workflow_repair: 'Workflow repair' }[record.evidenceKind]));
   meta.append(node('span', '', { pending: 'Verification pending', arithmetic_checked: 'Arithmetic checked', source_checked: 'Sources checked' }[record.verification]));
   card.append(meta, node('h3', '', record.title), node('p', 'research-activity-summary', record.summary));
   const timestamps = node('div', 'research-activity-times');
