@@ -95,7 +95,9 @@ from archived-data analyses and research discussions. The current repair binds
 prospective loaded-model identity to cached predictions; offline checks are not
 a completed model run or new performance evidence. The subsequent completed source audit stops the proposed independent MPtrj validation before execution because checkpoint-specific split eligibility and reference compatibility remain unestablished; this is not proof of exact-row contamination. The subsequent archived diagnostic passes its fixed common-error criterion: aligned shared residuals carry 71.00 percent and 76.52 percent of error on average across original configurations in MatPES and OMat24. Exact arithmetic is checked; reference mismatch and shared model limitations remain competing explanations.
 
-[Read the checked common-error result and planned final archive control](https://github.com/alexwelcing/lupine-rhizo/blob/28a0fb8e464b61a88aa158621850fe2366415c5e/docs/research-progress/2026-10-06-common-error.md).
+The final control now finds uniform offsets contribute less than 0.000001 percent and 0.01746 percent of common residual energy on the average configuration in MatPES and OMat24. Independent exact arithmetic is checked. The archived diagnostic branch is closed; the next paired-reference study on new geometries is planned and must pass source, geometry, units and exposure gates.
+
+[Read the checked final control and next evidence boundary](https://github.com/alexwelcing/lupine-rhizo/blob/8b2070f613de20c49667f5db5fef9bb065596a08/docs/research-progress/2026-10-06-uniform-offset.md).
 
 Only allowlisted, reviewed public records are accepted. Raw predictions, private
 PI packets, device details and private agenda payloads are never read by the
