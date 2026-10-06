@@ -22,7 +22,10 @@ test('buildTagIndex returns all manifest tags with reconciled article counts', (
   const index = buildTagIndex(articles);
   const rawMentions = articles.reduce((total, article) => total + (article.tags || []).length, 0);
 
-  assert.equal(index.length, 178);
+  // The content catalog grows independently of the reader. Assert complete
+  // coverage instead of pinning yesterday's tag count.
+  const catalogTags = new Set(articles.flatMap(article => article.tags || []));
+  assert.deepEqual(new Set(index.map(item => item.tag)), catalogTags);
   assert.equal(index.reduce((total, item) => total + item.count, 0), rawMentions);
   assert.deepEqual(index, [...index].sort((a, b) => a.tag.localeCompare(b.tag)));
   for (const item of index) {
