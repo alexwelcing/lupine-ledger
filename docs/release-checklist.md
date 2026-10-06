@@ -1,55 +1,44 @@
-# Release Checklist
+# Release checklist
 
-Use this before enabling or cutting over a public `library.lupine.site` deploy.
+Production: `library.lupine.science`, Cloudflare Pages project `lupine-ledger`.
 
-## Content
+## Reviewed content
 
-- [ ] Science repo exported a fresh `library-content.v1` bundle.
-- [ ] `manifest.source.commit` is the intended science commit.
-- [ ] Dirty export is intentional, or `manifest.source.dirty` is false.
-- [ ] New/changed claims were reviewed in the science repo.
-- [ ] Article statuses match the current public truth.
-- [ ] No private notes, local paths, or unpublished claims are present.
+- [ ] Rhizo exported the intended `library-content.v1` bundle and source commit.
+- [ ] A dirty export is intentional and recorded, or `manifest.source.dirty` is false.
+- [ ] Changed claims and article statuses were reviewed in Rhizo.
+- [ ] The public activity snapshot contains only explicitly reviewed records.
+- [ ] Evidence and review timestamps are original; source links identify the reviewed report.
+- [ ] Raw predictions, private notes, model packets and local/device paths are absent.
+- [ ] New results retain their limitations; planned work is not described as complete.
 
-## Local Verification
+## Local verification
 
-```bash
+```sh
 npm ci
-npm run content:sync
-npm run content:verify
-npm run build
-npm run dev
+npm run pages:build
+npm test
 ```
 
-- [ ] `npm run content:verify` passes.
-- [ ] `npm run build` passes.
-- [ ] `npm run test` passes (health endpoint and static assets).
-- [ ] Shelves render locally.
-- [ ] Search returns expected results.
-- [ ] Representative articles render across at least three shelves.
-- [ ] Service worker and PWA metadata load.
+- [ ] Article and activity contract verification passes.
+- [ ] Build and required tests pass.
+- [ ] Desktop/mobile home, shelves, search and representative article routes render.
+- [ ] Activity live, older-evidence, snapshot, offline and unavailable states are checked.
+- [ ] Refresh changes last-check time without changing evidence dates.
+- [ ] Navigation cleans up live requests and refresh timers.
+- [ ] PWA/service worker loads without disguising cached activity as live.
 
-## Deploy Verification
+## Deployment and acceptance
 
-- [ ] GitHub workflow uses repo-root paths, not old monorepo paths.
-- [ ] Cloud Build runs `npm run content:verify` before build.
-- [ ] Cloud Run deploy updates the intended service.
-- [ ] Traffic is moved to latest revision.
-- [ ] Deploy status posts to `glim-think` `/ops/report`.
+- [ ] CI verifies the exact release commit before deployment.
+- [ ] Cloudflare Pages receives `dist/` for the intended production or preview branch.
+- [ ] Production `/health` returns `ok` and `/data/library.json` identifies the release.
+- [ ] `/data/research-activity.json` contains the reviewed fallback IDs and dates.
+- [ ] The live public feed is independently verified and permits the Library origin.
+- [ ] Article routes, source links and home activity work on the public domain.
+- [ ] Canonical URLs, robots, sitemap, agent guide and cross-site links use `.science`.
+- [ ] Deploy telemetry reports the correct service and commit.
+- [ ] The prior Pages deployment is identified for rollback.
 
-## Live Verification
-
-- [ ] `https://library.lupine.site/health` returns `ok`.
-- [ ] `https://library.lupine.site/data/library.json` has the expected version.
-- [ ] Home page loads on desktop and mobile.
-- [ ] A representative article route loads directly.
-- [ ] `robots.txt`, `sitemap.xml`, `llms.txt`, and `brand.json` are current.
-- [ ] Cross-links from `lupine.science` and `lupi.live` point at the new domain.
-
-## Cutover Notes
-
-- [ ] DNS or Cloud Run domain mapping is complete.
-- [ ] Old Library URLs are redirected or intentionally retired.
-- [ ] Search engine canonical URLs use `library.lupine.site`.
-- [ ] The source science repo still owns claim/proof changes.
-- [ ] The old monorepo Library deploy path is disabled only after live proof.
+A public Library deployment and a live feed import are separate operations.
+Report each verified outcome and any snapshot fallback explicitly.

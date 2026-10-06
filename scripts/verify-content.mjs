@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadResearchActivity } from './research-activity-build.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -187,6 +188,8 @@ if (manifest) {
   console.log(`Catalog entries: ${entries.length}`);
   console.log(`Files checked: ${checkedFiles}`);
 }
+
+try { loadResearchActivity(ROOT); } catch (error) { fail(`Public research activity: ${error.message}`); }
 
 for (const message of warnings) console.warn(`[warn] ${message}`);
 

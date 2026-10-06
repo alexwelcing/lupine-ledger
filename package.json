@@ -1,7 +1,7 @@
 {
   "name": "library-lupine-site",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "license": "AGPL-3.0-or-later",
   "description": "Lupine Science research library - mobile-first reader for library.lupine.science",
@@ -18,9 +18,10 @@
     "pages:build": "node scripts/pages-build.mjs",
     "pages:deploy": "npx wrangler pages deploy dist --project-name=lupine-ledger --branch=main --commit-dirty=true",
     "pretest": "npm run build",
-    "test": "node scripts/check-stale-lean-counts.mjs && node --test scripts/libraryFilters.test.mjs scripts/reproducibility.test.mjs scripts/test-knowledge-graph*.mjs scripts/test-ontology*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js && node scripts/check-ontology.mjs",
+    "test": "node scripts/check-stale-lean-counts.mjs && node --test scripts/libraryFilters.test.mjs scripts/researchActivity.test.mjs scripts/reproducibility.test.mjs scripts/test-knowledge-graph*.mjs scripts/test-ontology*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js && node scripts/check-ontology.mjs",
     "clean": "rm -rf dist",
-    "test:browser": "npm run build && node scripts/browser-knowledge-graph.mjs"
+    "test:browser": "npm run build && node scripts/browser-knowledge-graph.mjs",
+    "test:activity:browser": "npm run build && node scripts/browser-research-activity.mjs"
   },
   "dependencies": {
     "force-graph": "^1.51.4",

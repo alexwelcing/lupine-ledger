@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validateFeed } from '../src/researchActivity.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -47,6 +48,9 @@ assertContent('health', 'ok\n', 'health endpoint');
 assertExists('index.html', 'index.html');
 assertExists('app.js', 'app.js');
 assertExists('knowledgeGraphView.js', 'knowledge graph view');
+assertExists('researchActivityView.js', 'research activity view');
+assertExists('researchActivity.js', 'public activity contract');
+assertExists('researchActivityConfig.js', 'public activity endpoint');
 assertExists('styles.css', 'styles.css');
 assertExists('sw.js', 'service worker');
 
@@ -60,6 +64,10 @@ assertExists('llms-full.txt', 'generated full agent guide');
 assertExists('data/library.json', 'library manifest');
 assertExists('data/knowledge-graph.json', 'knowledge graph');
 const library = readJson('data/library.json', 'library manifest');
+const activity = readJson('data/research-activity.json', 'reviewed activity snapshot');
+if (activity) {
+  try { validateFeed(activity); } catch { errors.push('invalid public activity snapshot'); }
+}
 const searchIndex = readJson('data/search-index.json', 'generated search index');
 if (library && searchIndex) {
   const libraryIds = library.articles.map((article) => article.id);

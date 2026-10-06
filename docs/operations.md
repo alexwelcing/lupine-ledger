@@ -1,118 +1,80 @@
 # Operations
 
-This repo should be boring to run: verify the content contract, build static
-files, serve them through nginx, and report deploy status.
+The production Library is `https://library.lupine.science`, deployed to
+Cloudflare Pages project `lupine-ledger`. Rhizo owns scientific claims and the
+reviewed public activity feed; Ledger owns their reader and presentation.
 
-## Local Development
+## Local development and content refresh
 
-Use Git Bash on Windows.
+Use Git Bash for Node commands on Windows.
 
-```bash
+```sh
 npm ci
 npm run content:sync
 npm run verify
+npm test
 npm run dev
 ```
 
-Local URLs:
+The local reader is `http://localhost:5173`. Check shelves, search, representative
+articles, reader settings, activity states and the service worker. The activity
+panel must remain useful when its public endpoint is unavailable.
 
-- `http://localhost:5173/`
-- `http://localhost:5173/data/library.json`
-- `http://localhost:5173/manifest.webmanifest`
+`content:sync` copies the science export from
+`../lupine-rhizo/exports/library-content/latest`. Set `SCIENCE_REPO` or
+`LIBRARY_CONTENT_EXPORT` to select another reviewed export. Do not hand-edit
+`content/latest/` to change claims; regenerate it from Rhizo. The reviewed
+activity snapshot is a separate contract at `content/research-activity.json`.
+See [activity operations](research-activity.md) for configuration and freshness.
 
-Local smoke:
+## Cloudflare Pages deployment
 
-- home page shows shelves
-- search returns `projection`, `mlip`, and `formal`
-- at least one article opens from three different shelves
-- reader settings persist after reload
-- service worker registers without console errors
+`.github/workflows/deploy.yml` runs `npm run pages:build` and `npm test` before
+deployment. Main pushes affecting deployable files and explicit workflow
+dispatches can deploy; pull requests verify without deployment credentials.
+Required deployment secrets are `CLOUDFLARE_ACCOUNT_ID` and
+`CLOUDFLARE_API_TOKEN`.
 
-## Content Refresh
+`pages:build` syncs an available sibling Rhizo export, then verifies and builds.
+CI uses the committed article bundle when the sibling is absent. Set
+`REQUIRE_LIBRARY_CONTENT_EXPORT=1` when a local release must consume that export.
 
-The normal local refresh is:
+For an authorized direct production release, build first:
 
-```bash
-npm run content:sync
-npm run content:verify
-npm run build
+```sh
+npm ci
+npm run pages:build
+npm test
+npm run pages:deploy
 ```
 
-Useful overrides:
+`pages:deploy` publishes the existing `dist/` directory to the production `main`
+branch; it does not build. Non-production workflow dispatches use their branch
+name and produce a Pages branch deployment. Confirm the intended branch before
+releasing. The old `cloudbuild.yaml`, Dockerfile and nginx configuration are
+retained for historical compatibility; they are not the current release path.
 
-```bash
-SCIENCE_REPO=../lupine-science-control-plane npm run content:sync
-LIBRARY_CONTENT_EXPORT=/tmp/library-content/latest npm run content:sync
-LIBRARY_CONTENT_BUNDLE=content/latest npm run verify
+## Live checks
+
+Verify workflow success, the Pages deployment, and the public domain separately:
+
+```sh
+curl -fsS https://library.lupine.science/health
+curl -fsS https://library.lupine.science/data/library.json
+curl -fsS https://library.lupine.science/data/research-activity.json
 ```
 
-Do not hand-edit files under `content/latest/` to change claims. Regenerate the
-bundle from the science repo.
-
-## Deploy
-
-GitHub Actions workflow:
-
-```text
-.github/workflows/deploy.yml
-```
-
-Cloud Build config:
-
-```text
-cloudbuild.yaml
-```
-
-Required secrets:
-
-- `GCP_PROJECT_ID`
-- `GCP_WORKLOAD_IDENTITY_PROVIDER`
-- `GCP_SERVICE_ACCOUNT`
-
-Cloud Build substitutions currently default to:
-
-- service: `library-site`
-- region: `us-central1`
-- artifact host: `us-central1-docker.pkg.dev`
-
-The deploy path runs `npm run content:verify` before `npm run build`.
-
-## Live Checks
-
-After deploy, keep the truth surfaces separate:
-
-- GitHub Actions: workflow completed
-- Cloud Build: image built and pushed
-- Cloud Run: latest revision receives traffic
-- Live site: `https://library.lupine.site/` serves current content
-- API/reporting: `glim-think` `/ops/report` received deploy telemetry
-
-Manual smoke:
-
-```bash
-curl -fsS https://library.lupine.site/health
-curl -fsS https://library.lupine.site/data/library.json
-curl -fsS https://library.lupine.site/llms.txt
-```
-
-Then open the site in a browser and check:
-
-- shelves render
-- search works
-- a representative article body renders
-- install/PWA metadata is present
-- offline cache can be warmed from settings
+Check the expected build version, reviewed record IDs and source dates; open the
+home page on desktop and mobile; test an article link and a source link. Confirm
+the live activity API is reachable with CORS from the public domain. A successful
+site build does not prove the live feed has been imported. `/ops/report` receives
+non-blocking deploy telemetry; a telemetry failure does not establish a failed
+deployment.
 
 ## Rollback
 
-Prefer Cloud Run revision rollback over content edits:
-
-```bash
-gcloud run revisions list --service=library-site --region=us-central1
-gcloud run services update-traffic library-site \
-  --region=us-central1 \
-  --to-revisions=REVISION=100
-```
-
-After rollback, report which revision is live and whether the public domain was
-verified.
+Use the Cloudflare Pages deployment history for project `lupine-ledger` to
+restore the reviewed previous production deployment, or revert the release
+commit through the repository workflow. Recheck the public domain, build
+version, article routes and activity states. Record which deployment is live.
+The producer's immutable activity records are not rewritten by a Library rollback.

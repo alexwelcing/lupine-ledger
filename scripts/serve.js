@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Tiny static server for local dev of library.lupine.site dist output.
+// Tiny static server for local dev of library.lupine.science dist output.
 // Serves the built SPA on http://localhost:5173 with SPA-style fallback to /index.html.
 
 import http from 'node:http';
@@ -42,6 +42,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   console.log(`Library dev server → http://localhost:${PORT}`);
 });
