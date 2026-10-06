@@ -1,10 +1,10 @@
-# library.lupine.site
+# library.lupine.science
 
 Standalone reader for the Lupine Science public research corpus.
 
 This repo owns the Library product: shelves, article pages, search, offline
 reading, reader settings, PWA metadata, static serving, and the
-`library.lupine.site` deployment. It does not own the scientific source of
+`library.lupine.science` deployment. It does not own the scientific source of
 truth. Claims, proof ledgers, papers, experiment code, and raw evidence stay in
 the science control-plane repo and arrive here as a versioned content bundle.
 
@@ -24,6 +24,8 @@ Consumes:
 - `library-content.v1` from the science control-plane repo
 - article metadata, status labels, source provenance, and markdown files
 - optional paper/static assets when they are included in the bundle
+- reviewed `lupine.public_research_activity_feed.v1` summaries from Rhizo,
+  with a separately validated release snapshot in `content/research-activity.json`
 
 Does not own:
 
@@ -77,7 +79,27 @@ npm run pages:deploy
 ```
 
 The Pages project is `lupine-ledger`; publish output is `dist/`, configured in
-`wrangler.toml`. The custom domain is `library.lupine.site`.
+`wrangler.toml`. The canonical domain is `library.lupine.science`.
+
+### See the research
+
+The home page's **Research activity** panel reads Rhizo's reviewed public feed.
+It refreshes on entry, on request, on returning to a visible tab, and every
+60 seconds while visible. Observation and review dates belong to the evidence;
+the last successful live check is shown separately. Evidence older than six
+hours is labeled accordingly. A network failure retains valid saved evidence or
+the reviewed release snapshot, with an explicit offline/unavailable label.
+
+Only allowlisted, reviewed public records are accepted. Raw predictions, private
+PI packets, device details and private agenda payloads are never read by the
+Library. See [the activity contract](docs/research-activity.md).
+
+Start with the **Show me the research** reading journey or the
+[Research Index](https://library.lupine.science/#/read/research-index). The index
+separates recorded results, open hypotheses, corrections, and formal proof
+evidence. Article status and source dates remain attached to the underlying
+reports. Articles remain a reviewed content snapshot; the activity feed supplies
+current public updates without changing historical article claims.
 
 Deploy status is reported back to `glim-think` `/ops/report` as a non-blocking
 telemetry step. See [docs/operations.md](docs/operations.md) and

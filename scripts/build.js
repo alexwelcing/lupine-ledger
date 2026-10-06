@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Build the Lupine Ledger research library.
 // Reads markdown sources defined in scripts/catalog.js, renders each to HTML,
-// and emits a static site into dist/ ready for nginx on Cloud Run.
+// and emits a static site into dist/ for Cloudflare Pages.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,6 +12,7 @@ import { CATALOG as FALLBACK_CATALOG, LEAN_INVENTORY } from './catalog.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
+import { loadResearchActivity } from './research-activity-build.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -367,6 +368,8 @@ function loadVersion() {
 }
 
 function build() {
+  // Reject unreviewed shapes/private fields before changing the deploy output.
+  const activity = loadResearchActivity(ROOT);
   // Clean dist
   fs.rmSync(DIST, { recursive: true, force: true });
   fs.mkdirSync(DIST, { recursive: true });
@@ -466,6 +469,7 @@ function build() {
     articles,
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(path.join(DATA_DIR, 'research-activity.json'), JSON.stringify(activity.feed, null, 2));
   writeOntology();
   // Build the graph from the same bundle the articles were rendered from —
   // a LIBRARY_CONTENT_BUNDLE override must not produce a graph/articles mismatch.
@@ -479,7 +483,8 @@ function build() {
     if (stat.isDirectory()) {
       copyDir(s, d);
     } else if (/\.(html|js|css|webmanifest)$/.test(name)) {
-      const content = hydrateLeanInventory(fs.readFileSync(s, 'utf8')).replaceAll('__VERSION__', version);
+      const content = hydrateLeanInventory(fs.readFileSync(s, 'utf8')).replaceAll('__VERSION__', version)
+        .replaceAll('__RESEARCH_ACTIVITY_ENDPOINT__', activity.endpoint);
       fs.writeFileSync(d, content);
     } else {
       fs.copyFileSync(s, d);

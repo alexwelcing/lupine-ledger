@@ -7,7 +7,7 @@ research machinery.
 ## This Repo
 
 **Lupine Ledger** is the public evidence record at
-`https://library.lupine.site`.
+`https://library.lupine.science`.
 
 It owns the reader, shelves, search, article routes, offline/PWA behavior, and
 the static deploy. It consumes exported content bundles; it does not own source

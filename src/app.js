@@ -3,6 +3,7 @@
 
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
+import { renderResearchActivity } from './researchActivityView.js';
 import { parseHashRoute, parseKnowledgeGraphHash, renderKnowledgeGraphView } from './knowledgeGraphView.js';
 import {
   buildTagIndex,
@@ -279,6 +280,11 @@ function cardFor(article, opts = {}) {
 
 async function renderHome() {
   clearActiveView();
+  // Prevent an older asynchronous home render from creating a refresh loop
+  // after navigation, or after a newer home render has replaced it.
+  let cancelled = false;
+  let activityCleanup;
+  activeViewCleanup = () => { cancelled = true; activityCleanup?.(); };
   STATE.view = 'home';
   document.documentElement.dataset.view = 'home';
   BACK_BTN.hidden = true;
@@ -286,6 +292,7 @@ async function renderHome() {
   VIEW.innerHTML = `<div class="loading">${t('home.loading', STATE.settings.lang)}</div>`;
   try {
     const m = await fetchManifest();
+    if (cancelled) return;
     VIEW.innerHTML = '';
 
     // Hero
@@ -301,6 +308,8 @@ async function renderHome() {
     hero.append(stats);
     hero.append(el('a', { class: 'tags-browse-link', href: '#/tags' }, t('tags.index', STATE.settings.lang), ' →'));
     VIEW.append(hero);
+
+    activityCleanup = renderResearchActivity(VIEW);
 
     // Start Here — guided journeys for four personas
     if (m.journeys && m.journeys.length) {
@@ -431,6 +440,8 @@ async function renderHome() {
       VIEW.append(el('div', { class: 'empty', style: 'margin:24px 16px;' }, 'No entries with this status.'));
     }
   } catch (e) {
+    if (cancelled) return;
+    activityCleanup?.();
     console.error(e);
     VIEW.innerHTML = `<div class="empty">${t('home.error', STATE.settings.lang)}</div>`;
   }

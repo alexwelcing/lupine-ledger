@@ -1,6 +1,6 @@
 # Library Content Contract
 
-`library.lupine.site` builds from a portable content bundle. The bundle is the
+`library.lupine.science` builds from a portable content bundle. The bundle is the
 only allowed input for public articles in this repo.
 
 ## Default Location
@@ -28,7 +28,7 @@ npm run content:sync
 By default that reads:
 
 ```text
-../shed/exports/library-content/latest
+../lupine-rhizo/exports/library-content/latest
 ```
 
 Set `SCIENCE_REPO` or `LIBRARY_CONTENT_EXPORT` to point somewhere else.
@@ -41,7 +41,7 @@ Required top-level fields:
 
 - `schemaVersion`: exactly `library-content.v1`
 - `generatedAt`: ISO timestamp
-- `source.repo`: expected to be `lupine-science-control-plane`
+- `source.repo`: expected to be `lupine-rhizo`
 - `source.commit`: 40-character source commit SHA
 - `source.dirty`: whether the export came from a dirty source tree
 - `source.generator`: science-side command that produced the bundle
@@ -116,6 +116,13 @@ This repo must:
 
 - verify the bundle before build and deploy
 - render articles without reaching back into the science repo
-- keep canonical links on `library.lupine.site`
+- keep canonical links on `library.lupine.science`
 - preserve article IDs unless a redirect/cutover plan exists
 - never edit scientific claims directly in the copied bundle
+
+## Public activity contract
+
+The home activity feed has its own strict reviewed contract and release snapshot
+at `content/research-activity.json`. Article claims still arrive only through the
+science bundle. See [public activity](research-activity.md) for validation, live
+refresh, fallback and publication rules.

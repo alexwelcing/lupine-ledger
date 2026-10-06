@@ -24,6 +24,9 @@ const SHELL_ASSETS = [
   '/index.html',
   '/app.js',
   '/mlipFlywheelView.js',
+  '/researchActivity.js',
+  '/researchActivityView.js',
+  '/researchActivityConfig.js',
   '/i18n.js',
   '/styles.css',
   '/favicon.ico',
@@ -36,6 +39,7 @@ const SHELL_ASSETS = [
   '/llms-full.txt',
   '/brand.json',
   '/data/library.json',
+  '/data/research-activity.json',
   '/data/search-index.json',
   '/data/knowledge-graph.json',
   '/reports/assets/mlip/mlip-flywheel-evidence.json',
@@ -88,6 +92,13 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+
+  // A successful activity request means a network read, even if the configured
+  // public feed is later hosted on this origin. Never disguise cache as live.
+  if (url.pathname === '/research/activity' || url.pathname.startsWith('/research/activity/')) {
+    event.respondWith(fetch(req, { cache: 'no-store' }));
+    return;
+  }
 
   // /data/*.json — network-first so content is always fresh when online;
   // the cache answers only when the network is unavailable (offline reading).
