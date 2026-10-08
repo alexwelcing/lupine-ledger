@@ -33,3 +33,18 @@ physical simulation or Lean proof is claimed by this interface release.
 - Desktop and narrow-screen layout inspection.
 
 Deployment and the public domain are verified separately in the release receipt.
+
+## Interaction refinement
+
+The field now has open edges, a larger typographic presence and a compact icon
+dock. Instructions and routine completion notices no longer occupy the canvas;
+screen-reader announcements, named controls and visible failure messages remain.
+Cards lift on hover/focus, source relationships respond, and a dragged paper
+unfolds at its drop position. Double-clicking the paper edge expands it.
+Removing the title releases that space to the field; Undo restores it.
+
+The separate Math shortcut and equation-size slider were removed. Equations
+remain selectable KaTeX content within the document, with horizontal overflow
+for wide formulas. Existing view persistence, recovery, document routes, capture
+and source-status distinctions remain available. Motion respects the visitor's
+reduced-motion preference; touch exposes close and open affordances.

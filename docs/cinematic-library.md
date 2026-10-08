@@ -13,12 +13,13 @@ can open full article text without a second request. Build verification compares
 every corpus object against its individual payload and checks manifest coverage.
 
 Pretext 0.0.9 measures and wraps graph labels; its measurements are refreshed once
-fonts are ready. Source mathematics remains KaTeX DOM, with a reader-controlled
-size slider in the mathematics desk. Neither generated images nor videos carry
+fonts are ready. Source mathematics remains KaTeX DOM inside the papers. Resizing a paper
+changes its reading space; wide equations remain horizontally scrollable. There
+is no separate mathematics mode or sizing panel. Neither generated images nor videos carry
 research equations or numerical results.
 
-Graph positions are a spherical exploratory layout, not a learned embedding or
-physical geometry. Edges retain the canonical declared/derived/suggested metadata.
+Graph positions follow the document field and an exploratory outer ring; they
+are not a learned embedding or physical geometry. Edges retain the canonical declared/derived/suggested metadata.
 The searchable index provides a keyboard route to every node and source.
 
 ## Media and capture
@@ -34,8 +35,9 @@ motion. The reviewed public media manifest points only to same-origin assets.
 
 These are generated creative interpretations, not scientific simulation output.
 The film opens only on a labeled user action; sound is never autoplayed at entry.
-Reduced-motion visitors initially receive the still. A visible control pauses the
-hero loop and graph motion. Large films are not part of the initial text preload.
+There is no background film. Optional film playback uses native video controls.
+Reduced-motion visitors receive no paper-lift animation. Large films are not
+part of the initial text preload.
 The service worker leaves video range requests to the browser; the still remains
 available for offline presentation.
 
