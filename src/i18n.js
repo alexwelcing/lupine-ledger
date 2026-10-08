@@ -6,6 +6,9 @@ export const SUPPORTED_LANGS = ['en', 'zh'];
 
 const STRINGS = {
   en: {
+    'nav.browse': 'Browse',
+    'nav.research': 'Research index',
+    'nav.science': 'Lupine Science ↗',
     'brand.title': 'Lupine Library',
     'meta.title': 'Lupine Library — Lupine Science Research',
     'meta.description': 'Mobile-first reader for Lupine Science research: UQ, benchmarking, MLIPs, and computational materials theory.',
@@ -141,6 +144,9 @@ const STRINGS = {
   },
 
   zh: {
+    'nav.browse': '浏览',
+    'nav.research': '研究索引',
+    'nav.science': 'Lupine Science ↗',
     'brand.title': 'Lupine 图书馆',
     'meta.title': 'Lupine 图书馆 — Lupine Science 研究',
     'meta.description': '面向移动端的 Lupine Science 研究阅读器：不确定性量化、基准测试、MLIP 和计算材料理论。',

@@ -25,12 +25,14 @@ function renderRecord(record, index) {
   card.append(meta, node('h3', '', record.title), node('p', 'research-activity-summary', record.summary));
   const timestamps = node('div', 'research-activity-times');
   timestamps.append(time('Observed', record.observedAt), time('Reviewed', record.reviewedAt)); card.append(timestamps);
-  if (record.datasets.length) card.append(node('p', 'research-activity-datasets', record.datasets.map(d =>
+  const evidence = node('details', 'research-activity-detail');
+  evidence.append(node('summary', '', 'Findings, limits & next test'));
+  if (record.datasets.length) evidence.append(node('p', 'research-activity-datasets', record.datasets.map(d =>
     `${d.name}: ${d.configurations.toLocaleString()} configurations${d.groups == null ? '' : ` · ${d.groups} groups`}${d.atoms == null ? '' : ` · ${d.atoms.toLocaleString()} atoms`}`).join(' / ')));
-  if (record.findings.length) card.append(list('What we found', record.findings));
-  card.append(list('Limits of this evidence', record.limitations, 'research-activity-limits'));
+  if (record.findings.length) evidence.append(list('What we found', record.findings));
+  evidence.append(list('Limits of this evidence', record.limitations, 'research-activity-limits'));
   const next = node('div', 'research-activity-next');
-  next.append(node('h4', '', 'Next question or test'), node('p', '', record.nextStep)); card.append(next);
+  next.append(node('h4', '', 'Next question or test'), node('p', '', record.nextStep)); evidence.append(next);
   const details = node('details', 'research-activity-sources');
   details.append(node('summary', '', 'Sources and provenance'));
   const links = [...record.sources, ...record.repositoryLinks, ...record.releaseLinks];
@@ -46,16 +48,17 @@ function renderRecord(record, index) {
   details.append(node('p', 'research-activity-id', `Public record ${record.id}`));
   if (record.supersedes) details.append(node('p', '', `Updates public record ${record.supersedes}.`));
   if (record.correctionReason) details.append(node('p', '', `Correction: ${record.correctionReason}`));
-  card.append(details);
+  evidence.append(details);
+  card.append(evidence);
   if (index < 2) return card;
   const older = node('details', 'research-activity-older');
   older.append(node('summary', '', `${record.title} · ${record.state}`), card); return older;
 }
 
 export function renderResearchActivity(mount) {
-  const section = node('section', 'research-activity'); section.setAttribute('aria-labelledby', 'research-activity-title');
+  const section = node('section', 'research-activity'); section.id = 'research-journal'; section.setAttribute('aria-labelledby', 'research-activity-title');
   const header = node('div', 'research-activity-heading'), heading = node('div');
-  heading.append(node('p', 'research-activity-kicker', 'Inside the research'), node('h2', '', 'Research activity'));
+  heading.append(node('p', 'research-activity-kicker', 'THE RESEARCH JOURNAL'), node('h2', '', 'Research in motion'));
   heading.lastChild.id = 'research-activity-title';
   const refresh = node('button', 'research-activity-refresh', 'Refresh'); refresh.type = 'button';
   header.append(heading, refresh);
@@ -85,7 +88,14 @@ export function renderResearchActivity(mount) {
         if (!state.feed) content.append(node('p', 'research-activity-empty', state.refreshing ? 'Loading reviewed research activity…' : 'The activity feed is unavailable. The research Library remains available below.'));
         else if (!state.feed.items.length) content.append(node('p', 'research-activity-empty', 'No reviewed public activity has been published yet.'));
         else {
-          [...state.feed.items].sort((a, b) => b.observedAt.localeCompare(a.observedAt) || b.id.localeCompare(a.id)).forEach((record, index) => content.append(renderRecord(record, index)));
+          const records = [...state.feed.items].sort((a, b) => b.observedAt.localeCompare(a.observedAt) || b.id.localeCompare(a.id));
+          records.slice(0, 2).forEach((record, index) => content.append(renderRecord(record, index)));
+          if (records.length > 2) {
+            const archive = node('details', 'research-activity-archive');
+            archive.append(node('summary', '', `Earlier research updates (${records.length - 2})`));
+            records.slice(2).forEach((record, index) => archive.append(renderRecord(record, index + 2)));
+            content.append(archive);
+          }
           if (state.feed.truncated) content.append(node('p', 'research-activity-empty', 'Showing the latest reviewed activities. Earlier records remain in the research ledger.'));
         }
       }

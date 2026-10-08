@@ -5,6 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
@@ -363,8 +364,20 @@ function copyDir(src, dst) {
 }
 
 function loadVersion() {
-  // Cache-busting: stamp with epoch; a new build -> new version -> SW picks up fresh assets.
-  return process.env.LIBRARY_BUILD_VERSION || CONTENT_VERSION || String(Date.now());
+  if (process.env.LIBRARY_BUILD_VERSION) return process.env.LIBRARY_BUILD_VERSION;
+  // A presentation change must invalidate the shell even when science is unchanged.
+  const hash = createHash('sha256');
+  const visit = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true }).sort((a,b) => a.name.localeCompare(b.name))) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) visit(full);
+      else { hash.update(path.relative(ROOT, full)); hash.update(fs.readFileSync(full)); }
+    }
+  };
+  visit(path.join(ROOT, 'src'));
+  hash.update(fs.readFileSync(path.join(ROOT, 'package-lock.json')));
+  hash.update(fs.readFileSync(path.join(ROOT, 'scripts/build.js')));
+  return `${CONTENT_VERSION || 'local'}-${hash.digest('hex').slice(0,12)}`;
 }
 
 function build() {
@@ -377,6 +390,7 @@ function build() {
 
   const version = loadVersion();
   const articles = [];
+  const corpus = [];
 
   function processEntry(entry, lang, sourcePath) {
     const absPath = path.resolve(REPO_ROOT, sourcePath);
@@ -416,6 +430,7 @@ function build() {
     if (!defaultArticle) continue;
 
     const languages = ['en'];
+    corpus.push(defaultArticle);
     fs.writeFileSync(
       path.join(DATA_DIR, `${defaultArticle.id}.json`),
       JSON.stringify(defaultArticle)
@@ -430,6 +445,7 @@ function build() {
         const variant = processEntry(entry, lang, sourcePath);
         if (variant) {
           languages.push(lang);
+          corpus.push(variant);
           title[lang] = variant.title;
           subtitle[lang] = variant.subtitle;
           fs.writeFileSync(
@@ -469,6 +485,7 @@ function build() {
     articles,
   };
   fs.writeFileSync(path.join(DATA_DIR, 'library.json'), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(path.join(DATA_DIR, 'corpus.json'), JSON.stringify({version, articles: corpus}));
   fs.writeFileSync(path.join(DATA_DIR, 'research-activity.json'), JSON.stringify(activity.feed, null, 2));
   writeOntology();
   // Build the graph from the same bundle the articles were rendered from —
@@ -505,6 +522,9 @@ function build() {
   } else {
     console.warn('[warn] KaTeX dist not found; math CSS/fonts will be missing');
   }
+
+  copyDir(path.join(ROOT, 'node_modules/@chenglou/pretext/dist'), path.join(DIST, 'vendor/pretext'));
+  fs.copyFileSync(path.join(ROOT, 'node_modules/html2canvas/dist/html2canvas.esm.js'), path.join(DIST, 'vendor/html2canvas.js'));
 
   console.log(`Built ${articles.length} articles. version=${version}`);
   console.log(`Output: ${path.relative(process.cwd(), DIST)}`);
