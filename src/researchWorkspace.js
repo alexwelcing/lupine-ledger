@@ -26,7 +26,7 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
     <section class="research-workspace" aria-label="Movable research workspace">
       <div class="workspace-intro" data-piece="title" tabindex="0" aria-label="Library title; select to move or remove">
         <div class="piece-handle" data-drag-handle><span>THE OPEN WORK / 001</span><button data-remove="title" aria-label="Remove title from my view">×</button></div>
-        <h1>Knowledge, <br><em>in your hands.</em></h1><p>Pull a paper from the field. <br>Make room for the thought.</p>
+        <h1>Knowledge, <em>in your hands.</em></h1><p>Pull a paper from the field. Make room for the thought.</p>
       </div>
       <section class="knowledge-field" data-piece="field" tabindex="0" aria-label="Knowledge field">
         <div class="piece-handle" data-drag-handle><span>THE FIELD <b>${manifest.articles.length}</b> DOCUMENTS / ${graph.links.length.toLocaleString()} RELATIONSHIPS</span><button data-remove="field" aria-label="Remove field from my view">×</button></div>
