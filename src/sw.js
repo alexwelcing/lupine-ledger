@@ -15,7 +15,7 @@ const VERSION = '__VERSION__';
 // regardless of VERSION skew. A escape hatch if a bad build ever ships again.
 // k2: purge caches poisoned by stale cache-first /reports/ assets — a fresh
 // report HTML was served against an old cached report.css, blanking the page.
-const KILL = 'k6';
+const KILL = 'k7';
 const SHELL_CACHE = `ll-shell-${KILL}-${VERSION}`;
 const DATA_CACHE = `ll-data-${KILL}-${VERSION}`;
 
@@ -24,6 +24,11 @@ const SHELL_ASSETS = [
   '/index.html',
   '/app.js',
   '/universeView.js',
+  '/researchWorkspace.js',
+  '/workspaceState.js',
+  '/fonts/newsreader-var.woff2',
+  '/fonts/newsreader-italic-var.woff2',
+  '/fonts/plex-mono-400.woff2',
   '/vendor/html2canvas.js',
   '/vendor/pretext/layout.js',
   '/vendor/pretext/analysis.js',
@@ -136,6 +141,12 @@ self.addEventListener('fetch', (event) => {
   // stale report.css against fresh report HTML and blanked the page. Freshness
   // wins when online; the cache is still the offline fallback.
   if (url.pathname.startsWith('/reports/')) {
+    event.respondWith(networkFirst(SHELL_CACHE, req));
+    return;
+  }
+
+  // Local preview builds reuse a source version while code is being edited.
+  if (['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)) {
     event.respondWith(networkFirst(SHELL_CACHE, req));
     return;
   }

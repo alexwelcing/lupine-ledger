@@ -1,10 +1,10 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-10-06T02:06:56.996Z",
+  "generatedAt": "2026-10-08T05:26:57.098Z",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "ea92ee63c895ea2d46a579790c98b963c2aa4284",
-    "dirty": false,
+    "commit": "9afe7d8db7b3812c8ab3ffeb8cf7f1d61e4f5674",
+    "dirty": true,
     "generator": "scripts/export_library_content.mjs"
   },
   "catalog": {
@@ -1593,7 +1593,7 @@
         "id": "z1-union-campaign-verdict",
         "source": "articles/docs/analysis/z1-union-campaign-verdict.md",
         "title": "Z1 Union Campaign — Verdict of Record (2026-07-24)",
-        "subtitle": "All four uMLIPs strong-win on the same-engine basis (≤15 meV) across 23 active paths; realized union economics 70.0% fewer evaluations (430 naive vs 129 executed), with the T1 wander map and law check.",
+        "subtitle": "Sparse-versus-dense GPAW self-consistency across 23 active paths: 0.0–6.8 meV mean error. VASP-referenced error is 693.0–705.7 meV; no external-reference accuracy win.",
         "category": "validation",
         "tags": [
           "z1",
@@ -1610,7 +1610,7 @@
         "id": "z1-union-cost-ledger",
         "source": "articles/docs/analysis/z1-union-cost-ledger.md",
         "title": "Z1 Union Campaign — Measured Cost Ledger (2026-07-24)",
-        "subtitle": "129 anchors in 61.0 wall-hours (mean 28.4 min/anchor), 244 vCPU-hours → $14.65 cloud-equivalent plus $0.60 local electricity, with per-path wall-hours.",
+        "subtitle": "Recorded ledger: 129 anchors, 61.0 wall-hours, 244 vCPU-hours. The campaign retains an unresolved cost-provenance conflict; estimates are not a verified bill.",
         "category": "validation",
         "tags": [
           "z1",
@@ -1688,8 +1688,8 @@
     {
       "source": "README.md",
       "bundleSource": "articles/README.md",
-      "bytes": 3832,
-      "sha256": "99de890f8e784acea6367d832c82c65a7d0ce89d32c2daba024c2f8ca00aed33"
+      "bytes": 5611,
+      "sha256": "75e49b5994ab50a829acb30b0ac7e4a9123ff05a87c0860b2543f6b6ee1b3294"
     },
     {
       "source": "GLOSSARY.md",
@@ -2018,8 +2018,8 @@
     {
       "source": "CHANGELOG.md",
       "bundleSource": "articles/CHANGELOG.md",
-      "bytes": 81501,
-      "sha256": "1e754a094f915d1bebc387b4f5f3297f26422199dd47a491b536ce810358a5af"
+      "bytes": 88516,
+      "sha256": "1d8e85aefefb39e02c5f089122a887fc22053ed732a8e18f10b19c31870a2a66"
     },
     {
       "source": "docs/papers-working.md",
