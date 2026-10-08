@@ -23,12 +23,26 @@ const SHELL_ASSETS = [
   '/',
   '/index.html',
   '/app.js',
+  '/universeView.js',
+  '/vendor/html2canvas.js',
+  '/vendor/pretext/layout.js',
+  '/vendor/pretext/analysis.js',
+  '/vendor/pretext/measurement.js',
+  '/vendor/pretext/bidi.js',
+  '/vendor/pretext/generated/bidi-data.js',
+  '/vendor/pretext/line-text.js',
+  '/vendor/pretext/line-break.js',
+  '/vendor/pretext/rich-inline.js',
+  '/assets/media/bluebonnet-chrome.jpg',
+  '/assets/media/manifest.json',
+  '/data/corpus.json',
   '/mlipFlywheelView.js',
   '/researchActivity.js',
   '/researchActivityView.js',
   '/researchActivityConfig.js',
   '/i18n.js',
   '/styles.css',
+  '/brand.css',
   '/favicon.ico',
   '/favicon-32x32.png',
   '/apple-touch-icon.png',
@@ -92,6 +106,10 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+
+  // Let the browser manage video range requests. Offline visitors see the poster;
+  // partial (206) media responses cannot safely be stored as complete cache entries.
+  if (/\.(mp4|webm)$/.test(url.pathname)) return;
 
   // A successful activity request means a network read, even if the configured
   // public feed is later hosted on this origin. Never disguise cache as live.

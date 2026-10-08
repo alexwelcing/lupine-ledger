@@ -64,6 +64,23 @@ assertExists('llms-full.txt', 'generated full agent guide');
 assertExists('data/library.json', 'library manifest');
 assertExists('data/knowledge-graph.json', 'knowledge graph');
 const library = readJson('data/library.json', 'library manifest');
+const corpus = readJson('data/corpus.json', 'complete first-load text collection');
+if (library && corpus) {
+  if (corpus.version !== library.version) errors.push('corpus/library version mismatch');
+  const ids = corpus.articles.filter(a => a.lang === 'en').map(a => a.id);
+  if (JSON.stringify(ids) !== JSON.stringify(library.articles.map(a => a.id))) errors.push('corpus coverage differs from the manifest');
+  for (const a of corpus.articles) {
+    const file = a.lang === 'en' ? `${a.id}.json` : `${a.id}.${a.lang}.json`;
+    const individual = readJson(`data/${file}`, 'canonical article');
+    if (JSON.stringify(a) !== JSON.stringify(individual)) errors.push(`corpus content mismatch: ${file}`);
+  }
+}
+for (const file of ['universeView.js', 'vendor/pretext/layout.js', 'vendor/pretext/analysis.js', 'vendor/html2canvas.js', 'assets/media/manifest.json']) assertExists(file, 'cinematic Library dependency');
+const media = readJson('assets/media/manifest.json', 'reviewed creative media manifest');
+if (media) for (const key of ['heroImage', 'heroVideo', 'featureFilm']) {
+  if (!media[key]?.startsWith('/assets/media/')) errors.push(`media must be served from this Library: ${key}`);
+  else assertExists(media[key].slice(1), key);
+}
 const activity = readJson('data/research-activity.json', 'reviewed activity snapshot');
 if (activity) {
   try { validateFeed(activity); } catch { errors.push('invalid public activity snapshot'); }

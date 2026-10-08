@@ -24,7 +24,9 @@
     "test:activity:browser": "npm run build && node scripts/browser-research-activity.mjs"
   },
   "dependencies": {
+    "@chenglou/pretext": "0.0.9",
     "force-graph": "^1.51.4",
+    "html2canvas": "1.4.1",
     "katex": "^0.17.0",
     "marked": "^12.0.2"
   }

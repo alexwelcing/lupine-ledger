@@ -1,6 +1,7 @@
 // Lupine Library — mobile-first research reader.
 // Single-page app with hash routing. No framework — dependencies are in the DOM.
 
+import { preloadCorpus, renderUniverse } from './universeView.js';
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
 import { renderResearchActivity } from './researchActivityView.js';
@@ -84,7 +85,7 @@ function applySettings() {
   html.dataset.readerWidth = STATE.settings.width;
   html.lang = STATE.settings.lang || DEFAULT_LANG;
   // Sync theme-color meta for PWA chrome
-  const map = { dark: '#06070d', sepia: '#1f1a12', light: '#f6f5f0' };
+  const map = { dark: '#03060b', sepia: '#1f1a12', light: '#f6f5f0' };
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = map[STATE.settings.theme] || '#06070d';
   // Sync page title
@@ -280,176 +281,22 @@ function cardFor(article, opts = {}) {
 
 async function renderHome() {
   clearActiveView();
-  // Prevent an older asynchronous home render from creating a refresh loop
-  // after navigation, or after a newer home render has replaced it.
-  let cancelled = false;
-  let activityCleanup;
-  activeViewCleanup = () => { cancelled = true; activityCleanup?.(); };
-  STATE.view = 'home';
-  document.documentElement.dataset.view = 'home';
-  BACK_BTN.hidden = true;
-  setProgress(0);
-  VIEW.innerHTML = `<div class="loading">${t('home.loading', STATE.settings.lang)}</div>`;
+  let cancelled = false, cleanup;
+  activeViewCleanup = () => { cancelled = true; cleanup?.(); };
+  STATE.view = 'home'; document.documentElement.dataset.view = 'home';
+  BACK_BTN.hidden = true; setProgress(0);
+  VIEW.innerHTML = '<div class="loading">Opening the knowledge field…</div>';
   try {
-    const m = await fetchManifest();
+    const [manifest, graph] = await Promise.all([fetchManifest(), fetchKnowledgeGraph()]);
     if (cancelled) return;
-    VIEW.innerHTML = '';
-
-    // Hero
-    const hero = el('section', { class: 'hero' });
-    hero.append(el('h1', { html: t('home.hero', STATE.settings.lang) }));
-    hero.append(el('p', {}, t('home.hero.sub', STATE.settings.lang)));
-    const totalWords = m.articles.reduce((a, b) => a + (b.words || 0), 0);
-    const totalMin = m.articles.reduce((a, b) => a + (b.readMinutes || 0), 0);
-    const stats = el('div', { class: 'hero-stats' });
-    stats.append(el('span', { html: `<strong>${m.articles.length}</strong> ${t('home.stats.reports', STATE.settings.lang)}` }));
-    stats.append(el('span', { html: `<strong>${totalWords.toLocaleString()}</strong> ${t('home.stats.words', STATE.settings.lang)}` }));
-    stats.append(el('span', { html: `≈<strong>${totalMin}</strong> ${t('home.stats.minutes', STATE.settings.lang)}` }));
-    hero.append(stats);
-    hero.append(el('a', { class: 'tags-browse-link', href: '#/tags' }, t('tags.index', STATE.settings.lang), ' →'));
-    VIEW.append(hero);
-
-    activityCleanup = renderResearchActivity(VIEW);
-
-    // Start Here — guided journeys for four personas
-    if (m.journeys && m.journeys.length) {
-      const journeysSec = el('section', { class: 'journeys' });
-      journeysSec.append(el('h2', {}, t('home.journeys.title', STATE.settings.lang)));
-      const journeysGrid = el('div', { class: 'journeys-grid' });
-      for (const j of m.journeys) {
-        const card = el('a', { class: 'journey-card', href: `#/read/${j.path[0]}` });
-        card.append(el('div', { class: 'journey-label' }, t(j.label, STATE.settings.lang)));
-        card.append(el('div', { class: 'journey-desc' }, t(j.description, STATE.settings.lang)));
-        const meta = el('div', { class: 'journey-meta' });
-        meta.append(el('span', {}, `${j.path.length} articles →`));
-        card.append(meta);
-        journeysGrid.append(card);
-      }
-      journeysSec.append(journeysGrid);
-      VIEW.append(journeysSec);
-    }
-
-    // Featured — max 4 curated callouts with defined roles
-    const featured = (m.articles || []).filter(a => a.featured && a.featuredRole).slice(0, 4);
-    if (featured.length) {
-      const featuredSec = el('section', { class: 'featured-section' });
-      featuredSec.append(el('h2', {}, t('home.featured.title', STATE.settings.lang)));
-      const featuredGrid = el('div', { class: 'featured-grid' });
-      for (const fa of featured) {
-        const roleLabel = fa.featuredRole
-          ? t(`home.featured.role.${fa.featuredRole}`, STATE.settings.lang)
-          : t('home.featured.role.default', STATE.settings.lang);
-        const card = el('a', { class: 'featured-card', href: `#/read/${fa.id}` });
-        card.append(el('span', { class: 'featured-role' }, roleLabel));
-        card.append(el('strong', { class: 'featured-title' }, t(fa.title, STATE.settings.lang)));
-        if (fa.subtitle) card.append(el('span', { class: 'featured-sub' }, t(fa.subtitle, STATE.settings.lang)));
-        featuredGrid.append(card);
-      }
-      featuredSec.append(featuredGrid);
-      VIEW.append(featuredSec);
-    }
-
-    // Continue reading
-    const inProgress = Object.entries(STATE.progress)
-      .map(([id, v]) => ({ id, ...v }))
-      .filter(p => p.pct > 0.02 && p.pct < 0.98)
-      .sort((a, b) => (b.ts || 0) - (a.ts || 0))
-      .slice(0, 3)
-      .map(p => m.articles.find(a => a.id === p.id))
-      .filter(Boolean);
-    if (inProgress.length) {
-      const sec = el('section', { class: 'continue' });
-      sec.append(el('h2', {}, t('home.continue', STATE.settings.lang)));
-      const cards = el('div', { class: 'cards' });
-      for (const a of inProgress) cards.append(cardFor(a, { showCategory: true }));
-      sec.append(cards);
-      VIEW.append(sec);
-    }
-
-    // Status filter — browse the corpus by lifecycle stage. Only statuses
-    // actually present in the corpus get a chip, each with a live count.
-    const statuses = m.statuses || {};
-    const presentCounts = {};
-    for (const a of m.articles) if (a.status) presentCounts[a.status] = (presentCounts[a.status] || 0) + 1;
-    const presentStatuses = Object.keys(statuses).filter(s => presentCounts[s]);
-    if (presentStatuses.length) {
-      const bar = el('div', { class: 'status-filter' });
-      const chip = (label, color, active, on) => {
-        const c = el('button', {
-          class: 'status-chip' + (active ? ' active' : ''),
-          style: `font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:999px;cursor:pointer;border:1px solid ${color};color:${active ? '#fff' : color};background:${active ? color : `color-mix(in srgb, ${color} 10%, transparent)`};`,
-        }, label);
-        c.addEventListener('click', on);
-        return c;
-      };
-      bar.append(chip(`All · ${m.articles.length}`, '#9ca3af', !STATE.statusFilter, () => { STATE.statusFilter = null; renderHome(); }));
-      for (const s of presentStatuses) {
-        const st = statuses[s];
-        bar.append(chip(`${t(st.label, STATE.settings.lang)} · ${presentCounts[s]}`, st.color, STATE.statusFilter === s, () => { STATE.statusFilter = s; renderHome(); }));
-      }
-      VIEW.append(bar);
-      // Gloss line: one-line explanation of each present status
-      const glossParts = presentStatuses
-        .map(s => {
-          const st = statuses[s];
-          if (!st || !st.gloss) return null;
-          const g = t(st.gloss, STATE.settings.lang);
-          if (!g) return null;
-          return `${t(st.label, STATE.settings.lang)} = ${g}`;
-        })
-        .filter(Boolean);
-      if (glossParts.length) {
-        VIEW.append(el('p', { class: 'status-gloss' }, glossParts.join('. ') + '.'));
-      }
-    }
-
-    // Shelves
-    for (const cat of m.categories) {
-      let arts = m.articles.filter(a => a.category === cat.id);
-      if (STATE.statusFilter) arts = arts.filter(a => a.status === STATE.statusFilter);
-      if (!arts.length) continue;
-      const shelf = el('section', { class: 'shelf' });
-      shelf.append(el('h2', {}, t(cat.label, STATE.settings.lang)));
-      if (cat.blurb && !STATE.statusFilter) shelf.append(el('p', { class: 'blurb' }, t(cat.blurb, STATE.settings.lang)));
-
-      // Group ribbons: if articles share a group, render a connector above them
-      const groups = {};
-      for (const a of arts) {
-        if (a.group) {
-          if (!groups[a.group]) groups[a.group] = [];
-          groups[a.group].push(a);
-        }
-      }
-      const cards = el('div', { class: 'cards' });
-      let lastGroup = null;
-      for (const a of arts) {
-        if (a.group && a.group !== lastGroup && groups[a.group]) {
-          const ribbon = el('div', { class: 'group-ribbon' });
-          ribbon.append(el('span', { class: 'group-ribbon-label' }, t(`group.${a.group}`, STATE.settings.lang) || a.group));
-          ribbon.append(el('span', { class: 'group-ribbon-arrow' }, '→'));
-          cards.append(ribbon);
-          lastGroup = a.group;
-        }
-        if (!a.group) lastGroup = null;
-        cards.append(cardFor(a));
-      }
-      shelf.append(cards);
-      VIEW.append(shelf);
-    }
-    if (STATE.statusFilter && !m.articles.some(a => a.status === STATE.statusFilter)) {
-      VIEW.append(el('div', { class: 'empty', style: 'margin:24px 16px;' }, 'No entries with this status.'));
-    }
-  } catch (e) {
-    if (cancelled) return;
-    activityCleanup?.();
-    console.error(e);
-    VIEW.innerHTML = `<div class="empty">${t('home.error', STATE.settings.lang)}</div>`;
+    const corpus = preloadCorpus(a => STATE.articleCache.set(`${a.id}:${a.lang}`, a));
+    cleanup = await renderUniverse(VIEW, { manifest, graph, corpus, onArticleLink: handleArticleLinkClick, renderActivity: renderResearchActivity });
+    if (cancelled) cleanup?.();
+  } catch (error) {
+    if (!cancelled) VIEW.innerHTML = '<div class="loading">The knowledge field is unavailable. <a href="#/tags">Open the document index →</a></div>';
   }
 }
 
-// ───────────────────────────────────────────────────────────────
-// Tags / faceted library browser
-// ───────────────────────────────────────────────────────────────
 async function renderTags() {
   clearActiveView();
   STATE.view = 'tags';
@@ -927,6 +774,7 @@ BACK_BTN.addEventListener('click', () => {
   if (history.length > 1) history.back();
   else location.hash = '#/';
 });
+document.querySelector('.skip-link')?.addEventListener('click', event => { event.preventDefault(); VIEW.focus(); });
 window.addEventListener('hashchange', route);
 window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -942,6 +790,7 @@ window.addEventListener('keydown', (e) => {
 
 applySettings();
 translateStaticDOM();
+preloadCorpus(a => STATE.articleCache.set(`${a.id}:${a.lang}`, a)).catch(() => {});
 route();
 
 // Register service worker (offline + fast repeat loads). When a new version
