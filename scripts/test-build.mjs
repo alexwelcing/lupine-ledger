@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { contentSourceSnapshot } from './content-provenance.mjs';
 import { validateFeed } from '../src/researchActivity.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -73,6 +74,11 @@ assertExists('data/library.json', 'library manifest');
 assertExists('data/knowledge-graph.json', 'knowledge graph');
 const library = readJson('data/library.json', 'library manifest');
 const corpus = readJson('data/corpus.json', 'complete first-load text collection');
+const contentManifestPath = path.join(process.env.LIBRARY_CONTENT_BUNDLE || path.join(ROOT, 'content/latest'), 'manifest.json');
+if (library && fs.existsSync(contentManifestPath)) {
+  const source = JSON.parse(fs.readFileSync(contentManifestPath, 'utf8'));
+  if (JSON.stringify(library.sourceSnapshot) !== JSON.stringify(contentSourceSnapshot(source))) errors.push('content export provenance differs from selected source manifest');
+}
 if (library && corpus) {
   if (corpus.version !== library.version) errors.push('corpus/library version mismatch');
   const ids = corpus.articles.filter(a => a.lang === 'en').map(a => a.id);
