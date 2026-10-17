@@ -44,6 +44,15 @@ export function validateKnowledgeGraph(graph, catalog) {
     }
   }
 
+  const reviewedRelations = new Set(['documentsVerificationClaims', 'discussesMagneticModelLimitations']);
+  const invalidBindings = links.filter(item => reviewedRelations.has(item.relation) && (
+    !item.source.startsWith('article:') || !item.target.startsWith('ontology:') ||
+    item.provenance?.confidence !== 'extracted-reviewed' || item.provenance?.bindingVersion !== 1 ||
+    !/^[a-f0-9]{64}$/.test(item.provenance?.articleSha256 || '') ||
+    !/^[a-f0-9]{64}$/.test(item.provenance?.ontologySha256 || '') ||
+    !item.provenance?.passageAnchor || !item.provenance?.rationale || !item.provenance?.reviewedBy));
+  if (invalidBindings.length) errors.push(issue('invalid reviewed article bindings', invalidBindings.map(l => l.id)));
+
   const missingPositions = nodes.filter((node) =>
     !node.position ||
     !Number.isFinite(node.position.x) ||

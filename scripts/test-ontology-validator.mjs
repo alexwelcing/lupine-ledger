@@ -15,3 +15,14 @@ test('validateOntology accepts the normalized atlas and rejects unresolved forei
   ontology.unresolvedForeignKeys.push({ source: 'materialClass:MC1', sourceField: 'chain', value: 'C99' });
   assert.ok(validateOntology(ontology).some((error) => error.message === 'ontology has unresolved foreign keys'));
 });
+
+
+test('validator rejects invented OBS and legacy classification semantics', () => {
+  const data = normalizeOntology(source);
+  const unspecified = data.nodes.find(n => n.marker === 'unspecified');
+  unspecified.marker = 'OBS';
+  assert.ok(validateOntology(data).some(e => e.message.includes('observation marker')));
+  const edge = data.links.find(l => l.relation === 'hasErrorType');
+  edge.relation = 'inheritsErrorFrom';
+  assert.ok(validateOntology(data).some(e => e.message.includes('classification represented')));
+});

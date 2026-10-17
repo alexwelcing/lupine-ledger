@@ -66,7 +66,7 @@ const STRINGS = {
     'search.placeholder': 'Search the library…',
     'search.results.one': '1 result found.',
     'search.results.many': '{count} results found.',
-    'search.all': 'All articles — type to filter.',
+    'search.all': 'Loaded content — type to filter.',
 
     'settings.title': 'Reader',
     'settings.lang': 'Language',
@@ -204,7 +204,7 @@ const STRINGS = {
     'search.placeholder': '搜索图书馆…',
     'search.results.one': '找到 1 条结果。',
     'search.results.many': '找到 {count} 条结果。',
-    'search.all': '全部文章 — 输入以筛选。',
+    'search.all': '已加载内容 — 输入以筛选。',
 
     'settings.title': '阅读设置',
     'settings.lang': '语言',

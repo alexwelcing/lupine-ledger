@@ -79,12 +79,20 @@ function labelFor(value, id) {
 }
 
 function markerFor(type, value) {
-  const serialized = JSON.stringify(value);
-  const explicit = MARKERS.find((marker) => serialized.includes(`[${marker}]`));
-  if (explicit) return explicit;
-  if (type === 'timeGate' || type === 'roadmapPhase' || type === 'climateTarget') return 'FRC';
-  if (type === 'acceptanceTest' || type === 'killCriterion' || type === 'falsifier' || /author-proposed/i.test(serialized)) return 'PRP';
-  return 'OBS';
+  const explicitField = MARKERS.includes(value?.marker) ? value.marker : null;
+  const tags = [...new Set(MARKERS.filter(marker => JSON.stringify(value).includes(`[${marker}]`)))];
+  if (explicitField || tags.length === 1) return {
+    marker: explicitField || tags[0], assignment: 'explicit',
+    reason: explicitField ? 'source marker field' : 'source bracket annotation',
+  };
+  if (tags.length > 1) return { marker: 'unspecified', assignment: 'unspecified', reason: 'conflicting source annotations' };
+  if (['timeGate', 'roadmapPhase', 'climateTarget'].includes(type)) return {
+    marker: 'FRC', assignment: 'heuristic', reason: 'forecast-like source type; not an observation',
+  };
+  if (['acceptanceTest', 'killCriterion', 'falsifier'].includes(type) || /author-proposed/i.test(JSON.stringify(value))) return {
+    marker: 'PRP', assignment: 'heuristic', reason: 'proposal-like source type/text',
+  };
+  return { marker: 'unspecified', assignment: 'unspecified', reason: 'no explicit epistemic annotation' };
 }
 
 function readinessFor(value) {
@@ -112,12 +120,14 @@ function normalizeRelation(row) {
 }
 
 export function normalizeOntology(source) {
+  const rawAtlas = clone(source);
   source = hydrateFormalProofInventory(source);
   const asOf = source.freshnessLayer.atlasDate;
   const nodes = [];
   const addNode = (section, type, sourceId, value) => {
     const payload = typeof value === 'string' ? { value } : clone(value);
     const readiness = readinessFor(payload);
+    const epistemic = markerFor(type, payload);
     const node = {
       ...payload,
       id: `${type}:${sourceId}`,
@@ -125,7 +135,9 @@ export function normalizeOntology(source) {
       sourceSection: section,
       type,
       label: labelFor(payload, sourceId),
-      marker: markerFor(type, payload),
+      marker: epistemic.marker,
+      markerAssignment: epistemic.assignment,
+      markerReason: epistemic.reason,
       readiness,
       confidence: confidenceFor(payload),
       asOf,
@@ -152,7 +164,8 @@ export function normalizeOntology(source) {
       return;
     }
     links.push({
-      id: `${relation}:${sourceId}->${targetId}:${sourceField}`,
+      id: `${['hasDominantErrorType', 'hasErrorType'].includes(relation) ? 'inheritsErrorFrom' : relation}:${sourceId}->${targetId}:${sourceField}`,
+      ...(['hasDominantErrorType', 'hasErrorType'].includes(relation) ? { legacyRelation: 'inheritsErrorFrom' } : {}),
       source: sourceId,
       target: targetId,
       relation,
@@ -166,13 +179,13 @@ export function normalizeOntology(source) {
     for (const type of emblem.types) addLink('partOf', `emblem:${emblem.id}`, `errorType:${type}`, 'emblems.types', type);
   }
   for (const material of source.materialClasses) {
-    for (const type of material.dominantErrorTypes) addLink('inheritsErrorFrom', `materialClass:${material.id}`, `errorType:${type}`, 'materialClasses.dominantErrorTypes', type);
+    for (const type of material.dominantErrorTypes) addLink('hasDominantErrorType', `materialClass:${material.id}`, `errorType:${type}`, 'materialClasses.dominantErrorTypes', type);
     for (const chain of Array.isArray(material.chain) ? material.chain : [material.chain]) {
       addLink('partOf', `materialClass:${material.id}`, `discoveryChain:${chain}`, 'chain', chain);
     }
   }
   for (const row of source.scoreboard) {
-    for (const type of row.types) addLink('inheritsErrorFrom', `scoreboardRow:SB${row.row}`, `errorType:${type}`, 'scoreboard.types', type);
+    for (const type of row.types) addLink('hasErrorType', `scoreboardRow:SB${row.row}`, `errorType:${type}`, 'scoreboard.types', type);
     addLink('readinessJudgedBy', `scoreboardRow:SB${row.row}`, `readinessGrade:${readinessFor(row).grade}`, 'scoreboard.readiness', row.readiness);
   }
   for (const chain of source.discoveryChains) {
@@ -186,12 +199,17 @@ export function normalizeOntology(source) {
     if (superClass && nodeIds.has(`superClass:${superClass}`)) addLink('isA', node.id, `superClass:${superClass}`, `${node.sourceSection}.type`, superClass);
     if (node.type !== 'epistemicMarker' && nodeIds.has(`epistemicMarker:${node.marker}`)) {
       addLink('markedAs', node.id, `epistemicMarker:${node.marker}`, `${node.sourceSection}.marker`, node.marker);
+      const assigned = links[links.length - 1];
+      assigned.provenance = { ...assigned.provenance, method: node.markerReason,
+        assignment: node.markerAssignment, confidence: node.markerAssignment === 'explicit' ? 'declared' : 'suggested' };
     }
   }
 
   links.sort((left, right) => left.id.localeCompare(right.id));
   unresolvedForeignKeys.sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
-  const relations = source.relations.map(normalizeRelation);
+  const relations = [...source.relations.map(normalizeRelation),
+    { name: 'hasDominantErrorType', meaning: 'Declared dominant error classification; not causal inheritance' },
+    { name: 'hasErrorType', meaning: 'Declared error classification; not causal inheritance' }];
   const edgeLabels = [...new Set(relations.flatMap((relation) => [relation.name, relation.inverse]).filter(Boolean))].sort();
   const typeCounts = Object.fromEntries([...new Set(nodes.map((node) => node.type))].sort().map((type) => [
     type, nodes.filter((node) => node.type === type).length,
@@ -200,6 +218,9 @@ export function normalizeOntology(source) {
 
   return {
     schema: 'lupine-ontology-v1',
+    normalizationVersion: 2,
+    rawAtlas,
+    relationAliases: { inheritsErrorFrom: ['hasDominantErrorType', 'hasErrorType'] },
     source: 'content/ontology/lupine-ontology.json',
     sourceTopLevelKeys: Object.keys(source),
     metadata: clone(source.metadata),

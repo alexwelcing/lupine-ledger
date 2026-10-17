@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeOntology } from './build-ontology.mjs';
@@ -9,6 +10,8 @@ const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_MANIFEST_PATH = path.join(ROOT, 'content', 'latest', 'manifest.json');
 const DEFAULT_ONTOLOGY_PATH = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
 const DEFAULT_OUTPUT_PATH = path.join(ROOT, 'dist', 'data', 'knowledge-graph.json');
+const DEFAULT_BINDINGS_PATH = path.join(ROOT, 'content', 'ontology', 'reviewed-article-bindings.json');
+const REVIEWED_RELATIONS = new Set(['documentsVerificationClaims', 'discussesMagneticModelLimitations']);
 const SCHEMA = 'lupine-library-knowledge-graph-v1';
 const RELATIONS = ['program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic'];
 const CONFIDENCE_VALUES = ['declared', 'derived', 'extracted-reviewed', 'suggested'];
@@ -73,7 +76,40 @@ function link(relation, source, target, details = {}) {
   };
 }
 
-export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, ontology: atlas = null } = {}) {
+export function resolveArticleBindings(catalog, atlas, bindings = [], documents = {}) {
+  const links = [], rejected = [];
+  const digest = value => crypto.createHash('sha256').update(value).digest('hex');
+  const articleIds = new Set((catalog.entries || []).map(e => e.id));
+  const ontologyIds = new Set((atlas?.nodes || []).map(n => n.id));
+  const seen = new Set();
+  for (const binding of bindings) {
+    let reason = null;
+    const text = documents.articles?.[binding.articleId];
+    if (binding.version !== 1 || !binding.id || seen.has(binding.id) ||
+        !REVIEWED_RELATIONS.has(binding.relation) || !binding.reviewedBy || !binding.reviewedOn || !binding.rationale) reason = 'invalid or duplicate reviewed binding';
+    else if (!articleIds.has(binding.articleId) || !ontologyIds.has(binding.ontologyId)) reason = 'missing graph endpoint';
+    else if (typeof text !== 'string' || typeof documents.ontology !== 'string') reason = 'source bytes unavailable';
+    else if (digest(text) !== binding.articleSha256 || digest(documents.ontology) !== binding.ontologySha256) reason = 'stale source hash';
+    else {
+      const headings = [...text.matchAll(/^#{1,6}\s+(.+?)\s*$/gm)].map(m => m[1]);
+      const slug = binding.heading?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      if (!binding.passageAnchor || slug !== binding.passageAnchor || !headings.includes(binding.heading)) reason = 'missing or mismatched passage anchor';
+    }
+    seen.add(binding.id);
+    if (reason) { rejected.push({ id: binding.id || null, reason }); continue; }
+    links.push(link(binding.relation, `article:${binding.articleId}`, `ontology:${binding.ontologyId}`, {
+      id: `reviewed-binding:${binding.id}`, label: binding.relation === 'documentsVerificationClaims' ? 'documents verification claims' : 'discusses magnetic model limitations',
+      passageAnchor: binding.passageAnchor,
+      articleRoute: `#/read/${encodeURIComponent(binding.articleId)}?passage=${encodeURIComponent(binding.passageAnchor)}`,
+      provenance: { source: 'content/ontology/reviewed-article-bindings.json', method: 'reviewed passage-to-concept binding; subject matter only', confidence: 'extracted-reviewed',
+        bindingVersion: binding.version, articleSha256: binding.articleSha256, ontologySha256: binding.ontologySha256,
+        passageAnchor: binding.passageAnchor, reviewedBy: binding.reviewedBy, reviewedOn: binding.reviewedOn, rationale: binding.rationale },
+    }));
+  }
+  return { links, rejected };
+}
+
+export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, ontology: atlas = null, reviewedBindings = [], bindingDocuments = {} } = {}) {
   const categories = [...(catalog.categories || [])].sort((a, b) => a.id.localeCompare(b.id));
   const entries = [...(catalog.entries || [])].sort((a, b) => a.id.localeCompare(b.id));
   const usedStatusIds = [...new Set(entries.map((entry) => entry.status).filter(Boolean))].sort();
@@ -231,9 +267,10 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, 
     source: `ontology:${item.source}`,
     target: `ontology:${item.target}`,
   }));
+  const reviewed = resolveArticleBindings(catalog, atlas, reviewedBindings, bindingDocuments);
   const nodes = [...libraryNodes, ...ontologyNodes].sort(compareId);
-  const links = [...libraryLinks, ...ontologyLinks].sort(compareId);
-  const relationNames = atlas ? [...new Set([...RELATIONS, ...atlas.edgeLabels])].sort() : RELATIONS;
+  const links = [...libraryLinks, ...ontologyLinks, ...reviewed.links].sort(compareId);
+  const relationNames = atlas ? [...new Set([...RELATIONS, ...atlas.edgeLabels, ...reviewed.links.map(l => l.relation)])].sort() : RELATIONS;
   const relationCounts = Object.fromEntries(relationNames.map((relation) => [
     relation,
     links.filter((item) => item.relation === relation).length,
@@ -250,6 +287,7 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, 
     },
     freshness: atlas?.freshness || null,
     ontologyExceptions: atlas?.exceptions || [],
+    reviewedBindings: { accepted: reviewed.links.length, rejected: reviewed.rejected },
     ontology: {
       nodeTypes: {
         corpus: 'Library corpus root',
@@ -265,6 +303,8 @@ export function buildKnowledgeGraph(catalog, { source = {}, generatedAt = null, 
       ])),
       confidenceValues: CONFIDENCE_VALUES,
       atlasRelationDefinitions: atlas?.relations || [],
+      normalizationVersion: atlas?.normalizationVersion || null,
+      relationAliases: atlas?.relationAliases || {},
     },
     perspectives: [
       { id: 'overview', label: 'Overview', relations: ['program', 'contains', 'tagged'] },
@@ -299,18 +339,34 @@ const RELATION_DESCRIPTIONS = {
   grouped: 'Article belongs to a declared group',
   related: 'Articles are suggested as related by at least two shared tags',
   'co-topic': 'Tags co-occur in at least two articles',
+  documentsVerificationClaims: 'Article documents verification claims; not a validity assertion',
+  discussesMagneticModelLimitations: 'Article discusses magnetic-model limitations; not a causal assertion',
 };
 
-export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outputPath = DEFAULT_OUTPUT_PATH } = {}) {
+export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outputPath = DEFAULT_OUTPUT_PATH, bindingsPath = DEFAULT_BINDINGS_PATH, ontologyPath = DEFAULT_ONTOLOGY_PATH } = {}) {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (manifest.schemaVersion !== 'library-content.v1') {
     throw new Error(`Unsupported Library content schema: ${manifest.schemaVersion}`);
   }
-  const atlasSource = JSON.parse(fs.readFileSync(DEFAULT_ONTOLOGY_PATH, 'utf8'));
+  const ontologyText = fs.readFileSync(ontologyPath, 'utf8');
+  const atlasSource = JSON.parse(ontologyText);
+  const bindingManifest = JSON.parse(fs.readFileSync(bindingsPath, 'utf8'));
+  if (bindingManifest.schema !== 'lupine.reviewed_article_bindings.v1' || !Array.isArray(bindingManifest.bindings)) throw new Error('Invalid reviewed binding manifest');
+  const articles = {};
+  for (const binding of bindingManifest.bindings) {
+    const entry = manifest.catalog.entries.find(e => e.id === binding.articleId);
+    if (!entry) continue;
+    const sourcePath = path.resolve(path.dirname(manifestPath), entry.source);
+    const relative = path.relative(path.dirname(manifestPath), sourcePath);
+    if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Article source escapes bundle');
+    if (fs.existsSync(sourcePath)) articles[entry.id] = fs.readFileSync(sourcePath, 'utf8');
+  }
   const graph = buildKnowledgeGraph(manifest.catalog, {
     source: manifest.source,
     generatedAt: manifest.generatedAt,
     ontology: normalizeOntology(atlasSource),
+    reviewedBindings: bindingManifest.bindings,
+    bindingDocuments: { articles, ontology: ontologyText },
   });
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, `${JSON.stringify(graph, null, 2)}\n`);

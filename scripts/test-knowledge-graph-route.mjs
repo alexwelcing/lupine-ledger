@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { parseHashRoute, parseKnowledgeGraphHash } from '../src/knowledgeGraphView.js';
+import { parseHashRoute, parseKnowledgeGraphHash, initialRelationsFor } from '../src/knowledgeGraphView.js';
 
 test('parseHashRoute keeps graph query parameters out of the route name', () => {
   assert.deepEqual(parseHashRoute('#/graph?focus=tag%3Amlip'), { path: 'graph', arg: '' });
@@ -29,4 +29,15 @@ test('parseKnowledgeGraphHash restores graph focus and filter state', () => {
     initialFocus: '',
     initialState: { focusNodeId: 'tag:mlip' },
   });
+});
+
+
+test('ontology filters include classification edges and expand legacy bookmarks', () => {
+  const defaults = initialRelationsFor('ontology');
+  assert.ok(defaults.has('hasDominantErrorType'));
+  assert.ok(defaults.has('hasErrorType'));
+  const legacy = initialRelationsFor('ontology', 'inheritsErrorFrom');
+  assert.deepEqual([...legacy].sort(), ['hasDominantErrorType', 'hasErrorType', 'inheritsErrorFrom'].sort());
+  assert.deepEqual([...initialRelationsFor('ontology', 'hasErrorType')], ['hasErrorType']);
+  assert.equal(initialRelationsFor('ontology', 'none').size, 0);
 });

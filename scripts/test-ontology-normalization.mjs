@@ -40,18 +40,18 @@ test('normalizeOntology preserves all source sections and resolves documented im
     assert.deepEqual(dataset.nodes.filter((item) => item.type === type).map((item) => item.sourceId), ids);
   }
 
-  assert.ok(dataset.nodes.every((item) => ['OBS', 'INF', 'TRN', 'PRP', 'FRC'].includes(item.marker)));
+  assert.ok(dataset.nodes.every((item) => ['OBS', 'INF', 'TRN', 'PRP', 'FRC', 'unspecified'].includes(item.marker)));
   assert.ok(dataset.nodes.every((item) => item.readiness?.grade && item.readiness?.annotation));
   assert.ok(dataset.nodes.every((item) => item.confidence?.grade && item.confidence?.annotation));
   assert.ok(dataset.nodes.every((item) => item.asOf === '2026-07-30'));
 });
 
-test('normalizeOntology emits explicit, resolved FK links and the collision-safe 32-relation vocabulary', () => {
+test('normalizeOntology emits explicit, resolved FK links and the collision-safe versioned relation vocabulary', () => {
   const dataset = normalizeOntology(source);
   const relations = new Set(dataset.edgeLabels);
   const nodeIds = new Set(dataset.nodes.map((item) => item.id));
 
-  assert.equal(dataset.relations.length, 32);
+  assert.equal(dataset.relations.length, 34);
   for (const name of ['claim.correctedBy', 'lever.correctedBy', 'chain.gatedBy', 'program.gatedBy']) {
     assert.ok(relations.has(name), `missing ${name}`);
   }
@@ -93,4 +93,37 @@ test('normalizeOntology preserves all fuzzy time gates and freshness dates', () 
     proofPackStatus: 'Draft',
     verified: source.freshnessLayer.verified,
   });
+});
+
+
+test('v2 normalization preserves raw source and IDs without inventing observations', () => {
+  const before = structuredClone(source);
+  const changed = structuredClone(source);
+  changed.discoveryChains[0].testAnnotation = '[OBS] explicit observation';
+  const plain = normalizeOntology(source);
+  const annotated = normalizeOntology(changed);
+  assert.equal(plain.normalizationVersion, 2);
+  assert.deepEqual(source, before);
+  assert.deepEqual(plain.rawAtlas, before);
+  assert.deepEqual(plain.nodes.map(n => n.id), annotated.nodes.map(n => n.id));
+  assert.equal(plain.nodes.find(n => n.id === 'discoveryChain:C4').marker, 'unspecified');
+  const explicit = annotated.nodes.find(n => n.id === `discoveryChain:${changed.discoveryChains[0].id}`);
+  assert.equal(explicit.marker, 'OBS');
+  assert.equal(explicit.markerAssignment, 'explicit');
+  assert.ok(plain.nodes.some(n => n.markerAssignment === 'heuristic'));
+  assert.ok(plain.nodes.every(n => n.marker !== 'OBS' || n.markerAssignment === 'explicit'));
+  assert.ok(plain.links.filter(l => l.relation === 'markedAs').every(l =>
+    ['explicit', 'heuristic'].includes(l.provenance.assignment)));
+});
+
+test('classification edges are not causal inheritance and retain legacy IDs', () => {
+  const data = normalizeOntology(source);
+  for (const [field, relation] of [['materialClasses.dominantErrorTypes', 'hasDominantErrorType'],
+                                 ['scoreboard.types', 'hasErrorType']]) {
+    const links = data.links.filter(l => l.sourceField === field);
+    assert.ok(links.length);
+    assert.ok(links.every(l => l.relation === relation && l.legacyRelation === 'inheritsErrorFrom'));
+    assert.ok(links.every(l => l.id.startsWith('inheritsErrorFrom:')));
+  }
+  assert.deepEqual(data.relationAliases.inheritsErrorFrom, ['hasDominantErrorType', 'hasErrorType']);
 });

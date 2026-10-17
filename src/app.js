@@ -1,3 +1,7 @@
+import { readerPassage, scrollReaderPassage } from './readerPassage.js';
+import { createPublicSearch } from './publicSearch.js';
+import { publicActivityStore } from './publicActivityStore.js';
+import { renderPublicResearch } from './publicResearchView.js';
 // Lupine Library — mobile-first research reader.
 // Single-page app with hash routing. No framework — dependencies are in the DOM.
 
@@ -12,6 +16,10 @@ import {
   parseLibraryHash,
   serializeLibraryHash,
 } from './libraryFilters.js';
+
+const publicSearch = createPublicSearch();
+const searchBodies = new Map();
+publicActivityStore().subscribe(state => { for (const record of state.records) publicSearch.activity(record); if (document.getElementById('search-dialog')?.open) renderSearchResults(document.getElementById('search-input').value.trim()); });
 
 const BANNERS = [
   {
@@ -416,7 +424,7 @@ async function renderTags() {
 // ───────────────────────────────────────────────────────────────
 // Reader
 // ───────────────────────────────────────────────────────────────
-async function renderReader(id) {
+async function renderReader(id, passage = '') {
   clearActiveView();
   STATE.view = 'reader';
   document.documentElement.dataset.view = 'reader';
@@ -427,7 +435,8 @@ async function renderReader(id) {
   window.scrollTo({ top: 0, behavior: 'instant' });
   try {
     const m = await fetchManifest();
-    const article = await fetchArticle(id);
+    // Reviewed passage anchors are pinned to the English source, not translated headings.
+    const article = await fetchArticle(id, passage ? 'en' : undefined);
     const cat = m.categories.find(c => c.id === article.category);
 
     VIEW.innerHTML = '';
@@ -493,7 +502,9 @@ async function renderReader(id) {
 
     // Restore scroll position if partially read
     const p = STATE.progress[id];
-    if (p && p.scrollTop) {
+    if (passage) {
+      requestAnimationFrame(() => scrollReaderPassage(body, passage));
+    } else if (p && p.scrollTop) {
       // Wait for layout
       requestAnimationFrame(() => window.scrollTo({ top: p.scrollTop, behavior: 'instant' }));
     }
@@ -573,13 +584,18 @@ function route() {
   const hash = location.hash || '#/';
   const { path, arg } = parseHashRoute(hash);
   if (path === 'read' && arg) {
-    renderReader(decodeURIComponent(arg));
+    renderReader(decodeURIComponent(arg), readerPassage(hash));
   } else if (path === 'graph') {
     renderKnowledgeGraph();
   } else if (path === 'tags') {
     renderTags();
   } else if (path === 'system' && arg === 'mlip-flywheel') {
     renderMlipFlywheel();
+  } else if (path === 'research' || path === 'activity') {
+    clearActiveView(); BACK_BTN.hidden = false; setProgress(0);
+    STATE.view = 'research'; document.documentElement.dataset.view = 'research';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    activeViewCleanup = renderPublicResearch(VIEW, path === 'activity' ? decodeURIComponent(arg || '') : null);
   } else if (path === 'reports') {
     renderReports();
   } else {
@@ -635,7 +651,17 @@ document.getElementById('search-close').addEventListener('click', () => searchDi
 searchDialog.addEventListener('click', (e) => { if (e.target === searchDialog) searchDialog.close(); });
 
 async function openSearch() {
-  await Promise.all([fetchManifest(), fetchSearchIndex()]);
+  const [manifest, index] = await Promise.all([fetchManifest(), fetchSearchIndex()]);
+  for (const article of index.articles) publicSearch.article(article, [...searchBodies].filter(([key])=>key.startsWith(`${article.id}:`)).map(([,body])=>body).join(' '));
+  publicActivityStore().refresh();
+  preloadCorpus().then(corpus => {
+    for (const article of corpus.articles) {
+      const body = document.createElement('div'); body.innerHTML = article.html;
+      const meta = manifest.articles.find(a => a.id === article.id);
+      if (meta) { searchBodies.set(`${article.id}:${article.lang || 'en'}`, body.textContent); publicSearch.article(meta, [...searchBodies].filter(([key])=>key.startsWith(`${article.id}:`)).map(([,text])=>text).join(' ')); }
+    }
+    if (searchDialog.open) renderSearchResults(searchInput.value.trim());
+  }).catch(() => { searchHint.textContent = 'Article text unavailable; searching titles and loaded public research.'; });
   searchInput.value = '';
   renderSearchResults('');
   if (typeof searchDialog.showModal === 'function') searchDialog.showModal();
@@ -646,17 +672,10 @@ searchInput?.addEventListener('input', () => renderSearchResults(searchInput.val
 function renderSearchResults(q) {
   const index = STATE.searchIndex;
   if (!index) return;
-  const ql = q.toLowerCase();
-  const list = q
-    ? index.articles
-        .map(a => ({ a, score: scoreMatch(a, ql) }))
-        .filter(x => x.score > 0)
-        .sort((x, y) => y.score - x.score)
-        .map(x => x.a)
-    : index.articles;
+  const list = publicSearch.search(q);
   searchResults.innerHTML = '';
   if (!list.length) {
-    searchHint.textContent = `No results for “${q}”.`;
+    searchHint.textContent = `No results for “${q}” in loaded content. Open Latest research to load older records.`;
     searchHint.classList.add('err');
     return;
   }
@@ -664,13 +683,18 @@ function renderSearchResults(q) {
   searchHint.textContent = q
     ? (list.length === 1 ? t('search.results.one', STATE.settings.lang) : t('search.results.many', STATE.settings.lang, { count: list.length }))
     : t('search.all', STATE.settings.lang);
+  searchHint.textContent += ' · Public articles and loaded research records. Open Latest research to load the archive.';
   for (const a of list.slice(0, 30)) {
     const li = el('li');
-    const link = el('a', { href: `#/read/${a.id}`,
+    const link = el('a', { href: a.route,
       onclick: () => searchDialog.close() });
     link.append(el('div', { class: 'r-title' }, t(a.title, STATE.settings.lang)));
     if (a.subtitle) link.append(el('div', { class: 'r-sub' }, t(a.subtitle, STATE.settings.lang)));
     li.append(link);
+    if (a.supersededBy) {
+      li.append(el('span', { class: 'r-sub' }, 'Superseded record · '));
+      li.append(el('a', { href: `#/activity/${encodeURIComponent(a.supersededBy)}`, onclick: () => searchDialog.close() }, 'Read correction'));
+    }
     searchResults.append(li);
   }
 }

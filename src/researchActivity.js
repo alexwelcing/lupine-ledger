@@ -105,8 +105,12 @@ export function activityFreshness(state, now = Date.now()) {
   else if (!state.feed) mode = 'loading';
   return { mode, stale, newest };
 }
-async function readFeed(response, now) {
-  if (!response.ok || Number(response.headers?.get('content-length')) > MAX_FEED_BYTES) fail();
+export async function readPublicJSON(response) {
+  if (!response.ok) fail();
+  if (Number(response.headers?.get('content-length')) > MAX_FEED_BYTES) {
+    try { await response.body?.cancel(); } catch { /* Reject even if cancellation fails. */ }
+    fail();
+  }
   let raw = '';
   if (response.body?.getReader) {
     const reader = response.body.getReader(), decoder = new TextDecoder();
@@ -123,7 +127,10 @@ async function readFeed(response, now) {
     } finally { reader.releaseLock(); }
   } else { raw = await response.text(); }
   if (encoder.encode(raw).length > MAX_FEED_BYTES) fail();
-  return validateFeed(JSON.parse(raw), now);
+  return JSON.parse(raw);
+}
+async function readFeed(response, now) {
+  return validateFeed(await readPublicJSON(response), now);
 }
 
 // Network data stays separate from the static fallback. A saved successful read

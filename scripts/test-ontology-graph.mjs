@@ -24,7 +24,8 @@ test('buildKnowledgeGraph merges normalized ontology nodes and explicit links', 
   }
   const c4 = graph.nodes.find((node) => node.id === 'ontology:discoveryChain:C4');
   assert.deepEqual(c4.readiness, { grade: 'M', annotation: 'M (L→M boundary)' });
-  assert.equal(c4.marker, 'OBS');
+  assert.equal(c4.marker, 'unspecified');
+  assert.equal(c4.markerAssignment, 'unspecified');
   assert.equal(c4.asOf, '2026-07-30');
   assert.ok(c4.confidence.grade);
 
@@ -33,7 +34,7 @@ test('buildKnowledgeGraph merges normalized ontology nodes and explicit links', 
     link.target === 'ontology:acceptanceTest:Z1' &&
     link.relation === 'chain.gatedBy'
   ));
-  assert.equal(graph.ontology.atlasRelationDefinitions.length, 32);
+  assert.equal(graph.ontology.atlasRelationDefinitions.length, 34);
   assert.ok(graph.ontology.relationTypes['claim.correctedBy']);
   assert.ok(graph.ontology.relationTypes['lever.correctedBy']);
   assert.ok(graph.ontology.relationTypes['chain.gatedBy']);
