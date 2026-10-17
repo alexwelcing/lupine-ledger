@@ -104,3 +104,7 @@ html[data-view="research"] .research-activity-card{margin:20px 0;padding:24px;bo
 .public-research-view .research-activity-refresh{background:#203247;border:1px solid #627d9b;color:#e5e9e5;font:12px/1.5 var(--font-mono);padding:10px 14px;border-radius:9px;cursor:pointer}
 .public-research-view .research-activity-refresh:hover:not(:disabled){background:#2c435d;border-color:#a6b8dc}
 .public-research-view .research-activity-refresh:disabled{opacity:.6;cursor:wait}
+
+.reader-source-snapshot{font:11px/1.6 var(--font-mono);color:#a8b9d0;max-width:80ch;margin:16px 0 0}
+.reader-source-snapshot a,.reader-source-snapshot a:visited{color:#bdd3ee;text-underline-offset:3px}
+.reader-source-snapshot a:focus-visible{outline:2px solid #bcc9ff;outline-offset:4px}

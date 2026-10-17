@@ -14,6 +14,7 @@ import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
 import { loadResearchActivity } from './research-activity-build.mjs';
+import { contentSourceSnapshot } from './content-provenance.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -37,6 +38,7 @@ function loadContentConfig() {
       catalog: manifest.catalog,
       repoRoot: bundleRoot,
       contentVersion: manifest.source?.commit || manifest.generatedAt,
+      sourceSnapshot: contentSourceSnapshot(manifest),
     };
   }
   if (process.env.ALLOW_LEGACY_CATALOG !== '1') {
@@ -50,6 +52,7 @@ function loadContentConfig() {
       ? path.resolve(process.env.LIBRARY_CONTENT_ROOT)
       : ROOT,
     contentVersion: null,
+    sourceSnapshot: null,
   };
 }
 
@@ -57,6 +60,7 @@ const {
   catalog: CATALOG,
   repoRoot: REPO_ROOT,
   contentVersion: CONTENT_VERSION,
+  sourceSnapshot: SOURCE_SNAPSHOT,
 } = loadContentConfig();
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
@@ -478,6 +482,7 @@ function build() {
   const manifest = {
     version,
     generatedAt: new Date().toISOString(),
+    sourceSnapshot: SOURCE_SNAPSHOT,
     categories: CATALOG.categories,
     statuses: CATALOG.statuses || {},
     journeys: CATALOG.journeys || [],

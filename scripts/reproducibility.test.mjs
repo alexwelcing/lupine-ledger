@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { contentSourceSnapshot } from './content-provenance.mjs';
 import { normalizeOntology } from './build-ontology.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -43,4 +44,16 @@ test('ontology formal-proof inventory matches the current Lean evidence plane', 
   assert.equal(formalProof.inventoryAsOf, generated.counted_at);
   assert.equal(formalProof.sorryCount, 0);
   assert.equal(generated.zero_sorry, true);
+});
+
+
+test('content export provenance retains its own clock and dirty source identity', () => {
+  const source = { repo: 'lupine-rhizo', commit: 'a'.repeat(40), dirty: true, generator: 'export.mjs' };
+  const original = { generatedAt: '2026-10-08T05:26:57.098Z', source };
+  const manifest = { generatedAt: '2026-10-17T18:00:00.000Z', sourceSnapshot: contentSourceSnapshot(original) };
+  assert.deepEqual(manifest.sourceSnapshot, { exportedAt: original.generatedAt, source });
+  assert.notEqual(manifest.sourceSnapshot.exportedAt, manifest.generatedAt);
+  assert.equal(contentSourceSnapshot({ source: {} }).exportedAt, null);
+  assert.equal(contentSourceSnapshot({ source: {} }).source.dirty, null);
+  assert.equal(contentSourceSnapshot(null), null);
 });

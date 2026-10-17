@@ -460,6 +460,13 @@ async function renderReader(id, passage = '') {
     meta.append(el('span', {}, `${article.words.toLocaleString()} ${t('home.stats.words', STATE.settings.lang)}`));
     if (article.source) meta.append(el('span', { class: 'tag' }, article.source));
     head.append(meta);
+    const snapshot = m.sourceSnapshot;
+    const snapshotDate = typeof snapshot?.exportedAt === 'string' && Number.isFinite(Date.parse(snapshot.exportedAt))
+      ? snapshot.exportedAt.slice(0, 10) : t('reader.sourceSnapshot.unknown', STATE.settings.lang);
+    const snapshotNotice = el('p', { class: 'reader-source-snapshot' },
+      t('reader.sourceSnapshot.notice', STATE.settings.lang, { date: snapshotDate }));
+    snapshotNotice.append(document.createTextNode(' '), el('a', { href: '#/research' }, t('reader.sourceSnapshot.latest', STATE.settings.lang)));
+    head.append(snapshotNotice);
     root.append(head);
 
     // Extracted Knowledge Panel

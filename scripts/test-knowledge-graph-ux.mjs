@@ -48,3 +48,16 @@ test('mobile graph controls and SVG nodes expose 44px touch targets without over
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.kg-mode,[\s\S]*\.kg-relation-chip[\s\S]*min-height:\s*44px/);
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.kg-toolbar[\s\S]*min-width:\s*0/);
 });
+
+
+test('reviewed article bindings have translated relation filter labels in both languages', () => {
+  const bindings = JSON.parse(read('../content/ontology/reviewed-article-bindings.json')).bindings;
+  assert.ok(bindings.length > 0);
+  for (const relation of new Set(bindings.map(binding => binding.relation))) {
+    const key = `graph.relation.${relation}`;
+    for (const lang of ['en', 'zh']) {
+      assert.notEqual(t(key, lang), key, `missing ${lang} relation filter translation for ${relation}`);
+      assert.ok(t(key, lang).trim());
+    }
+  }
+});
