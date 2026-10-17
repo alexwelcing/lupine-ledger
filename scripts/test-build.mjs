@@ -53,6 +53,14 @@ assertExists('researchActivity.js', 'public activity contract');
 assertExists('researchActivityConfig.js', 'public activity endpoint');
 assertExists('styles.css', 'styles.css');
 assertExists('sw.js', 'service worker');
+for (const module of ['publicSearch.js', 'publicActivityStore.js', 'publicResearchView.js', 'readerPassage.js']) {
+  assertExists(module, 'public search/research dependency');
+  if (fs.existsSync(path.join(DIST, 'sw.js'))) {
+    const sw = fs.readFileSync(path.join(DIST, 'sw.js'), 'utf8');
+    const shell = sw.match(/const SHELL_ASSETS = (\[[\s\S]*?\]);/)?.[1] || '';
+    if (!shell.includes(`'/${module}'`)) errors.push(`public module absent from shell precache: ${module}`);
+  }
+}
 
 // ── SEO / metadata ──
 assertExists('robots.txt', 'robots.txt');

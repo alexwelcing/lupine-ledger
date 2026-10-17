@@ -1,5 +1,5 @@
-import { activityFreshness, createActivityController } from './researchActivity.js';
-import { researchActivityEndpoint } from './researchActivityConfig.js';
+import { activityFreshness } from './researchActivity.js';
+import { publicActivityStore } from './publicActivityStore.js';
 
 function node(tag, className, content) {
   const element = document.createElement(tag);
@@ -16,13 +16,15 @@ function list(title, values, className = '') {
   const section = node('div', className); section.append(node('h4', '', title));
   const ul = node('ul'); values.forEach(value => ul.append(node('li', '', value))); section.append(ul); return section;
 }
-function renderRecord(record, index) {
+export function renderRecord(record, index = 0) {
   const card = node('article', 'research-activity-card');
   const meta = node('div', 'research-activity-tags');
   meta.append(node('span', `research-state research-state-${record.state}`, record.state));
   meta.append(node('span', '', { archived_analysis: 'Archived-data analysis', research_cycle: 'Research discussion', workflow_repair: 'Workflow repair' }[record.evidenceKind]));
   meta.append(node('span', '', { pending: 'Verification pending', arithmetic_checked: 'Arithmetic checked', source_checked: 'Sources checked' }[record.verification]));
-  card.append(meta, node('h3', '', record.title), node('p', 'research-activity-summary', record.summary));
+  const title = node('h3'); const permalink = node('a', '', record.title);
+  permalink.href = `#/activity/${encodeURIComponent(record.id)}`; title.append(permalink);
+  card.append(meta, title, node('p', 'research-activity-summary', record.summary));
   const timestamps = node('div', 'research-activity-times');
   timestamps.append(time('Observed', record.observedAt), time('Reviewed', record.reviewedAt)); card.append(timestamps);
   const evidence = node('details', 'research-activity-detail');
@@ -65,12 +67,9 @@ export function renderResearchActivity(mount) {
   const intro = node('p', 'research-activity-intro', 'Questions, checked findings and next tests from the research team. Only reviewed public summaries appear here.');
   const status = node('div', 'research-activity-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   const content = node('div', 'research-activity-records'); section.append(header, intro, status, content); mount.append(section);
-  let storage;
-  try { storage = localStorage; } catch { /* Storage may be disabled. */ }
   let lastFeed = null;
-  const controller = createActivityController({ endpoint: researchActivityEndpoint, storage,
-    online: () => navigator.onLine,
-    onChange(state) {
+  const controller = publicActivityStore();
+  const unsubscribe = controller.subscribe(state => {
       const freshness = activityFreshness(state);
       section.dataset.freshness = freshness.mode;
       refresh.disabled = state.refreshing; refresh.textContent = state.refreshing ? 'Checking…' : 'Refresh';
@@ -99,17 +98,16 @@ export function renderResearchActivity(mount) {
           if (state.feed.truncated) content.append(node('p', 'research-activity-empty', 'Showing the latest reviewed activities. Earlier records remain in the research ledger.'));
         }
       }
-    },
   });
   const check = () => controller.refresh();
   const visible = () => { if (!document.hidden) check(); };
   refresh.addEventListener('click', check);
   document.addEventListener('visibilitychange', visible);
   window.addEventListener('online', visible);
-  const interval = setInterval(visible, 60_000);
+  const archiveLink = node('a', '', 'Browse research and history →'); archiveLink.href = '#/research'; section.append(archiveLink);
   check();
   return () => {
-    controller.dispose(); clearInterval(interval);
+    unsubscribe();
     refresh.removeEventListener('click', check); document.removeEventListener('visibilitychange', visible); window.removeEventListener('online', visible);
   };
 }

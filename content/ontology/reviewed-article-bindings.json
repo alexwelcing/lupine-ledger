@@ -1,0 +1,33 @@
+{
+  "schema": "lupine.reviewed_article_bindings.v1",
+  "bindings": [
+    {
+      "id": "formal-proof-ledger-documents-formal-proof",
+      "version": 1,
+      "articleId": "formal-proof-ledger",
+      "articleSha256": "e84263fe8706cc3cebd81bc7fd13b77a58e7028c2224653077907bb0a2ed3d2b",
+      "passageAnchor": "verdicts",
+      "heading": "Verdicts",
+      "ontologyId": "formalProof:FP1",
+      "ontologySha256": "153078c1a3e6d2a01539030fb79e9eeca2136046902f87aa43048f3adf35ea3e",
+      "relation": "documentsVerificationClaims",
+      "reviewedBy": "Codex internal source review; implementation authorized by coordinating chat",
+      "reviewedOn": "2026-10-17",
+      "rationale": "The Verdicts passage documents claimed formal-verification scope. This link asserts subject matter only, not current compilation, proof validity or empirical truth."
+    },
+    {
+      "id": "fe-outlier-discusses-magnetic-model-limitations",
+      "version": 1,
+      "articleId": "hyp-fe-persistent-outlier",
+      "articleSha256": "d69cd3d41e51e2b608f4a5e95ca29d2cd0eb4220a2b46e30b15c1285eb088fad",
+      "passageAnchor": "current-status-after-born-screening",
+      "heading": "Current status after Born screening",
+      "ontologyId": "materialClass:MC6",
+      "ontologySha256": "153078c1a3e6d2a01539030fb79e9eeca2136046902f87aa43048f3adf35ea3e",
+      "relation": "discussesMagneticModelLimitations",
+      "reviewedBy": "Codex internal source review; implementation authorized by coordinating chat",
+      "reviewedOn": "2026-10-17",
+      "rationale": "The passage discusses Fe as a narrowed magnetic failure-mode suspect. This is a topical link, not proof of a magnetic cause or transfer to all magnets/rare-earth-free materials."
+    }
+  ]
+}

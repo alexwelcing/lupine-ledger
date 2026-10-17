@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ONTOLOGY_PATH = path.join(ROOT, 'dist', 'data', 'ontology.json');
 const REQUIRED_TYPES = ['errorType', 'materialClass', 'discoveryChain', 'acceptanceTest', 'emblem', 'scoreboardRow', 'timeGate', 'falsifier'];
-const MARKERS = new Set(['OBS', 'INF', 'TRN', 'PRP', 'FRC']);
+const MARKERS = new Set(['OBS', 'INF', 'TRN', 'PRP', 'FRC', 'unspecified']);
 
 function issue(message, details = null) {
   return { message, details };
@@ -21,13 +21,17 @@ export function validateOntology(ontology) {
   const duplicates = nodes.filter((node, index) => nodes.findIndex((other) => other.id === node.id) !== index).map((node) => node.id);
   const badLinks = links.filter((link) => !nodeIds.has(link.source) || !nodeIds.has(link.target) || !relationLabels.has(link.relation));
   const missingChrome = nodes.filter((node) =>
-    !MARKERS.has(node.marker) || !node.readiness?.grade || !node.readiness?.annotation ||
+    !MARKERS.has(node.marker) || !['explicit', 'heuristic', 'unspecified'].includes(node.markerAssignment) || !node.markerReason || !node.readiness?.grade || !node.readiness?.annotation ||
     !node.confidence?.grade || !node.confidence?.annotation || !node.asOf
   );
 
   if (ontology.schema !== 'lupine-ontology-v1') errors.push(issue('unexpected ontology schema', ontology.schema));
+  if (ontology.normalizationVersion !== 2) errors.push(issue('unexpected normalization version', ontology.normalizationVersion));
+  if (!ontology.rawAtlas || !ontology.relationAliases?.inheritsErrorFrom) errors.push(issue('missing raw atlas or legacy relation aliases'));
+  if (nodes.some(n => n.marker === 'OBS' && n.markerAssignment !== 'explicit')) errors.push(issue('observation marker requires explicit source annotation'));
+  if (links.some(l => l.relation === 'inheritsErrorFrom' && ['materialClasses.dominantErrorTypes', 'scoreboard.types'].includes(l.sourceField))) errors.push(issue('classification represented as inheritance'));
   if (ontology.sourceTopLevelKeys?.length !== 27) errors.push(issue('ontology source section count is not 27', ontology.sourceTopLevelKeys?.length));
-  if (ontology.relations?.length !== 32) errors.push(issue('ontology relation definition count is not 32', ontology.relations?.length));
+  if (ontology.relations?.length !== 34) errors.push(issue('ontology relation definition count is not 34', ontology.relations?.length));
   if (ontology.stats?.superClassCount !== 37) errors.push(issue('ontology superclass count is not 37', ontology.stats?.superClassCount));
   if (duplicates.length) errors.push(issue('ontology has duplicate node ids', duplicates));
   if (badLinks.length) errors.push(issue('ontology has invalid links', badLinks.slice(0, 10)));

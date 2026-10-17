@@ -1,3 +1,4 @@
+import { reviewedPassageRoute } from './readerPassage.js';
 import { t } from './i18n.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -14,8 +15,8 @@ const MODE_RELATIONS = {
   overview: new Set(['program', 'contains', 'tagged']),
   topics: new Set(['tagged', 'co-topic']),
   lifecycle: new Set(['program', 'contains', 'lifecycle', 'grouped']),
-  ontology: new Set(['isA', 'partOf', 'inheritsErrorFrom', 'readinessJudgedBy', 'chain.gatedBy', 'markedAs']),
-  local: new Set(['program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic']),
+  ontology: new Set(['isA', 'partOf', 'inheritsErrorFrom', 'hasDominantErrorType', 'hasErrorType', 'documentsVerificationClaims', 'discussesMagneticModelLimitations', 'readinessJudgedBy', 'chain.gatedBy', 'markedAs']),
+  local: new Set(['documentsVerificationClaims', 'discussesMagneticModelLimitations', 'program', 'contains', 'tagged', 'lifecycle', 'grouped', 'related', 'co-topic']),
 };
 
 
@@ -138,13 +139,14 @@ function setEquals(a, b) {
   return true;
 }
 
-function initialRelationsFor(mode, relationParam) {
+export function initialRelationsFor(mode, relationParam) {
   const allowed = MODE_RELATIONS[mode] || MODE_RELATIONS.overview;
   if (relationParam === 'none') return new Set(); // explicit empty filter set
   if (!relationParam) return new Set(allowed);
   const requested = String(relationParam)
     .split(',')
-    .map(item => item.trim())
+    .flatMap(item => item.trim() === 'inheritsErrorFrom'
+      ? ['inheritsErrorFrom', 'hasDominantErrorType', 'hasErrorType'] : [item.trim()])
     .filter(item => allowed.has(item));
   return new Set(requested.length ? requested : allowed);
 }
@@ -580,6 +582,11 @@ export async function renderKnowledgeGraphView(mount, {
           el('span', { class: 'kg-relation-label' }, other.label),
           el('span', { class: 'kg-relation-kind' }, `${relationLabel(link, lang)}${link.evidence ? `: ${link.evidence}` : ''}`)
         ));
+        const passageRoute = reviewedPassageRoute(link);
+        if (passageRoute) list.append(el('a', {
+          class: 'kg-read-link', href: passageRoute,
+          title: link.provenance.rationale,
+        }, 'Read reviewed source passage'));
       }
       relationPanel.append(list);
     }
