@@ -3,6 +3,7 @@ import { readerPassage, scrollReaderPassage } from './readerPassage.js';
 import { createPublicSearch } from './publicSearch.js';
 import { publicActivityStore } from './publicActivityStore.js';
 import { renderPublicResearch } from './publicResearchView.js';
+import { renderResearchConnections } from './researchConnectionsView.js';
 // Lupine Library — mobile-first research reader.
 // Single-page app with hash routing. No framework — dependencies are in the DOM.
 
@@ -468,6 +469,8 @@ async function renderReader(id, passage = '') {
       t('reader.sourceSnapshot.notice', STATE.settings.lang, { date: snapshotDate }));
     snapshotNotice.append(document.createTextNode(' '), el('a', { href: '#/research' }, t('reader.sourceSnapshot.latest', STATE.settings.lang)));
     head.append(snapshotNotice);
+    const connectionLink = el('a', { class: 'reader-connections-link', href: `#/graph/${encodeURIComponent('article:' + article.id)}?mode=local` }, 'Explore this article’s connections ↗');
+    head.append(connectionLink);
     root.append(head);
 
     // Extracted Knowledge Panel
@@ -595,6 +598,12 @@ function route() {
     renderReader(decodeURIComponent(arg), readerPassage(hash));
   } else if (path === 'graph') {
     renderKnowledgeGraph();
+  } else if (path === 'connections') {
+    clearActiveView(); BACK_BTN.hidden = false; setProgress(0);
+    STATE.view = 'connections'; document.documentElement.dataset.view = 'connections';
+    STATE.currentId = null;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    activeViewCleanup = renderResearchConnections(VIEW);
   } else if (path === 'tags') {
     renderTags();
   } else if (path === 'system' && arg === 'mlip-flywheel') {

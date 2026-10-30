@@ -6,7 +6,12 @@ export function renderPublicResearch(mount, id = null, store = publicActivitySto
   let history = false; const priorRequests = new Set(); let disposed=false,questionScrolled=false;
   mount.classList.add('public-research-view');
   const heading=document.createElement('h1'); heading.textContent=id?'Research record':'Latest reviewed research';
-  const nav=document.createElement('p'), link=document.createElement('a'); link.href='#/research'; link.textContent='Research archive'; nav.append(link);
+  const nav=document.createElement('nav'), link=document.createElement('a'); link.href='#/research'; link.textContent='Research archive'; nav.className='public-research-navigation';nav.setAttribute('aria-label','Research navigation');nav.append(link);
+  const connections=document.createElement('a');connections.href=id?`#/connections?report=${encodeURIComponent(id)}`:'#/connections';connections.textContent=id?'See this report in context':'Explore connections';nav.append(connections);
+  const feature=document.createElement('section');feature.className='connections-archive-feature';
+  const featureTitle=document.createElement('h2');featureTitle.textContent='Follow a question through the research.';
+  const featureText=document.createElement('p');featureText.textContent='See the reports together, trace their follow-up questions, and discover the sources they share.';
+  const featureLink=document.createElement('a');featureLink.href='#/connections';featureLink.textContent='Explore research connections →';feature.append(featureTitle,featureText,featureLink);
   const status=document.createElement('p'); status.setAttribute('role','status');
   const content=document.createElement('div');
   const more=document.createElement('button'); more.textContent='Load more research'; more.type='button';
@@ -15,7 +20,7 @@ export function renderPublicResearch(mount, id = null, store = publicActivitySto
   const controls=document.createElement('div');controls.className='public-research-controls';
   refresh.className=toggle.className=more.className='research-activity-refresh';
   controls.append(refresh,toggle);
-  mount.replaceChildren(heading,nav,status,controls,content,more);
+  mount.replaceChildren(heading,nav,...(id?[]:[feature]),status,controls,content,more);
   const paint=state=>{
     const successors=new Map(state.records.filter(r=>r.supersedes).map(r=>[r.supersedes,r.id]));
     const superseded=new Set(successors.keys());
