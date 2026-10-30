@@ -90,6 +90,12 @@ export function generateLlmsFull(catalog, ontology) {
     '- Library manifest: /data/library.json',
     '- Sitemap: /sitemap.xml',
     '- Structured brand metadata: /brand.json',
+    '- Live reviewed research: https://glim-think-v1.aw-ab5.workers.dev/research/activity?limit=20',
+    '- Snapshot-paged public archive: https://glim-think-v1.aw-ab5.workers.dev/research/activity/archive?after=0&limit=50',
+    '- Public research knowledge graph: https://glim-think-v1.aw-ab5.workers.dev/research/knowledge',
+    '- Exact record: /research/activity/<id> on the research origin. Full evidence: /research/activity/<id>/evidence.',
+    '- Full report schema: lupine.public_discovery_report.v1. Verify SHA-256 of exact response bytes against the record hash labelled Public evidence before use.',
+    '- Automated contract review is not external peer review or empirical validation. Retain correction history, original observation times, source provenance and incomplete archive coverage.',
     '',
   );
   return `${lines.join('\n')}\n`;

@@ -14,6 +14,9 @@ function object(value, required, optional = []) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || required.some(k => !Object.hasOwn(value, k)) ||
       Object.keys(value).some(k => !required.includes(k) && !optional.includes(k))) fail();
 }
+export function isPublicText(value) {
+  return typeof value === 'string' && value.length > 0 && value === value.trim() && !PRIVATE_TEXT.test(value) && !CREDENTIAL.test(value);
+}
 function text(value, max) {
   if (typeof value !== 'string' || !value.length || value.length > max || value !== value.trim() || PRIVATE_TEXT.test(value) || CREDENTIAL.test(value)) fail();
 }

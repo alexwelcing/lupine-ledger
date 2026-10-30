@@ -25,6 +25,8 @@ const SHELL_ASSETS = [
   '/app.js',
   '/publicSearch.js',
   '/publicActivityStore.js',
+  '/publicResearchEvidence.js',
+  '/publicResearchEvidenceView.js',
   '/publicResearchView.js',
   '/readerPassage.js',
   '/universeView.js',

@@ -32,7 +32,7 @@ assert.match(llmsFull, /figure caption says 33/);
 const searchIndex = generateSearchIndex(catalog);
 assert.deepEqual(searchIndex, generateSearchIndex(catalog), 'search-index generation must be deterministic');
 assert.equal(searchIndex.schemaVersion, 'library-search-index.v1');
-assert.equal(searchIndex.articles.length, 94);
+assert.equal(searchIndex.articles.length, catalog.entries.length);
 assert.deepEqual(searchIndex.articles.map((article) => article.id), articleIds);
 for (const [index, article] of searchIndex.articles.entries()) {
   const source = catalog.entries[index];
@@ -50,4 +50,4 @@ const sitemapArticleIds = [...sitemap.matchAll(/<loc>https:\/\/library\.lupine\.
   .filter((id) => articleIds.includes(id));
 assert.deepEqual(sitemapArticleIds, articleIds, 'sitemap must contain one valid data route per manifest article');
 
-console.log('[ok] deterministic machine indexes cover all 94 manifest articles.');
+console.log(`[ok] deterministic machine indexes cover all ${catalog.entries.length} manifest articles.`);

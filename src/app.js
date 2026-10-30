@@ -1,3 +1,4 @@
+import { publicResearchQuestion } from './publicResearchEvidence.js';
 import { readerPassage, scrollReaderPassage } from './readerPassage.js';
 import { createPublicSearch } from './publicSearch.js';
 import { publicActivityStore } from './publicActivityStore.js';
@@ -19,7 +20,7 @@ import {
 
 const publicSearch = createPublicSearch();
 const searchBodies = new Map();
-publicActivityStore().subscribe(state => { for (const record of state.records) publicSearch.activity(record); if (document.getElementById('search-dialog')?.open) renderSearchResults(document.getElementById('search-input').value.trim()); });
+publicActivityStore().subscribe(state => { for (const record of state.records) { publicSearch.activity(record); if(state.evidence?.[record.id]?.status==='verified')publicSearch.evidence(record,state.evidence[record.id].evidence); } if (document.getElementById('search-dialog')?.open) renderSearchResults(document.getElementById('search-input').value.trim()); });
 
 const BANNERS = [
   {
@@ -602,7 +603,7 @@ function route() {
     clearActiveView(); BACK_BTN.hidden = false; setProgress(0);
     STATE.view = 'research'; document.documentElement.dataset.view = 'research';
     window.scrollTo({ top: 0, behavior: 'instant' });
-    activeViewCleanup = renderPublicResearch(VIEW, path === 'activity' ? decodeURIComponent(arg || '') : null);
+    activeViewCleanup = renderPublicResearch(VIEW, path === 'activity' ? decodeURIComponent(arg || '') : null, publicActivityStore(), publicResearchQuestion(hash));
   } else if (path === 'reports') {
     renderReports();
   } else {

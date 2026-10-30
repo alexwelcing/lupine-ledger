@@ -1,3 +1,4 @@
+import { validatePublicEvidence } from './publicResearchEvidence.js';
 import { validateActivity } from './researchActivity.js';
 const words = value => String(value || '').normalize('NFKC').toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
 const text = value => typeof value === 'string' ? value : Object.values(value || {}).join(' ');
@@ -16,6 +17,11 @@ export function createPublicSearch() {
         supersedes: record.supersedes, correctionReason: record.correctionReason,
         subtitle: record.summary, observedAt: record.observedAt, route: `#/activity/${encodeURIComponent(record.id)}`,
         body: [record.title, record.summary, record.correctionReason || '', ...record.findings, ...record.limitations, record.nextStep].join(' ') });
+    },
+    evidence(record,evidence) {
+      validatePublicEvidence(evidence,record); const existing=records.get(`activity:${record.id}`); if(!existing)return;
+      const r=evidence.report;
+      put({...existing,body:[existing.body,r.summary,evidence.topic.question,...r.claims.map(c=>c.statement),...r.concepts.map(c=>c.name),...r.assessments.map(a=>a.reason),...r.questions,...r.queries,evidence.provenance.model].join(' ')});
     },
     remove(key) { records.delete(key); },
     search(query) {

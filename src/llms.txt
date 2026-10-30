@@ -72,3 +72,14 @@ refutations, LUPI evidence routes, Library updates, and agent-readable files.
 
 - Full agent guide: /llms-full.txt
 - Structured brand metadata: /brand.json
+
+## Continuously published research
+
+- Library journal: https://library.lupine.science/#/research
+- Latest public records: https://glim-think-v1.aw-ab5.workers.dev/research/activity?limit=20
+- Snapshot-bound archive: https://glim-think-v1.aw-ab5.workers.dev/research/activity/archive?after=0&limit=50
+- Public research knowledge: https://glim-think-v1.aw-ab5.workers.dev/research/knowledge
+- Exact record: /research/activity/<id> on the research origin. Full report: /research/activity/<id>/evidence.
+- Full reports use lupine.public_discovery_report.v1. Verify exact response bytes against the record's SHA-256 labelled Public evidence.
+- Automated contract review is not external peer review or empirical validation. Preserve limitations, source hashes, corrections and the original observation clock.
+- The live research graph is separate from the curated article graph; bounded loaded records do not imply complete archive coverage.

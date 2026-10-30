@@ -25,6 +25,7 @@ and qualifications determine what that label supports.
 
 | Report date | Report | Catalog status | What to look for |
 | --- | --- | --- | --- |
+| 2026-10-26 | [Cloudflare research team study](./research-progress/2026-10-26-cloudflare-research-team.md) | Retrospective case study | Scientific results, per-agent report sizes and model participation; preserved failures and limits of independent validation. |
 | 2026-07-24 | [Z1 Union Campaign — Verdict](./analysis/z1-union-campaign-verdict.md) | Supported | Same-engine self-consistency, with external-reference accuracy and remaining gates explicitly separated. |
 | 2026-07-24 | [Z1 Union Campaign — Cost Ledger](./analysis/z1-union-cost-ledger.md) | Supported | Measured wall time, assumed price rates, and per-path costs. This is not a cloud invoice. |
 | 2026-07-19 | [Z1 Barrier Campaign — Round 4](./validation/z1-barrier-campaign-round4-results.md) | Refuted by us | The preregistered accuracy gate failed on both precision chains; incomplete paths remain visible. |
