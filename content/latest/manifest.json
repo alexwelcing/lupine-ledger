@@ -1,11 +1,11 @@
 {
   "schemaVersion": "library-content.v1",
-  "generatedAt": "2026-10-26T13:53:42.020828+00:00",
+  "generatedAt": "2026-10-31T20:37:24.102512+00:00",
   "source": {
     "repo": "lupine-rhizo",
-    "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
-    "dirty": true,
-    "generator": "reviewed article projection from verified existing Library bundle and selected science source"
+    "commit": "cc8dd7f056dd2e2b7f47ca0d20bbf7228887648b",
+    "dirty": false,
+    "generator": "additive reviewed export: retained October 26 bundle plus October 31 LAMMPS source study and explicit research-index reconciliation"
   },
   "catalog": {
     "statuses": {
@@ -288,6 +288,31 @@
     ],
     "entries": [
       {
+        "id": "lammps-code-to-experiment",
+        "source": "articles/docs/research-programs/lammps-code-to-experiment.md",
+        "originalSource": "docs/research-programs/lammps-code-to-experiment.md",
+        "title": "LAMMPS as a research instrument: from source code to trustworthy experiments",
+        "subtitle": "Read the force and stress calculation paths, qualify the simulation tool, and turn implementation choices into falsifiable experiments.",
+        "category": "methods",
+        "status": "open",
+        "tags": [
+          "lammps",
+          "molecular-dynamics",
+          "methods",
+          "validation",
+          "provenance",
+          "mlip",
+          "force-consistency",
+          "stress"
+        ],
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "cc8dd7f056dd2e2b7f47ca0d20bbf7228887648b",
+          "dirty": false,
+          "scope": "New locally reviewed source study and explicit index reconciliation; no simulation or hosted research-team inference."
+        }
+      },
+      {
         "id": "cloudflare-research-team",
         "source": "articles/docs/research-progress/2026-10-26-cloudflare-research-team.md",
         "title": "A Cloudflare research team for materials science",
@@ -300,7 +325,15 @@
           "operational-analysis",
           "corrections"
         ],
-        "originalSource": "docs/research-progress/2026-10-26-cloudflare-research-team.md"
+        "originalSource": "docs/research-progress/2026-10-26-cloudflare-research-team.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "cloudflare-research-team-methods",
@@ -314,7 +347,15 @@
           "provenance",
           "reproducibility"
         ],
-        "originalSource": "docs/research-progress/2026-10-26-cloudflare-research-team-methods.md"
+        "originalSource": "docs/research-progress/2026-10-26-cloudflare-research-team-methods.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "readme",
@@ -325,7 +366,15 @@
         "tags": [
           "overview"
         ],
-        "originalSource": "README.md"
+        "originalSource": "README.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "glossary",
@@ -337,7 +386,15 @@
           "glossary",
           "reference"
         ],
-        "originalSource": "GLOSSARY.md"
+        "originalSource": "GLOSSARY.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "research-index",
@@ -351,7 +408,14 @@
           "research-progress",
           "evidence"
         ],
-        "originalSource": "docs/research-index.md"
+        "originalSource": "docs/research-index.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "cc8dd7f056dd2e2b7f47ca0d20bbf7228887648b",
+          "dirty": false,
+          "scope": "New locally reviewed source study and explicit index reconciliation; no simulation or hosted research-team inference.",
+          "inheritedManifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d"
+        }
       },
       {
         "id": "navigation",
@@ -363,7 +427,15 @@
           "navigation",
           "reference"
         ],
-        "originalSource": "docs/navigation.md"
+        "originalSource": "docs/navigation.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "data-provenance",
@@ -376,7 +448,15 @@
           "data",
           "trust"
         ],
-        "originalSource": "docs/data-provenance.md"
+        "originalSource": "docs/data-provenance.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "internal-science-program",
@@ -389,7 +469,15 @@
           "agenda",
           "vision"
         ],
-        "originalSource": "docs/internal-science-program.md"
+        "originalSource": "docs/internal-science-program.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "public-approach",
@@ -402,7 +490,15 @@
           "strategy",
           "roadmap"
         ],
-        "originalSource": "docs/PUBLIC.md"
+        "originalSource": "docs/PUBLIC.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "conjecture-ledger",
@@ -416,7 +512,15 @@
           "overview"
         ],
         "group": "hypotheses",
-        "originalSource": "docs/conjectures/ledger.md"
+        "originalSource": "docs/conjectures/ledger.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-hyper-ribbon-universality",
@@ -430,7 +534,15 @@
         ],
         "group": "hypotheses",
         "status": "supported",
-        "originalSource": "docs/conjectures/hyper-ribbon-universality.md"
+        "originalSource": "docs/conjectures/hyper-ribbon-universality.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-hyper-ribbon-mlip-transfer",
@@ -445,7 +557,15 @@
         ],
         "group": "hypotheses",
         "status": "open",
-        "originalSource": "docs/conjectures/hyper-ribbon-mlip-transfer.md"
+        "originalSource": "docs/conjectures/hyper-ribbon-mlip-transfer.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-cross-mlip-orthogonal-errors",
@@ -460,7 +580,15 @@
         ],
         "group": "hypotheses",
         "status": "supported",
-        "originalSource": "docs/conjectures/cross-mlip-orthogonal-errors.md"
+        "originalSource": "docs/conjectures/cross-mlip-orthogonal-errors.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-au-mlip-escape",
@@ -475,7 +603,15 @@
         ],
         "group": "hypotheses",
         "status": "open",
-        "originalSource": "docs/conjectures/au-mlip-escape.md"
+        "originalSource": "docs/conjectures/au-mlip-escape.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-fe-persistent-outlier",
@@ -490,7 +626,15 @@
         ],
         "group": "hypotheses",
         "status": "open",
-        "originalSource": "docs/conjectures/fe-persistent-outlier.md"
+        "originalSource": "docs/conjectures/fe-persistent-outlier.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-dband-correlation",
@@ -505,7 +649,15 @@
         ],
         "group": "hypotheses",
         "status": "refuted",
-        "originalSource": "docs/conjectures/dband-correlation.md"
+        "originalSource": "docs/conjectures/dband-correlation.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-meam-intrinsic-2d",
@@ -520,7 +672,15 @@
         ],
         "group": "hypotheses",
         "status": "refuted",
-        "originalSource": "docs/conjectures/meam-intrinsic-2d.md"
+        "originalSource": "docs/conjectures/meam-intrinsic-2d.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "hyp-bccfcc-causal-shield",
@@ -536,7 +696,15 @@
         ],
         "group": "hypotheses",
         "status": "self-corrected",
-        "originalSource": "docs/conjectures/bccfcc-causal-shield.md"
+        "originalSource": "docs/conjectures/bccfcc-causal-shield.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "error-geometry-objects",
@@ -549,7 +717,15 @@
           "sloppy-models",
           "disambiguation"
         ],
-        "originalSource": "docs/science/objects.md"
+        "originalSource": "docs/science/objects.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "sloppy-models",
@@ -561,7 +737,15 @@
           "sloppy",
           "fim"
         ],
-        "originalSource": "docs/sloppy_models_report.md"
+        "originalSource": "docs/sloppy_models_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "rg-coarsegraining",
@@ -573,7 +757,15 @@
           "rg",
           "coarse-graining"
         ],
-        "originalSource": "docs/rg_coarsegraining_report.md"
+        "originalSource": "docs/rg_coarsegraining_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "info-theoretic",
@@ -584,7 +776,15 @@
         "tags": [
           "information-theory"
         ],
-        "originalSource": "docs/info_theoretic_report.md"
+        "originalSource": "docs/info_theoretic_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "methodology",
@@ -597,7 +797,15 @@
           "matched-n",
           "self-correction"
         ],
-        "originalSource": "docs/methodology.md"
+        "originalSource": "docs/methodology.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "glimmer-multifidelity-uq",
@@ -610,7 +818,15 @@
           "multi-fidelity",
           "glimMER"
         ],
-        "originalSource": "docs/multi_fidelity_uq_glimMER_report.md"
+        "originalSource": "docs/multi_fidelity_uq_glimMER_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "bayesian-active-learning",
@@ -622,7 +838,15 @@
           "bayesian",
           "active-learning"
         ],
-        "originalSource": "docs/bayesian_active_learning_report.md"
+        "originalSource": "docs/bayesian_active_learning_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "weather-climate-ensembles",
@@ -634,7 +858,15 @@
           "ensembles",
           "climate"
         ],
-        "originalSource": "docs/weather_climate_ensembles_report.md"
+        "originalSource": "docs/weather_climate_ensembles_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "gnn-error-prediction",
@@ -646,7 +878,15 @@
           "gnn",
           "error-prediction"
         ],
-        "originalSource": "docs/gnn_error_prediction_report.md"
+        "originalSource": "docs/gnn_error_prediction_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "tda-error-landscapes",
@@ -658,7 +898,15 @@
           "tda",
           "topology"
         ],
-        "originalSource": "docs/tda_error_landscapes_report.md"
+        "originalSource": "docs/tda_error_landscapes_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "phonon-benchmarking",
@@ -670,7 +918,15 @@
           "phonon",
           "benchmark"
         ],
-        "originalSource": "docs/phonon_benchmarking_report.md"
+        "originalSource": "docs/phonon_benchmarking_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "key-findings",
@@ -682,7 +938,15 @@
           "summary",
           "phonon"
         ],
-        "originalSource": "docs/KEY_FINDINGS_SUMMARY.md"
+        "originalSource": "docs/KEY_FINDINGS_SUMMARY.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z1-barrier-campaign-round4",
@@ -700,7 +964,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "refuted",
-        "originalSource": "docs/validation/z1-barrier-campaign-round4-results.md"
+        "originalSource": "docs/validation/z1-barrier-campaign-round4-results.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z3-adsorption-delta-campaign-round4",
@@ -718,7 +990,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "refuted",
-        "originalSource": "docs/validation/z3-adsorption-delta-campaign-round4-results.md"
+        "originalSource": "docs/validation/z3-adsorption-delta-campaign-round4-results.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z2-abstention-audit-round4",
@@ -734,7 +1014,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "proposed",
-        "originalSource": "docs/campaigns/z2-abstention-audit.md"
+        "originalSource": "docs/campaigns/z2-abstention-audit.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "round4-elastic-correction-results-amendment",
@@ -750,7 +1038,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "refuted",
-        "originalSource": "docs/plans/2026-07-19-round4-preregistration-amendment.md"
+        "originalSource": "docs/plans/2026-07-19-round4-preregistration-amendment.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-cloud-baseline-distill",
@@ -767,7 +1063,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/mlip-cloud-baseline-distill-report.md"
+        "originalSource": "docs/mlip-cloud-baseline-distill-report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-ni-paired-accuracy-live",
@@ -784,7 +1088,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/mlip-ni-paired-accuracy-live-report.md"
+        "originalSource": "docs/mlip-ni-paired-accuracy-live-report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-ni-zero-point-policy-replay",
@@ -801,7 +1113,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/mlip-ni-zero-point-policy-replay.md"
+        "originalSource": "docs/mlip-ni-zero-point-policy-replay.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-mptrj-broad-dft-canary",
@@ -819,7 +1139,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/mlip-mptrj-broad-dft-canary.md"
+        "originalSource": "docs/mlip-mptrj-broad-dft-canary.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "projection-law-round2-preregistration",
@@ -836,7 +1164,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/projection-law-round2-preregistration.md"
+        "originalSource": "docs/projection-law-round2-preregistration.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "projection-law-round2-results",
@@ -856,7 +1192,15 @@
         "featuredRole": "anchor",
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/projection-law-round2-results.md"
+        "originalSource": "docs/projection-law-round2-results.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "environment-error-field-paper",
@@ -876,7 +1220,15 @@
         "featuredRole": "anchor",
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "paper/environment-error-field-2026-07-02.md"
+        "originalSource": "paper/environment-error-field-2026-07-02.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "y-matrix-preregistration",
@@ -892,7 +1244,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md"
+        "originalSource": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "y-matrix-confirmatory-results",
@@ -908,7 +1268,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/plans/y-matrix-confirmatory-results-2026-07-01.md"
+        "originalSource": "docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mrh-monotone-reparameterization",
@@ -924,7 +1292,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/mrh-monotone-reparameterization.md"
+        "originalSource": "docs/mrh-monotone-reparameterization.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formalization-ladder",
@@ -939,7 +1315,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/formalization-ladder.md"
+        "originalSource": "docs/formalization-ladder.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "layer2-supercell-evaluation",
@@ -956,7 +1340,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/layer2_supercell_evaluation.md"
+        "originalSource": "docs/layer2_supercell_evaluation.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "layer2-research-paper",
@@ -973,7 +1365,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/layer2_research_paper.md"
+        "originalSource": "docs/layer2_research_paper.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-elastic-benchmark-preprint",
@@ -990,7 +1390,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "mlip-elastic-benchmark/mlip-elastic-benchmark-preprint-2026-06-27.md"
+        "originalSource": "mlip-elastic-benchmark/mlip-elastic-benchmark-preprint-2026-06-27.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-elastic-benchmark-protocol",
@@ -1007,7 +1415,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "mlip-elastic-benchmark/mlip-elastic-benchmark-protocol-2026-06-27.md"
+        "originalSource": "mlip-elastic-benchmark/mlip-elastic-benchmark-protocol-2026-06-27.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-elastic-operator-failure-diagnosis",
@@ -1023,7 +1439,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "mlip-elastic-benchmark/operator-failure-diagnosis-2026-06-27.md"
+        "originalSource": "mlip-elastic-benchmark/operator-failure-diagnosis-2026-06-27.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "lupine-layer2-3x3x3-final-paper",
@@ -1042,7 +1466,15 @@
         "group": "mlip-flywheel",
         "status": "supported",
         "featured": false,
-        "originalSource": "paper/lupine-layer2-3x3x3-final-paper.md"
+        "originalSource": "paper/lupine-layer2-3x3x3-final-paper.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "lupine-refinement-sprint-announcement",
@@ -1059,7 +1491,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "live",
-        "originalSource": "docs/ANNOUNCEMENT-lupine-refinement-sprint-2026-06-27.md"
+        "originalSource": "docs/ANNOUNCEMENT-lupine-refinement-sprint-2026-06-27.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formal-vision",
@@ -1072,7 +1512,15 @@
           "formal-spec",
           "vision"
         ],
-        "originalSource": "docs/formal-vision.md"
+        "originalSource": "docs/formal-vision.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formal-methodology",
@@ -1085,7 +1533,15 @@
           "methodology",
           "epistemology"
         ],
-        "originalSource": "docs/formal-methodology.md"
+        "originalSource": "docs/formal-methodology.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formal-audit",
@@ -1098,7 +1554,15 @@
           "audit",
           "verification"
         ],
-        "originalSource": "docs/formal-audit.md"
+        "originalSource": "docs/formal-audit.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formal-hypotheses",
@@ -1111,7 +1575,15 @@
           "hypotheses",
           "meta-science"
         ],
-        "originalSource": "docs/formal-hypotheses.md"
+        "originalSource": "docs/formal-hypotheses.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "formal-proof-ledger",
@@ -1126,7 +1598,15 @@
         ],
         "group": "hypotheses",
         "status": "proven",
-        "originalSource": "docs/formal-proof-ledger.md"
+        "originalSource": "docs/formal-proof-ledger.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "changelog",
@@ -1139,7 +1619,15 @@
           "progress",
           "narrative"
         ],
-        "originalSource": "CHANGELOG.md"
+        "originalSource": "CHANGELOG.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "working-papers",
@@ -1155,7 +1643,15 @@
         ],
         "featured": true,
         "featuredRole": "replication",
-        "originalSource": "docs/papers-working.md"
+        "originalSource": "docs/papers-working.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "research-evolution",
@@ -1168,7 +1664,15 @@
           "research-evolution",
           "narrative"
         ],
-        "originalSource": "docs/research_evolution_2026_05_05.md"
+        "originalSource": "docs/research_evolution_2026_05_05.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "phoenix-observability",
@@ -1182,7 +1686,15 @@
           "evals",
           "featured"
         ],
-        "originalSource": "docs/phoenix-observability.md"
+        "originalSource": "docs/phoenix-observability.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "mlip-flywheel-readiness",
@@ -1197,7 +1709,15 @@
           "phoenix"
         ],
         "status": "open",
-        "originalSource": "docs/mlip-flywheel-readiness.md"
+        "originalSource": "docs/mlip-flywheel-readiness.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "born-screening-re-audit",
@@ -1215,7 +1735,15 @@
         "featured": true,
         "featuredRole": "counter",
         "status": "self-corrected",
-        "originalSource": "docs/born-screening-re-audit.md"
+        "originalSource": "docs/born-screening-re-audit.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "foundation-model-trust-layers",
@@ -1230,7 +1758,15 @@
           "batteries",
           "featured"
         ],
-        "originalSource": "docs/foundation-model-trust-layers.md"
+        "originalSource": "docs/foundation-model-trust-layers.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "references",
@@ -1243,7 +1779,15 @@
           "bibliography",
           "lineage"
         ],
-        "originalSource": "docs/references.md"
+        "originalSource": "docs/references.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "lit-review-error-structure",
@@ -1257,7 +1801,15 @@
           "simpson",
           "fcc"
         ],
-        "originalSource": "lit-review.md"
+        "originalSource": "lit-review.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "academic-review-projection-law",
@@ -1271,7 +1823,15 @@
           "submission-gate"
         ],
         "status": "open",
-        "originalSource": "docs/reviews/academic-review-projection-law-2026-06-16.md"
+        "originalSource": "docs/reviews/academic-review-projection-law-2026-06-16.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "adversarial-review-projection-law",
@@ -1285,7 +1845,15 @@
           "submission-gate"
         ],
         "status": "open",
-        "originalSource": "docs/reviews/adversarial-review-projection-law-2026-06-16.md"
+        "originalSource": "docs/reviews/adversarial-review-projection-law-2026-06-16.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "funding-landscape",
@@ -1297,7 +1865,15 @@
           "funding",
           "policy"
         ],
-        "originalSource": "docs/funding_landscape_report.md"
+        "originalSource": "docs/funding_landscape_report.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "operating-system",
@@ -1309,7 +1885,15 @@
           "meta",
           "system"
         ],
-        "originalSource": "docs/operating-system.md"
+        "originalSource": "docs/operating-system.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "resource-fabric",
@@ -1321,7 +1905,15 @@
           "meta",
           "infrastructure"
         ],
-        "originalSource": "docs/resource-fabric.md"
+        "originalSource": "docs/resource-fabric.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "reproduce",
@@ -1334,7 +1926,15 @@
           "atlas-distill",
           "lean"
         ],
-        "originalSource": "docs/reproduce.md"
+        "originalSource": "docs/reproduce.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "extraction-complete",
@@ -1347,7 +1947,15 @@
           "build"
         ],
         "group": "extraction",
-        "originalSource": "docs/EXTRACTION_COMPLETE.md"
+        "originalSource": "docs/EXTRACTION_COMPLETE.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "extraction-report",
@@ -1360,7 +1968,15 @@
           "build"
         ],
         "group": "extraction",
-        "originalSource": "docs/EXTRACTION_REPORT.md"
+        "originalSource": "docs/EXTRACTION_REPORT.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "extraction-notes",
@@ -1373,7 +1989,15 @@
           "build"
         ],
         "group": "extraction",
-        "originalSource": "docs/EXTRACTION_NOTES.md"
+        "originalSource": "docs/EXTRACTION_NOTES.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "adr-0001-storage",
@@ -1386,7 +2010,15 @@
           "infrastructure",
           "storage"
         ],
-        "originalSource": "docs/decisions/0001-r2-over-bandwidth-alliance.md"
+        "originalSource": "docs/decisions/0001-r2-over-bandwidth-alliance.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "partnerships",
@@ -1399,7 +2031,15 @@
           "miit-67",
           "pilots"
         ],
-        "originalSource": "docs/partnerships.md"
+        "originalSource": "docs/partnerships.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "what-is-an-interatomic-potential",
@@ -1412,7 +2052,15 @@
           "mlip",
           "basics"
         ],
-        "originalSource": "docs/what-is-an-interatomic-potential.md"
+        "originalSource": "docs/what-is-an-interatomic-potential.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "projection-law-in-plain-language",
@@ -1426,7 +2074,15 @@
           "mlip"
         ],
         "group": "mlip-flywheel",
-        "originalSource": "docs/projection-law-in-plain-language.md"
+        "originalSource": "docs/projection-law-in-plain-language.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-surrogate-neb",
@@ -1442,7 +2098,15 @@
           "transition-state"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-surrogate-neb.md"
+        "originalSource": "lit-review/savings-surrogate-neb.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-active-learning",
@@ -1457,7 +2121,15 @@
           "mlip"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-active-learning.md"
+        "originalSource": "lit-review/savings-active-learning.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-delta-multifidelity",
@@ -1473,7 +2145,15 @@
           "transfer-learning"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-delta-multifidelity.md"
+        "originalSource": "lit-review/savings-delta-multifidelity.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-abstention-economics",
@@ -1488,7 +2168,15 @@
           "uncertainty"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-abstention-economics.md"
+        "originalSource": "lit-review/savings-abstention-economics.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-dft-systems",
@@ -1504,7 +2192,15 @@
           "hpc"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-dft-systems.md"
+        "originalSource": "lit-review/savings-dft-systems.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-electronic-surrogates",
@@ -1520,7 +2216,15 @@
           "surrogate"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-electronic-surrogates.md"
+        "originalSource": "lit-review/savings-electronic-surrogates.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-path-sampling-algorithms",
@@ -1536,7 +2240,15 @@
           "algorithms"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/savings-path-sampling-algorithms.md"
+        "originalSource": "lit-review/savings-path-sampling-algorithms.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "supercomputing-atomistic-history",
@@ -1552,7 +2264,15 @@
           "hpc"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/supercomputing-atomistic-history.md"
+        "originalSource": "lit-review/supercomputing-atomistic-history.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "research-compute-resourcing",
@@ -1568,7 +2288,15 @@
           "funding"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/research-compute-resourcing.md"
+        "originalSource": "lit-review/research-compute-resourcing.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "savings-techniques-synthesis-2026-07-21",
@@ -1585,7 +2313,15 @@
         "group": "savings-stack",
         "featured": true,
         "featuredRole": "newest",
-        "originalSource": "lit-review/savings-techniques-synthesis-2026-07-21.md"
+        "originalSource": "lit-review/savings-techniques-synthesis-2026-07-21.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z1-union-anchor-economics",
@@ -1601,7 +2337,15 @@
           "economics"
         ],
         "group": "savings-stack",
-        "originalSource": "docs/analysis/z1-union-anchor-economics.md"
+        "originalSource": "docs/analysis/z1-union-anchor-economics.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "citation-verification-2026-07-21",
@@ -1616,7 +2360,15 @@
           "provenance"
         ],
         "group": "savings-stack",
-        "originalSource": "lit-review/citation-verification-2026-07-21.md"
+        "originalSource": "lit-review/citation-verification-2026-07-21.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z1-union-campaign-verdict",
@@ -1633,7 +2385,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/analysis/z1-union-campaign-verdict.md"
+        "originalSource": "docs/analysis/z1-union-campaign-verdict.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "z1-union-cost-ledger",
@@ -1650,7 +2410,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/analysis/z1-union-cost-ledger.md"
+        "originalSource": "docs/analysis/z1-union-cost-ledger.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "t1-niggli-audit",
@@ -1667,7 +2435,15 @@
         ],
         "group": "mlip-flywheel",
         "status": "supported",
-        "originalSource": "docs/analysis/t1-niggli-audit.md"
+        "originalSource": "docs/analysis/t1-niggli-audit.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "t1-wander-mechanism",
@@ -1683,7 +2459,15 @@
           "metallic-saddle"
         ],
         "group": "mlip-flywheel",
-        "originalSource": "docs/analysis/t1-wander-mechanism.md"
+        "originalSource": "docs/analysis/t1-wander-mechanism.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       },
       {
         "id": "t1-wander-gate",
@@ -1699,7 +2483,15 @@
           "theorem-commons"
         ],
         "group": "mlip-flywheel",
-        "originalSource": "docs/analysis/t1-wander-gate.md"
+        "originalSource": "docs/analysis/t1-wander-gate.md",
+        "sourceOrigin": {
+          "repo": "lupine-rhizo",
+          "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+          "dirty": true,
+          "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+          "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+          "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+        }
       }
     ],
     "languages": {
@@ -1718,577 +2510,1391 @@
       "source": "README.md",
       "bundleSource": "articles/README.md",
       "bytes": 5611,
-      "sha256": "75e49b5994ab50a829acb30b0ac7e4a9123ff05a87c0860b2543f6b6ee1b3294"
+      "sha256": "75e49b5994ab50a829acb30b0ac7e4a9123ff05a87c0860b2543f6b6ee1b3294",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "GLOSSARY.md",
       "bundleSource": "articles/GLOSSARY.md",
       "bytes": 6092,
-      "sha256": "83b1204309b111ed2fd7149cc1d17fb7c95168b2b777f45f9af6b2f3e560a068"
+      "sha256": "83b1204309b111ed2fd7149cc1d17fb7c95168b2b777f45f9af6b2f3e560a068",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/navigation.md",
       "bundleSource": "articles/docs/navigation.md",
       "bytes": 9957,
-      "sha256": "a4326ee36f8cdd0e1af6ad9fb4b0215fe314e40f60a6c0a1a6a9d6e0a4c860ee"
+      "sha256": "a4326ee36f8cdd0e1af6ad9fb4b0215fe314e40f60a6c0a1a6a9d6e0a4c860ee",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/data-provenance.md",
       "bundleSource": "articles/docs/data-provenance.md",
       "bytes": 2765,
-      "sha256": "b9ceacddb7fbd6284c68cf26fe1bd520ffa1d31f31f1418820623f6b15c17ba7"
+      "sha256": "b9ceacddb7fbd6284c68cf26fe1bd520ffa1d31f31f1418820623f6b15c17ba7",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/internal-science-program.md",
       "bundleSource": "articles/docs/internal-science-program.md",
       "bytes": 5975,
-      "sha256": "f867cf143fc5abbb522515846f15d550b330bdf0acb3c7a3b8c813ffcc5da1bf"
+      "sha256": "f867cf143fc5abbb522515846f15d550b330bdf0acb3c7a3b8c813ffcc5da1bf",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/PUBLIC.md",
       "bundleSource": "articles/docs/PUBLIC.md",
       "bytes": 3810,
-      "sha256": "3427b6afc72baa54d87d24f0d56cbb4820eb7603c457e37d4462b234e3550f6d"
+      "sha256": "3427b6afc72baa54d87d24f0d56cbb4820eb7603c457e37d4462b234e3550f6d",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/ledger.md",
       "bundleSource": "articles/docs/conjectures/ledger.md",
       "bytes": 4301,
-      "sha256": "e3811261328f79431ea4ebe6c93fe644118b225e72f9c9f192bb2830e5035df4"
+      "sha256": "e3811261328f79431ea4ebe6c93fe644118b225e72f9c9f192bb2830e5035df4",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/hyper-ribbon-universality.md",
       "bundleSource": "articles/docs/conjectures/hyper-ribbon-universality.md",
       "bytes": 1610,
-      "sha256": "e1cfb795ec05098c1c46f5ab2747133f55bc19321789dc707d029eb395839359"
+      "sha256": "e1cfb795ec05098c1c46f5ab2747133f55bc19321789dc707d029eb395839359",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/hyper-ribbon-mlip-transfer.md",
       "bundleSource": "articles/docs/conjectures/hyper-ribbon-mlip-transfer.md",
       "bytes": 2563,
-      "sha256": "9a0bc2e01d38ad2bf21a6d75e671260a8be96ef743de55cc979f31fe25894968"
+      "sha256": "9a0bc2e01d38ad2bf21a6d75e671260a8be96ef743de55cc979f31fe25894968",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/cross-mlip-orthogonal-errors.md",
       "bundleSource": "articles/docs/conjectures/cross-mlip-orthogonal-errors.md",
       "bytes": 1318,
-      "sha256": "bb196383f3cadbf7851f5b12caaddf268f607a8db31ee2d56574042b3d53efe8"
+      "sha256": "bb196383f3cadbf7851f5b12caaddf268f607a8db31ee2d56574042b3d53efe8",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/au-mlip-escape.md",
       "bundleSource": "articles/docs/conjectures/au-mlip-escape.md",
       "bytes": 1307,
-      "sha256": "efebaa95ea899cc6630413ba1b45f3f03a19391e38efc36a2737f9c0c0007b6c"
+      "sha256": "efebaa95ea899cc6630413ba1b45f3f03a19391e38efc36a2737f9c0c0007b6c",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/fe-persistent-outlier.md",
       "bundleSource": "articles/docs/conjectures/fe-persistent-outlier.md",
       "bytes": 2165,
-      "sha256": "d69cd3d41e51e2b608f4a5e95ca29d2cd0eb4220a2b46e30b15c1285eb088fad"
+      "sha256": "d69cd3d41e51e2b608f4a5e95ca29d2cd0eb4220a2b46e30b15c1285eb088fad",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/dband-correlation.md",
       "bundleSource": "articles/docs/conjectures/dband-correlation.md",
       "bytes": 1362,
-      "sha256": "24ee7674939cd04714edd8d531c53b3c1f7e6c2f97c5753f1f0a97ff2ff3bafd"
+      "sha256": "24ee7674939cd04714edd8d531c53b3c1f7e6c2f97c5753f1f0a97ff2ff3bafd",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/meam-intrinsic-2d.md",
       "bundleSource": "articles/docs/conjectures/meam-intrinsic-2d.md",
       "bytes": 1386,
-      "sha256": "e71fd02392687139dd5e503be23bcdd5b3edcada228ac246b5150ac674e1fb9a"
+      "sha256": "e71fd02392687139dd5e503be23bcdd5b3edcada228ac246b5150ac674e1fb9a",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/conjectures/bccfcc-causal-shield.md",
       "bundleSource": "articles/docs/conjectures/bccfcc-causal-shield.md",
       "bytes": 1384,
-      "sha256": "fde7e25e923aeee604421a74aa7d15b673f5831604ad2c95598176ebbc2e7ee0"
+      "sha256": "fde7e25e923aeee604421a74aa7d15b673f5831604ad2c95598176ebbc2e7ee0",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/science/objects.md",
       "bundleSource": "articles/docs/science/objects.md",
       "bytes": 6893,
-      "sha256": "393ff53b40c35a599febe934dea1f41cd568d4ba74693ca6a39b4fc9b66d4bf6"
+      "sha256": "393ff53b40c35a599febe934dea1f41cd568d4ba74693ca6a39b4fc9b66d4bf6",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/sloppy_models_report.md",
       "bundleSource": "articles/docs/sloppy_models_report.md",
       "bytes": 12467,
-      "sha256": "9ef3c681344edb4eb283b21b910f3bf4ccfaaba84d0c10f7cea7dba097760ed5"
+      "sha256": "9ef3c681344edb4eb283b21b910f3bf4ccfaaba84d0c10f7cea7dba097760ed5",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/rg_coarsegraining_report.md",
       "bundleSource": "articles/docs/rg_coarsegraining_report.md",
       "bytes": 14712,
-      "sha256": "1520384ea32806b2467913cd79a08bdbd049894fe255ce1e6361d1a0655ca0d0"
+      "sha256": "1520384ea32806b2467913cd79a08bdbd049894fe255ce1e6361d1a0655ca0d0",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/info_theoretic_report.md",
       "bundleSource": "articles/docs/info_theoretic_report.md",
       "bytes": 16099,
-      "sha256": "85f21523bcf42d31c5749f92c385622cdc163ed04384134c3a1e91984b0491cd"
+      "sha256": "85f21523bcf42d31c5749f92c385622cdc163ed04384134c3a1e91984b0491cd",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/methodology.md",
       "bundleSource": "articles/docs/methodology.md",
       "bytes": 2351,
-      "sha256": "99f53d2314489626dfbaedeff9e96cebc33bbb5375285050af9c1bdd66862613"
+      "sha256": "99f53d2314489626dfbaedeff9e96cebc33bbb5375285050af9c1bdd66862613",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/multi_fidelity_uq_glimMER_report.md",
       "bundleSource": "articles/docs/multi_fidelity_uq_glimMER_report.md",
       "bytes": 33446,
-      "sha256": "c174ee3ca98995576c22f1bc8b9dc7aeab9df3cb1ff96a567adf0c56e8adfbb9"
+      "sha256": "c174ee3ca98995576c22f1bc8b9dc7aeab9df3cb1ff96a567adf0c56e8adfbb9",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/bayesian_active_learning_report.md",
       "bundleSource": "articles/docs/bayesian_active_learning_report.md",
       "bytes": 8459,
-      "sha256": "cdedf3e63bcf874b6a22189198ee302731280af0a4c8da0353489af5310f6683"
+      "sha256": "cdedf3e63bcf874b6a22189198ee302731280af0a4c8da0353489af5310f6683",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/weather_climate_ensembles_report.md",
       "bundleSource": "articles/docs/weather_climate_ensembles_report.md",
       "bytes": 12354,
-      "sha256": "75897910f9cfa5e495f5999286e950d4a6b62eae4a1222c99f1e4aab1725e239"
+      "sha256": "75897910f9cfa5e495f5999286e950d4a6b62eae4a1222c99f1e4aab1725e239",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/gnn_error_prediction_report.md",
       "bundleSource": "articles/docs/gnn_error_prediction_report.md",
       "bytes": 11495,
-      "sha256": "3744b8b0e59601c7b3810a3f9a47dede9b712b7a984e9a9f245952c92f8c1c94"
+      "sha256": "3744b8b0e59601c7b3810a3f9a47dede9b712b7a984e9a9f245952c92f8c1c94",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/tda_error_landscapes_report.md",
       "bundleSource": "articles/docs/tda_error_landscapes_report.md",
       "bytes": 50755,
-      "sha256": "dbddf48a4b8b4b5ee561156a02a9f8ced47048a0b24a1db5c844254de0dc47d8"
+      "sha256": "dbddf48a4b8b4b5ee561156a02a9f8ced47048a0b24a1db5c844254de0dc47d8",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/phonon_benchmarking_report.md",
       "bundleSource": "articles/docs/phonon_benchmarking_report.md",
       "bytes": 19431,
-      "sha256": "3fa3d511140425704d548594c2198bc5656234bbfc01e6499da27441eda5986c"
+      "sha256": "3fa3d511140425704d548594c2198bc5656234bbfc01e6499da27441eda5986c",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/KEY_FINDINGS_SUMMARY.md",
       "bundleSource": "articles/docs/KEY_FINDINGS_SUMMARY.md",
       "bytes": 8700,
-      "sha256": "d0c603a181f70094496c865d24397a41a5d91024e9343e8871f4728b6de6410a"
+      "sha256": "d0c603a181f70094496c865d24397a41a5d91024e9343e8871f4728b6de6410a",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/validation/z1-barrier-campaign-round4-results.md",
       "bundleSource": "articles/docs/validation/z1-barrier-campaign-round4-results.md",
       "bytes": 5428,
-      "sha256": "45e06c1489887ea39c3c9e8f27abfa4d809c562ae645ef1a7f9c05cbe3ad0eb2"
+      "sha256": "45e06c1489887ea39c3c9e8f27abfa4d809c562ae645ef1a7f9c05cbe3ad0eb2",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/validation/z3-adsorption-delta-campaign-round4-results.md",
       "bundleSource": "articles/docs/validation/z3-adsorption-delta-campaign-round4-results.md",
       "bytes": 6558,
-      "sha256": "a3f102f2348157e4fe4e93214985762815338f0653ce9aa48f422a33a3e5fded"
+      "sha256": "a3f102f2348157e4fe4e93214985762815338f0653ce9aa48f422a33a3e5fded",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/campaigns/z2-abstention-audit.md",
       "bundleSource": "articles/docs/campaigns/z2-abstention-audit.md",
       "bytes": 3017,
-      "sha256": "87e9631aeb5a3b675a6edbf782c89b93aeb4496c6f5c26ad65d0bc962d53127e"
+      "sha256": "87e9631aeb5a3b675a6edbf782c89b93aeb4496c6f5c26ad65d0bc962d53127e",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/plans/2026-07-19-round4-preregistration-amendment.md",
       "bundleSource": "articles/docs/plans/2026-07-19-round4-preregistration-amendment.md",
       "bytes": 7082,
-      "sha256": "cf89b891d02b49a816c90ec1661020751f4578de34a583b490175181898cd4d7"
+      "sha256": "cf89b891d02b49a816c90ec1661020751f4578de34a583b490175181898cd4d7",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mlip-cloud-baseline-distill-report.md",
       "bundleSource": "articles/docs/mlip-cloud-baseline-distill-report.md",
       "bytes": 6669,
-      "sha256": "b231aa8fe37907fdbe60790a90a410a96f69559e15d5b899603c719395096fb9"
+      "sha256": "b231aa8fe37907fdbe60790a90a410a96f69559e15d5b899603c719395096fb9",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mlip-ni-paired-accuracy-live-report.md",
       "bundleSource": "articles/docs/mlip-ni-paired-accuracy-live-report.md",
       "bytes": 4729,
-      "sha256": "4457908a4c6c6b6746cf430e1ba773a4e11772719a4761209a02581fea1d0536"
+      "sha256": "4457908a4c6c6b6746cf430e1ba773a4e11772719a4761209a02581fea1d0536",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mlip-ni-zero-point-policy-replay.md",
       "bundleSource": "articles/docs/mlip-ni-zero-point-policy-replay.md",
       "bytes": 3004,
-      "sha256": "ad8fdf263aac60124016c8a296b4da32b5eb902b08575a8a4110dac9e63149e0"
+      "sha256": "ad8fdf263aac60124016c8a296b4da32b5eb902b08575a8a4110dac9e63149e0",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mlip-mptrj-broad-dft-canary.md",
       "bundleSource": "articles/docs/mlip-mptrj-broad-dft-canary.md",
       "bytes": 4031,
-      "sha256": "27ecd26a785941d63e16551a5e9eabac58a1a015a034459c432c9b1760e8cab6"
+      "sha256": "27ecd26a785941d63e16551a5e9eabac58a1a015a034459c432c9b1760e8cab6",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/projection-law-round2-preregistration.md",
       "bundleSource": "articles/docs/projection-law-round2-preregistration.md",
       "bytes": 9223,
-      "sha256": "9293bde19481b43a1185a1b36022aee6b81d4f0b466240be8a45f8ec54072e00"
+      "sha256": "9293bde19481b43a1185a1b36022aee6b81d4f0b466240be8a45f8ec54072e00",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/projection-law-round2-results.md",
       "bundleSource": "articles/docs/projection-law-round2-results.md",
       "bytes": 30997,
-      "sha256": "80978efb5bfe30f470abba7aa6ba08e662e260239727a21fab40716b3b09c606"
+      "sha256": "80978efb5bfe30f470abba7aa6ba08e662e260239727a21fab40716b3b09c606",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "paper/environment-error-field-2026-07-02.md",
       "bundleSource": "articles/paper/environment-error-field-2026-07-02.md",
       "bytes": 19690,
-      "sha256": "f9335f6d0cb0a1e5d27c6835e64b131b5c23e37880f905f21f04490207412dea"
+      "sha256": "f9335f6d0cb0a1e5d27c6835e64b131b5c23e37880f905f21f04490207412dea",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
       "bundleSource": "articles/docs/plans/y-matrix-cross-property-preregistration-2026-07-01.md",
       "bytes": 12533,
-      "sha256": "6e0c939ad7215a452368ce6f71f0545d13285dc2a57ed229a5661f7f9ab947cf"
+      "sha256": "6e0c939ad7215a452368ce6f71f0545d13285dc2a57ed229a5661f7f9ab947cf",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
       "bundleSource": "articles/docs/plans/y-matrix-confirmatory-results-2026-07-01.md",
       "bytes": 10272,
-      "sha256": "783142fab61d89b9e209a69276f0a0e10375657272f46d5780c63de85a78041e"
+      "sha256": "783142fab61d89b9e209a69276f0a0e10375657272f46d5780c63de85a78041e",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mrh-monotone-reparameterization.md",
       "bundleSource": "articles/docs/mrh-monotone-reparameterization.md",
       "bytes": 8312,
-      "sha256": "89ed2c717f733f57287e6e2d1061ac5143658a1529c9d6897ad665d7e08b3158"
+      "sha256": "89ed2c717f733f57287e6e2d1061ac5143658a1529c9d6897ad665d7e08b3158",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formalization-ladder.md",
       "bundleSource": "articles/docs/formalization-ladder.md",
       "bytes": 3338,
-      "sha256": "98dbed278e0f5061d577fd45c9e90aaffe0edd0811378544ba7ac38fd066934d"
+      "sha256": "98dbed278e0f5061d577fd45c9e90aaffe0edd0811378544ba7ac38fd066934d",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/layer2_supercell_evaluation.md",
       "bundleSource": "articles/docs/layer2_supercell_evaluation.md",
       "bytes": 16838,
-      "sha256": "64a7563eb499fc5532700a00bb61c0dea8ebe643f88d6918a6e1be34b3019b3d"
+      "sha256": "64a7563eb499fc5532700a00bb61c0dea8ebe643f88d6918a6e1be34b3019b3d",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/layer2_research_paper.md",
       "bundleSource": "articles/docs/layer2_research_paper.md",
       "bytes": 19989,
-      "sha256": "3f31b83b45644b185f97c4988648a318f000590785c5946a2cd28b21755f2ba2"
+      "sha256": "3f31b83b45644b185f97c4988648a318f000590785c5946a2cd28b21755f2ba2",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "mlip-elastic-benchmark/mlip-elastic-benchmark-preprint-2026-06-27.md",
       "bundleSource": "articles/mlip-elastic-benchmark/mlip-elastic-benchmark-preprint-2026-06-27.md",
       "bytes": 20550,
-      "sha256": "4570268b4e1d3453d3634e8f06f681a37540b9e7fcf894a20f2afcca82f485b7"
+      "sha256": "4570268b4e1d3453d3634e8f06f681a37540b9e7fcf894a20f2afcca82f485b7",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "mlip-elastic-benchmark/mlip-elastic-benchmark-protocol-2026-06-27.md",
       "bundleSource": "articles/mlip-elastic-benchmark/mlip-elastic-benchmark-protocol-2026-06-27.md",
       "bytes": 3629,
-      "sha256": "221ca2b653400d18f07e34319490250aca04ad322176c6b9da1fb752b4867d75"
+      "sha256": "221ca2b653400d18f07e34319490250aca04ad322176c6b9da1fb752b4867d75",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "mlip-elastic-benchmark/operator-failure-diagnosis-2026-06-27.md",
       "bundleSource": "articles/mlip-elastic-benchmark/operator-failure-diagnosis-2026-06-27.md",
       "bytes": 18455,
-      "sha256": "f5ff07686b9f4f0e3a095578cbb8b16fbabefe533e5af7424004fc9942b9582f"
+      "sha256": "f5ff07686b9f4f0e3a095578cbb8b16fbabefe533e5af7424004fc9942b9582f",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "paper/lupine-layer2-3x3x3-final-paper.md",
       "bundleSource": "articles/paper/lupine-layer2-3x3x3-final-paper.md",
       "bytes": 17930,
-      "sha256": "da726ff67514f8a6b562db228c8ee8c5a5e8a97064117b62567bfb13bed055b0"
+      "sha256": "da726ff67514f8a6b562db228c8ee8c5a5e8a97064117b62567bfb13bed055b0",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/ANNOUNCEMENT-lupine-refinement-sprint-2026-06-27.md",
       "bundleSource": "articles/docs/ANNOUNCEMENT-lupine-refinement-sprint-2026-06-27.md",
       "bytes": 7166,
-      "sha256": "fc97056950d040b416c7f5c266cf2210f24989a3bba4e6e2872e8e752b219d56"
+      "sha256": "fc97056950d040b416c7f5c266cf2210f24989a3bba4e6e2872e8e752b219d56",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formal-vision.md",
       "bundleSource": "articles/docs/formal-vision.md",
       "bytes": 6737,
-      "sha256": "2bf85d9703404a7df9211b3340565bf82d6fb04840078a987d304e8d2ef0820d"
+      "sha256": "2bf85d9703404a7df9211b3340565bf82d6fb04840078a987d304e8d2ef0820d",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formal-methodology.md",
       "bundleSource": "articles/docs/formal-methodology.md",
       "bytes": 6171,
-      "sha256": "88f798581f9bbe36e52541d4a9365b663096522d44ebc3740727e423e629cc80"
+      "sha256": "88f798581f9bbe36e52541d4a9365b663096522d44ebc3740727e423e629cc80",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formal-audit.md",
       "bundleSource": "articles/docs/formal-audit.md",
       "bytes": 4348,
-      "sha256": "1fdd298bd31c5b8fe6614bdd03756414b45df2b2e00ab7a01f316d8d4067b0cf"
+      "sha256": "1fdd298bd31c5b8fe6614bdd03756414b45df2b2e00ab7a01f316d8d4067b0cf",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formal-hypotheses.md",
       "bundleSource": "articles/docs/formal-hypotheses.md",
       "bytes": 6562,
-      "sha256": "9d8808ffebcdcadf2267cd2dcca52c1d235c04e601a56d5ce4b73dc80ed027f6"
+      "sha256": "9d8808ffebcdcadf2267cd2dcca52c1d235c04e601a56d5ce4b73dc80ed027f6",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/formal-proof-ledger.md",
       "bundleSource": "articles/docs/formal-proof-ledger.md",
       "bytes": 2841,
-      "sha256": "e84263fe8706cc3cebd81bc7fd13b77a58e7028c2224653077907bb0a2ed3d2b"
+      "sha256": "e84263fe8706cc3cebd81bc7fd13b77a58e7028c2224653077907bb0a2ed3d2b",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "CHANGELOG.md",
       "bundleSource": "articles/CHANGELOG.md",
       "bytes": 88516,
-      "sha256": "1d8e85aefefb39e02c5f089122a887fc22053ed732a8e18f10b19c31870a2a66"
+      "sha256": "1d8e85aefefb39e02c5f089122a887fc22053ed732a8e18f10b19c31870a2a66",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/papers-working.md",
       "bundleSource": "articles/docs/papers-working.md",
       "bytes": 951,
-      "sha256": "a74311f230bc5367a2c823e2ec7ba0a485f093bfb5c805fa2f9f5915817e340f"
+      "sha256": "a74311f230bc5367a2c823e2ec7ba0a485f093bfb5c805fa2f9f5915817e340f",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/research_evolution_2026_05_05.md",
       "bundleSource": "articles/docs/research_evolution_2026_05_05.md",
       "bytes": 14435,
-      "sha256": "1a4004dc757822d31bc84bac05542d72707a655e5bc904adda514243574c921b"
+      "sha256": "1a4004dc757822d31bc84bac05542d72707a655e5bc904adda514243574c921b",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/phoenix-observability.md",
       "bundleSource": "articles/docs/phoenix-observability.md",
       "bytes": 3936,
-      "sha256": "075881b3d123aa00f16e31fc0a672883994c31f0ba8c3f4e284c5959a2ec8891"
+      "sha256": "075881b3d123aa00f16e31fc0a672883994c31f0ba8c3f4e284c5959a2ec8891",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/mlip-flywheel-readiness.md",
       "bundleSource": "articles/docs/mlip-flywheel-readiness.md",
       "bytes": 5027,
-      "sha256": "bb0578b95fd07e5e0a580f04e819de6e8b29645fee8069262f15d31444f691c0"
+      "sha256": "bb0578b95fd07e5e0a580f04e819de6e8b29645fee8069262f15d31444f691c0",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/born-screening-re-audit.md",
       "bundleSource": "articles/docs/born-screening-re-audit.md",
       "bytes": 5018,
-      "sha256": "0b7e8a2239c11a1586c6c4af2bf1afa2e8115ba285cca5350d8086bc47d1dfa3"
+      "sha256": "0b7e8a2239c11a1586c6c4af2bf1afa2e8115ba285cca5350d8086bc47d1dfa3",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/foundation-model-trust-layers.md",
       "bundleSource": "articles/docs/foundation-model-trust-layers.md",
       "bytes": 7938,
-      "sha256": "a0ea62a60f879799956f3708ef4e7d99a2c504a786a5864251efec786c05e815"
+      "sha256": "a0ea62a60f879799956f3708ef4e7d99a2c504a786a5864251efec786c05e815",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/references.md",
       "bundleSource": "articles/docs/references.md",
       "bytes": 8148,
-      "sha256": "dd9d3f6481c2b10585b2b5bd1b4189f8f0d850beecdb0f9ff392a316523fe1d6"
+      "sha256": "dd9d3f6481c2b10585b2b5bd1b4189f8f0d850beecdb0f9ff392a316523fe1d6",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review.md",
       "bundleSource": "articles/lit-review.md",
       "bytes": 17081,
-      "sha256": "cfb491217fd6fb7b47fa3c63cfb76696c4af0891baaf59e7fb9235159e41cd9b"
+      "sha256": "cfb491217fd6fb7b47fa3c63cfb76696c4af0891baaf59e7fb9235159e41cd9b",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/reviews/academic-review-projection-law-2026-06-16.md",
       "bundleSource": "articles/docs/reviews/academic-review-projection-law-2026-06-16.md",
       "bytes": 15157,
-      "sha256": "5a6290cddfee8325f8c361b927105e5c572791bff0b12c005be830b866643cfa"
+      "sha256": "5a6290cddfee8325f8c361b927105e5c572791bff0b12c005be830b866643cfa",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/reviews/adversarial-review-projection-law-2026-06-16.md",
       "bundleSource": "articles/docs/reviews/adversarial-review-projection-law-2026-06-16.md",
       "bytes": 11459,
-      "sha256": "aa41609643483c83f8f5156ad21c31615f97b7b9960777f18fc1c517dcfcedf7"
+      "sha256": "aa41609643483c83f8f5156ad21c31615f97b7b9960777f18fc1c517dcfcedf7",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/funding_landscape_report.md",
       "bundleSource": "articles/docs/funding_landscape_report.md",
       "bytes": 31737,
-      "sha256": "b19cafa0f4df3cc514f1c9fbd23f030d3fc31977598e6354babe3e81b0492168"
+      "sha256": "b19cafa0f4df3cc514f1c9fbd23f030d3fc31977598e6354babe3e81b0492168",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/operating-system.md",
       "bundleSource": "articles/docs/operating-system.md",
       "bytes": 1387,
-      "sha256": "554699b41ef9279f83d11c3079e813e61b9beb4a5cbbc53689aa545c8c74b665"
+      "sha256": "554699b41ef9279f83d11c3079e813e61b9beb4a5cbbc53689aa545c8c74b665",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/resource-fabric.md",
       "bundleSource": "articles/docs/resource-fabric.md",
       "bytes": 3092,
-      "sha256": "fdca88fd312348b7e7667cdd80597d3b802f6c0d968dcc286d668fd11ec581a1"
+      "sha256": "fdca88fd312348b7e7667cdd80597d3b802f6c0d968dcc286d668fd11ec581a1",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/reproduce.md",
       "bundleSource": "articles/docs/reproduce.md",
       "bytes": 2263,
-      "sha256": "38efe4f407131d0fe956784e0007bdcdd20e013c3f3c332222ba4b50d0ba7d14"
+      "sha256": "38efe4f407131d0fe956784e0007bdcdd20e013c3f3c332222ba4b50d0ba7d14",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/EXTRACTION_COMPLETE.md",
       "bundleSource": "articles/docs/EXTRACTION_COMPLETE.md",
       "bytes": 3475,
-      "sha256": "9317ac0bf7d51cee9571b718a6e860317ec0c7ba31ae07768beb9e344215548e"
+      "sha256": "9317ac0bf7d51cee9571b718a6e860317ec0c7ba31ae07768beb9e344215548e",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/EXTRACTION_REPORT.md",
       "bundleSource": "articles/docs/EXTRACTION_REPORT.md",
       "bytes": 7195,
-      "sha256": "235652d0a26d6245bf22cd6435edd48ab33511c893105886cdd149085d61a6ef"
+      "sha256": "235652d0a26d6245bf22cd6435edd48ab33511c893105886cdd149085d61a6ef",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/EXTRACTION_NOTES.md",
       "bundleSource": "articles/docs/EXTRACTION_NOTES.md",
       "bytes": 4245,
-      "sha256": "4611f11f4e5622238809fb07bafed7485882207a435423babb7d5d9a682e71a9"
+      "sha256": "4611f11f4e5622238809fb07bafed7485882207a435423babb7d5d9a682e71a9",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/decisions/0001-r2-over-bandwidth-alliance.md",
       "bundleSource": "articles/docs/decisions/0001-r2-over-bandwidth-alliance.md",
       "bytes": 7474,
-      "sha256": "bb7ac3149da7d3bfe4ca94fcb00bb9eb5b2e73e592cb8c41059b1886a5c971b7"
+      "sha256": "bb7ac3149da7d3bfe4ca94fcb00bb9eb5b2e73e592cb8c41059b1886a5c971b7",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/partnerships.md",
       "bundleSource": "articles/docs/partnerships.md",
       "bytes": 2127,
-      "sha256": "a457a53f372ced4f5638f8bfa7b1aeb290c369c2beeb782ad4924c29f6670595"
+      "sha256": "a457a53f372ced4f5638f8bfa7b1aeb290c369c2beeb782ad4924c29f6670595",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/what-is-an-interatomic-potential.md",
       "bundleSource": "articles/docs/what-is-an-interatomic-potential.md",
       "bytes": 2782,
-      "sha256": "f2af6514039ad935d545f868b47ac1143f94c07540e18e7707991c1d69f61a7a"
+      "sha256": "f2af6514039ad935d545f868b47ac1143f94c07540e18e7707991c1d69f61a7a",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/projection-law-in-plain-language.md",
       "bundleSource": "articles/docs/projection-law-in-plain-language.md",
       "bytes": 3736,
-      "sha256": "963b76fb0384decfbc4b1bef44716f62e72efda81aece84fde11f518d3e61cdb"
+      "sha256": "963b76fb0384decfbc4b1bef44716f62e72efda81aece84fde11f518d3e61cdb",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-surrogate-neb.md",
       "bundleSource": "articles/lit-review/savings-surrogate-neb.md",
       "bytes": 22088,
-      "sha256": "f4241722e75cc5a5a988f76dcb70dec5de1baff65dfb3398450bea4f3f0d2a3d"
+      "sha256": "f4241722e75cc5a5a988f76dcb70dec5de1baff65dfb3398450bea4f3f0d2a3d",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-active-learning.md",
       "bundleSource": "articles/lit-review/savings-active-learning.md",
       "bytes": 18737,
-      "sha256": "5ff83af9bbc2d72fb2bf9f06f5345486638e26a0270d0952e4a44c78d9e17d4f"
+      "sha256": "5ff83af9bbc2d72fb2bf9f06f5345486638e26a0270d0952e4a44c78d9e17d4f",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-delta-multifidelity.md",
       "bundleSource": "articles/lit-review/savings-delta-multifidelity.md",
       "bytes": 20171,
-      "sha256": "338bb2e2663ae9997636b0372e8debba7ab3f08a37d9cb26b5a9c5543e076d23"
+      "sha256": "338bb2e2663ae9997636b0372e8debba7ab3f08a37d9cb26b5a9c5543e076d23",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-abstention-economics.md",
       "bundleSource": "articles/lit-review/savings-abstention-economics.md",
       "bytes": 18071,
-      "sha256": "6781754544f9d418319e3ec1ecb125ac12d18fcfe762010ab1a0beb356729939"
+      "sha256": "6781754544f9d418319e3ec1ecb125ac12d18fcfe762010ab1a0beb356729939",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-dft-systems.md",
       "bundleSource": "articles/lit-review/savings-dft-systems.md",
       "bytes": 23682,
-      "sha256": "b4cdb50db7d61b0c639b289482914854993868d442fe27ad10628c711cc6febc"
+      "sha256": "b4cdb50db7d61b0c639b289482914854993868d442fe27ad10628c711cc6febc",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-electronic-surrogates.md",
       "bundleSource": "articles/lit-review/savings-electronic-surrogates.md",
       "bytes": 20616,
-      "sha256": "c54a2fd0ee57dfb49fbdedb6a8a5092daefcb588ad106cbfb4d4bb4c3b8bbdce"
+      "sha256": "c54a2fd0ee57dfb49fbdedb6a8a5092daefcb588ad106cbfb4d4bb4c3b8bbdce",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-path-sampling-algorithms.md",
       "bundleSource": "articles/lit-review/savings-path-sampling-algorithms.md",
       "bytes": 19748,
-      "sha256": "74adf54edaa1957433d3bb190b8d95d2663cf5e2b1bea9345363faeaec9f13dd"
+      "sha256": "74adf54edaa1957433d3bb190b8d95d2663cf5e2b1bea9345363faeaec9f13dd",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/supercomputing-atomistic-history.md",
       "bundleSource": "articles/lit-review/supercomputing-atomistic-history.md",
       "bytes": 15608,
-      "sha256": "1187a684365367a16b9ecfb59c7afc1435991a669ecc9ba9a11b726308652986"
+      "sha256": "1187a684365367a16b9ecfb59c7afc1435991a669ecc9ba9a11b726308652986",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/research-compute-resourcing.md",
       "bundleSource": "articles/lit-review/research-compute-resourcing.md",
       "bytes": 14280,
-      "sha256": "d973d1f7d070b523f18ee346b4ba5612d74ad893798f766bd59568a4cd48b2b9"
+      "sha256": "d973d1f7d070b523f18ee346b4ba5612d74ad893798f766bd59568a4cd48b2b9",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/savings-techniques-synthesis-2026-07-21.md",
       "bundleSource": "articles/lit-review/savings-techniques-synthesis-2026-07-21.md",
       "bytes": 15657,
-      "sha256": "d2b6b967fc8b02e37a2968a1503a9ae0315ad6bf72b173eae66e9af3f2d05add"
+      "sha256": "d2b6b967fc8b02e37a2968a1503a9ae0315ad6bf72b173eae66e9af3f2d05add",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/z1-union-anchor-economics.md",
       "bundleSource": "articles/docs/analysis/z1-union-anchor-economics.md",
       "bytes": 6159,
-      "sha256": "04a7c6d5ea7646d07622c20a27653a069a7375c39db4ec2617c2fad0db8bf00e"
+      "sha256": "04a7c6d5ea7646d07622c20a27653a069a7375c39db4ec2617c2fad0db8bf00e",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "lit-review/citation-verification-2026-07-21.md",
       "bundleSource": "articles/lit-review/citation-verification-2026-07-21.md",
       "bytes": 2731,
-      "sha256": "e5cf6774b1bb57a704d172ba86a3716ac9836117f86dfc0f1322f829d96a8721"
+      "sha256": "e5cf6774b1bb57a704d172ba86a3716ac9836117f86dfc0f1322f829d96a8721",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/z1-union-campaign-verdict.md",
       "bundleSource": "articles/docs/analysis/z1-union-campaign-verdict.md",
       "bytes": 3077,
-      "sha256": "863999a1a0e9b7e7ceac020d6c4c63f04ebb3e5c2990e800259dca92454961d6"
+      "sha256": "863999a1a0e9b7e7ceac020d6c4c63f04ebb3e5c2990e800259dca92454961d6",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/z1-union-cost-ledger.md",
       "bundleSource": "articles/docs/analysis/z1-union-cost-ledger.md",
       "bytes": 919,
-      "sha256": "feca0f96b52508960bc9106ecb73c3488c0563a2702823ddb29558fa41ac0ca4"
+      "sha256": "feca0f96b52508960bc9106ecb73c3488c0563a2702823ddb29558fa41ac0ca4",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/t1-niggli-audit.md",
       "bundleSource": "articles/docs/analysis/t1-niggli-audit.md",
       "bytes": 1164,
-      "sha256": "5e03363b41a1504482e69512676f49bba409ab8706f329b20c9e76f88a4b4152"
+      "sha256": "5e03363b41a1504482e69512676f49bba409ab8706f329b20c9e76f88a4b4152",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/t1-wander-mechanism.md",
       "bundleSource": "articles/docs/analysis/t1-wander-mechanism.md",
       "bytes": 2958,
-      "sha256": "9e7ccca06cc85d67e572197465c151582b8036c6c10de4ad36b74df553e143ba"
+      "sha256": "9e7ccca06cc85d67e572197465c151582b8036c6c10de4ad36b74df553e143ba",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/analysis/t1-wander-gate.md",
       "bundleSource": "articles/docs/analysis/t1-wander-gate.md",
       "bytes": 7746,
-      "sha256": "6d7d1dca33f49e4f5c57c020a4967999d6784c6bc558cc943ab6970cacabd954"
+      "sha256": "6d7d1dca33f49e4f5c57c020a4967999d6784c6bc558cc943ab6970cacabd954",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/research-progress/2026-10-26-cloudflare-research-team.md",
       "bundleSource": "articles/docs/research-progress/2026-10-26-cloudflare-research-team.md",
       "bytes": 43986,
-      "sha256": "aa13332d935bbdb110126c174330a9c69c41aef6cd5c6c6788a7c1afb1a20460"
+      "sha256": "aa13332d935bbdb110126c174330a9c69c41aef6cd5c6c6788a7c1afb1a20460",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/research-progress/2026-10-26-cloudflare-research-team-methods.md",
       "bundleSource": "articles/docs/research-progress/2026-10-26-cloudflare-research-team-methods.md",
       "bytes": 24051,
-      "sha256": "551efb54e2c3381651e8926a9a584c775a5061124541da457a8d37e960981db9"
+      "sha256": "551efb54e2c3381651e8926a9a584c775a5061124541da457a8d37e960981db9",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "exportedAt": "2026-10-26T13:53:42.020828+00:00",
+        "manifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+        "scope": "Retained article bytes from the prior reviewed bundle; no fresh source or scientific revalidation."
+      }
     },
     {
       "source": "docs/research-index.md",
       "bundleSource": "articles/docs/research-index.md",
-      "bytes": 8942,
-      "sha256": "13990c2db123a90a19d55e39cdc43067eae7cfd63545095c48a100cd7f1d1c9e"
+      "bytes": 9340,
+      "sha256": "5087cfbbe261b82f3742372f71d74c431bc7bd114f1a8d66495d5d62e099c901",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "cc8dd7f056dd2e2b7f47ca0d20bbf7228887648b",
+        "dirty": false,
+        "scope": "New locally reviewed source study and explicit index reconciliation; no simulation or hosted research-team inference.",
+        "supersedesFileSha256": "13990c2db123a90a19d55e39cdc43067eae7cfd63545095c48a100cd7f1d1c9e",
+        "inheritedManifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d"
+      }
+    },
+    {
+      "source": "docs/research-programs/lammps-code-to-experiment.md",
+      "bundleSource": "articles/docs/research-programs/lammps-code-to-experiment.md",
+      "bytes": 12808,
+      "sha256": "7b5985452b0a66ccd582aad74aedf109b7ba5a35235142ce909ac06c8150b610",
+      "origin": {
+        "repo": "lupine-rhizo",
+        "commit": "cc8dd7f056dd2e2b7f47ca0d20bbf7228887648b",
+        "dirty": false,
+        "scope": "New locally reviewed source study and explicit index reconciliation; no simulation or hosted research-team inference."
+      }
     }
-  ]
+  ],
+  "lineage": {
+    "schema": "library-content-lineage.v1",
+    "inheritedManifestSha256": "9790a6ae250ed586a6373c4ef1a1b1f4ad1f13a104cea3fdf3ee12490a92782d",
+    "inheritedSnapshot": {
+      "generatedAt": "2026-10-26T13:53:42.020828+00:00",
+      "source": {
+        "repo": "lupine-rhizo",
+        "commit": "f68a78011abd0df5cec5b5c5652e14e0912e7580",
+        "dirty": true,
+        "generator": "reviewed article projection from verified existing Library bundle and selected science source"
+      }
+    },
+    "preservedArticleFiles": 95,
+    "updatedArticleFiles": [
+      {
+        "source": "docs/research-index.md",
+        "beforeSha256": "13990c2db123a90a19d55e39cdc43067eae7cfd63545095c48a100cd7f1d1c9e",
+        "afterSha256": "5087cfbbe261b82f3742372f71d74c431bc7bd114f1a8d66495d5d62e099c901"
+      }
+    ],
+    "addedArticleFiles": [
+      {
+        "source": "docs/research-programs/lammps-code-to-experiment.md",
+        "sha256": "7b5985452b0a66ccd582aad74aedf109b7ba5a35235142ce909ac06c8150b610"
+      }
+    ],
+    "scope": "Current timestamp denotes assembly of this additive export. It does not re-date the inherited article observations, reviews or scientific claims.",
+    "previousAssembly": {
+      "manifestSha256": "39ff97ebbf79bc16974e6c7b077b36be636e43dcf870f7feae792e4179a72547",
+      "generatedAt": "2026-10-31T20:36:05.467673+00:00",
+      "sourceCommit": "e5b72a87bcd3ea0009f2b8301e7b87eebc3dfd88",
+      "reason": "Explicit source Date line now parsed as document date; v1 export is retained unchanged."
+    }
+  }
 }

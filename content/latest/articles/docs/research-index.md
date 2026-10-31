@@ -32,6 +32,10 @@ and qualifications determine what that label supports.
 | 2026-07-19 | [Z3 Adsorption Campaign — Round 4](./validation/z3-adsorption-delta-campaign-round4-results.md) | Refuted by us | All four validation-selected corrections worsened held-out accuracy relative to their raw baselines. |
 | 2026-06-20 | [Born-Screening Re-Audit](./born-screening-re-audit.md) | Self-corrected | Invalid tensors narrowed earlier claims; open recomputation gates remain open. |
 
+## Source studies
+
+- [LAMMPS as a research instrument: from source code to trustworthy experiments](./research-programs/lammps-code-to-experiment.md) — local source review dated 31 October 2026, connecting force calculations and stress conventions to a proposed static copper EAM check. The experiment has not run; source inspection and numerical consistency do not establish material accuracy.
+
 ## Follow a claim from question to evidence
 
 1. Read its status and scope in [The Hypothesis Ledger](./conjectures/ledger.md).

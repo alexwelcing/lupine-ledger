@@ -83,7 +83,7 @@ test('built reader, archive, search, corpus and graph share display labels and o
   const corpus = read('dist/data/corpus.json');
   const search = read('dist/data/search-index.json');
   const graph = read('dist/data/knowledge-graph.json');
-  assert.equal(library.articles.length, 96);
+  assert.equal(library.articles.length, catalog.entries.length);
   assert.equal(library.articles.filter(article => article.editorial.applied).length, 10);
   for (const candidate of candidates) {
     const canonical = read(`dist/data/${candidate.id}.json`);
