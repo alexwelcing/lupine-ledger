@@ -1,5 +1,5 @@
 import { publicResearchQuestion } from './publicResearchEvidence.js';
-import { readerPassage, scrollReaderPassage } from './readerPassage.js';
+import { readerPassage } from './readerPassage.js';
 import { createPublicSearch } from './publicSearch.js';
 import { publicActivityStore } from './publicActivityStore.js';
 import { renderPublicResearch } from './publicResearchView.js';
@@ -8,7 +8,7 @@ import { renderResearchConnections } from './researchConnectionsView.js';
 // Single-page app with hash routing. No framework — dependencies are in the DOM.
 
 import { preloadCorpus } from './articleCorpus.js';
-import { renderKnowledgeHome } from './knowledgeHome.js';
+import { renderDocumentLibrary } from './documentLibrary.js';
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
 import { parseHashRoute, parseKnowledgeGraphHash, renderKnowledgeGraphView } from './knowledgeGraphView.js';
@@ -21,6 +21,7 @@ import {
 
 const publicSearch = createPublicSearch();
 const searchBodies = new Map();
+let indexedCorpusVersion = null;
 publicActivityStore().subscribe(state => { for (const record of state.records) { publicSearch.activity(record); if(state.evidence?.[record.id]?.status==='verified')publicSearch.evidence(record,state.evidence[record.id].evidence); } if (document.getElementById('search-dialog')?.open) renderSearchResults(document.getElementById('search-input').value.trim()); });
 
 const BANNERS = [
@@ -54,7 +55,6 @@ const BANNERS = [
 const STATE = {
   manifest: null,          // { categories, articles, version }
   searchIndex: null,       // deterministic metadata from /data/search-index.json
-  articleCache: new Map(), // id -> article (with html)
   view: 'home',
   currentId: null,
   settings: loadSettings(),
@@ -67,6 +67,8 @@ const TOPBAR = document.getElementById('topbar');
 const BACK_BTN = document.getElementById('back-btn');
 const PROGRESS_FILL = document.getElementById('progress-fill');
 let activeViewCleanup = null;
+let documentDesk = null;
+let documentRequest = null;
 
 function clearActiveView() {
   if (typeof activeViewCleanup === 'function') activeViewCleanup();
@@ -165,60 +167,9 @@ function buildSourceToIdMap(manifest) {
   return map;
 }
 
-function articleVersionQuery() {
-  return STATE.manifest?.version ? `?v=${encodeURIComponent(STATE.manifest.version)}` : '';
-}
-
-async function parseJsonResponse(res) {
-  const contentType = res.headers.get('content-type') || '';
-  if (!/\bapplication\/(?:[\w.+-]+\+)?json\b/i.test(contentType)) return null;
-  try {
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-async function fetchArticle(id, preferredLang) {
-  const cacheKey = `${id}:${preferredLang || STATE.settings.lang}`;
-  if (STATE.articleCache.has(cacheKey)) return STATE.articleCache.get(cacheKey);
-
-  const lang = preferredLang || STATE.settings.lang;
-  const q = articleVersionQuery();
-  let res = null;
-  let article = null;
-  let triedLang = null;
-
-  // Try preferred language variant first
-  if (lang !== DEFAULT_LANG) {
-    try {
-      res = await fetch(`/data/${encodeURIComponent(id)}.${lang}.json${q}`);
-      if (res.ok) {
-        article = await parseJsonResponse(res);
-        if (article) triedLang = lang;
-      }
-    } catch {
-      // A missing localized asset may surface as a network failure; use the default.
-    }
-  }
-
-  // Fall back to default
-  if (!article) {
-    res = await fetch(`/data/${encodeURIComponent(id)}.json${q}`);
-    triedLang = DEFAULT_LANG;
-    if (res.ok) article = await parseJsonResponse(res);
-  }
-
-  if (!res.ok || !article) throw new Error(`article ${id} fetch failed`);
-  article._displayLang = triedLang;
-  article._requestedLang = lang;
-  STATE.articleCache.set(cacheKey, article);
-  return article;
-}
-
 function handleArticleLinkClick(e, article) {
   const a = e.target.closest('a');
-  if (!a) return;
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
   const href = a.getAttribute('href') || '';
   if (!href || href.startsWith('#') || /^[a-z][a-z0-9+.-]:/i.test(href)) return;
 
@@ -232,7 +183,7 @@ function handleArticleLinkClick(e, article) {
   const resolved = new URL(mdPath, base).pathname.replace(/^\/+/, '');
   const targetId = STATE.sourceToId?.get(resolved);
   if (targetId) {
-    location.hash = `#/read/${encodeURIComponent(targetId)}${fragment || ''}`;
+    location.hash = `#/read/${encodeURIComponent(targetId)}${fragment ? '?passage=' + encodeURIComponent(decodeURIComponent(fragment.slice(1))) : ''}`;
   } else {
     window.open(a.href, '_blank', 'noopener');
   }
@@ -289,20 +240,58 @@ function cardFor(article, opts = {}) {
   return card;
 }
 
-async function renderHome() {
+function corpusOptions(manifest) {
+  return { version: manifest.version, expectedIds: manifest.articles.map(article => article.id) };
+}
+
+function renderHome() { return renderDocuments('research-index'); }
+
+async function renderDocuments(id, passage = '', recreate = false) {
+  STATE.currentId = id;
+  if (documentDesk && !recreate) {
+    if (documentDesk.openArticle(id, passage)) return;
+    return renderDocuments(id, passage, true);
+  }
+  if (documentRequest && !recreate) { documentRequest.selection = { id, passage }; return; }
   clearActiveView();
-  let cancelled = false, cleanup;
-  activeViewCleanup = () => { cancelled = true; cleanup?.(); };
-  STATE.view = 'home'; document.documentElement.dataset.view = 'home';
+  const request = { selection: { id, passage }, cancelled: false };
+  documentRequest = request;
+  activeViewCleanup = () => {
+    request.cancelled = true;
+    documentDesk?.destroy(); documentDesk = null;
+    if (documentRequest === request) documentRequest = null;
+  };
+  STATE.view = 'documents'; document.documentElement.dataset.view = 'documents';
   BACK_BTN.hidden = true; setProgress(0);
-  VIEW.innerHTML = '<div class="loading">Opening the knowledge field…</div>';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  VIEW.innerHTML = '<div class="loading" role="status">Opening the document library…</div>';
   try {
-    const [manifest, graph] = await Promise.all([fetchManifest(), fetchKnowledgeGraph()]);
-    if (cancelled) return;
-    cleanup = renderKnowledgeHome(VIEW, { manifest, graph });
-    if (cancelled) cleanup?.();
+    const manifest = await fetchManifest();
+    if (request.cancelled) return;
+    VIEW.firstElementChild.textContent = `Loading all ${manifest.articles.length} documents for this visit…`;
+    const corpus = await preloadCorpus(corpusOptions(manifest));
+    if (request.cancelled) return;
+    const selected = request.selection;
+    documentDesk = renderDocumentLibrary(VIEW, {
+      manifest, corpus, initialId: selected.id, passage: selected.passage,
+      language: STATE.settings.lang,
+      onNavigate(id, passage = '') {
+        STATE.currentId = id;
+        const route = `#/read/${encodeURIComponent(id)}${passage ? '?passage=' + encodeURIComponent(passage) : ''}`;
+        if (location.hash !== route) location.hash = route;
+      },
+      onArticleLink: handleArticleLinkClick,
+    });
+    documentRequest = null;
   } catch (error) {
-    if (!cancelled) VIEW.innerHTML = '<div class="loading">The knowledge field is unavailable. <a href="#/tags">Open the document index →</a></div>';
+    if (request.cancelled) return;
+    documentRequest = null;
+    VIEW.replaceChildren();
+    const notice = el('div', { class: 'loading', role: 'alert' },
+      el('p', {}, 'The complete Library could not be loaded. You can retry, or read the published article pages.'));
+    notice.append(el('button', { type: 'button', onclick: () => renderDocuments(request.selection.id, request.selection.passage, true) }, 'Retry loading'));
+    notice.append(el('p', {}, el('a', { href: '/articles/research-index/' }, 'Read the research index →')));
+    VIEW.append(notice);
   }
 }
 
@@ -425,119 +414,7 @@ async function renderTags() {
 // ───────────────────────────────────────────────────────────────
 // Reader
 // ───────────────────────────────────────────────────────────────
-async function renderReader(id, passage = '') {
-  clearActiveView();
-  STATE.view = 'reader';
-  document.documentElement.dataset.view = 'reader';
-  STATE.currentId = id;
-  BACK_BTN.hidden = false;
-  setProgress(0);
-  VIEW.innerHTML = `<div class="loading">${t('reader.loading', STATE.settings.lang)}</div>`;
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  try {
-    const m = await fetchManifest();
-    // Reviewed passage anchors are pinned to the English source, not translated headings.
-    const article = await fetchArticle(id, passage ? 'en' : undefined);
-    const cat = m.categories.find(c => c.id === article.category);
-
-    VIEW.innerHTML = '';
-    const root = el('article', { class: 'reader' });
-
-    const head = el('header', { class: 'reader-head' });
-    if (cat) head.append(el('div', { class: 'reader-cat' }, t(cat.label, STATE.settings.lang)));
-
-    // Fallback notice when article not available in requested language
-    if (article._displayLang && article._requestedLang && article._displayLang !== article._requestedLang) {
-      const langName = (m.languages && m.languages[article._requestedLang]?.native) || article._requestedLang;
-      const notice = el('div', { class: 'lang-fallback', style: 'margin-bottom: 12px; padding: 10px 14px; border-radius: 6px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25); color: #fbbf24; font-size: 0.85rem;' });
-      notice.textContent = t('home.fallbackNotice', STATE.settings.lang, { lang: langName });
-      head.append(notice);
-    }
-
-    head.append(el('h1', { class: 'reader-title' }, t(article.title, STATE.settings.lang)));
-    if (article.subtitle) head.append(el('p', { class: 'reader-sub' }, t(article.subtitle, STATE.settings.lang)));
-    if (article.editorial?.applied) {
-      const original = el('details', { class: 'reader-original-title' });
-      original.append(el('summary', {}, 'Library description & original title'), el('p', {}, `The Library title describes this archived document. Original catalog title: ${article.originalTitle}`));
-      head.append(original);
-    }
-    const meta = el('div', { class: 'reader-meta' });
-    meta.append(el('span', {}, `${article.readMinutes} ${t('reader.meta.read', STATE.settings.lang)}`));
-    meta.append(el('span', {}, `${article.words.toLocaleString()} ${t('home.stats.words', STATE.settings.lang)}`));
-    if (article.source) meta.append(el('span', { class: 'tag' }, article.source));
-    head.append(meta);
-    const snapshot = m.sourceSnapshot;
-    const snapshotDate = typeof snapshot?.exportedAt === 'string' && Number.isFinite(Date.parse(snapshot.exportedAt))
-      ? snapshot.exportedAt.slice(0, 10) : t('reader.sourceSnapshot.unknown', STATE.settings.lang);
-    const snapshotNotice = el('p', { class: 'reader-source-snapshot' },
-      t('reader.sourceSnapshot.notice', STATE.settings.lang, { date: snapshotDate }));
-    snapshotNotice.append(document.createTextNode(' '), el('a', { href: '#/research' }, t('reader.sourceSnapshot.latest', STATE.settings.lang)));
-    head.append(snapshotNotice);
-    const connectionLink = el('a', { class: 'reader-connections-link', href: `#/graph/${encodeURIComponent('article:' + article.id)}?mode=local` }, 'Explore this article’s connections ↗');
-    head.append(connectionLink);
-    root.append(head);
-
-    // Extracted Knowledge Panel
-    if (article.extracted_knowledge && Object.keys(article.extracted_knowledge).length > 0) {
-      const panel = el('div', { class: 'knowledge-panel' });
-      panel.append(el('h3', { class: 'kp-title' }, 'Extracted Knowledge'));
-      const grid = el('div', { class: 'knowledge-grid' });
-      for (const [key, val] of Object.entries(article.extracted_knowledge)) {
-        const item = el('div', { class: 'knowledge-item' });
-        item.append(el('span', { class: 'k-key' }, key));
-        let displayVal = val;
-        if (Array.isArray(val)) displayVal = val.join(', ');
-        else if (typeof val === 'object') displayVal = JSON.stringify(val);
-        item.append(el('span', { class: 'k-val' }, String(displayVal)));
-        grid.append(item);
-      }
-      panel.append(grid);
-      root.append(panel);
-    }
-
-    const body = el('div', { class: 'content' });
-    body.innerHTML = article.html;
-    root.append(body);
-
-    // Defense-in-depth: even if a cached article JSON still contains raw .md
-    // links, rewrite clicks to intra-library targets so they don't fall back
-    // to the home view. Unknown .md files open as raw sources.
-    body.addEventListener('click', (e) => handleArticleLinkClick(e, article));
-
-    VIEW.append(root);
-
-    // Prev / next by manifest order, stable across categories
-    const idx = m.articles.findIndex(a => a.id === id);
-    const prev = idx > 0 ? m.articles[idx - 1] : null;
-    const next = idx < m.articles.length - 1 ? m.articles[idx + 1] : null;
-    const nav = el('nav', { class: 'reader-nav' });
-    nav.append(linkBlock(prev, t('reader.nav.prev', STATE.settings.lang), 'prev'));
-    nav.append(linkBlock(next, t('reader.nav.next', STATE.settings.lang), 'next'));
-    VIEW.append(nav);
-
-    // Restore scroll position if partially read
-    const p = STATE.progress[id];
-    if (passage) {
-      requestAnimationFrame(() => scrollReaderPassage(body, passage));
-    } else if (p && p.scrollTop) {
-      // Wait for layout
-      requestAnimationFrame(() => window.scrollTo({ top: p.scrollTop, behavior: 'instant' }));
-    }
-  } catch (e) {
-    console.error(e);
-    VIEW.innerHTML = `<div class="empty">${t('reader.error.offline', STATE.settings.lang)}</div>`;
-  }
-}
-function linkBlock(article, label, cls) {
-  if (!article) {
-    return el('a', { class: `${cls} disabled`, 'aria-disabled': 'true' },
-      el('span', { class: 'lbl' }, label),
-      el('span', {}, cls === 'prev' ? t('reader.nav.start', STATE.settings.lang) : t('reader.nav.end', STATE.settings.lang)));
-  }
-  return el('a', { class: cls, href: `#/read/${article.id}` },
-    el('span', { class: 'lbl' }, label),
-    el('span', {}, t(article.title, STATE.settings.lang)));
-}
+function renderReader(id, passage = '') { return renderDocuments(id, passage); }
 
 async function renderMlipFlywheel() {
   clearActiveView();
@@ -578,6 +455,7 @@ async function renderKnowledgeGraph() {
 
 // Scroll-tracked progress
 function onScroll() {
+  if (STATE.view === 'documents') return;
   const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   const pct = Math.min(1, Math.max(0, window.scrollY / max));
   setProgress(pct);
@@ -675,12 +553,14 @@ async function openSearch() {
   const [manifest, index] = await Promise.all([fetchManifest(), fetchSearchIndex()]);
   for (const article of index.articles) publicSearch.article(article, [...searchBodies].filter(([key])=>key.startsWith(`${article.id}:`)).map(([,body])=>body).join(' '));
   publicActivityStore().refresh();
-  preloadCorpus().then(corpus => {
+  preloadCorpus(corpusOptions(manifest)).then(corpus => {
+    if (indexedCorpusVersion === corpus.version) return;
     for (const article of corpus.articles) {
       const body = document.createElement('div'); body.innerHTML = article.html;
       const meta = manifest.articles.find(a => a.id === article.id);
       if (meta) { searchBodies.set(`${article.id}:${article.lang || 'en'}`, body.textContent); publicSearch.article(meta, [...searchBodies].filter(([key])=>key.startsWith(`${article.id}:`)).map(([,text])=>text).join(' ')); }
     }
+    indexedCorpusVersion = corpus.version;
     if (searchDialog.open) renderSearchResults(searchInput.value.trim());
   }).catch(() => { searchHint.textContent = 'Article text unavailable; searching titles and loaded public research.'; });
   searchInput.value = '';
@@ -778,7 +658,7 @@ function syncSettingsUI() {
 settingsDialog.addEventListener('click', (e) => {
   const t = e.target.closest('button');
   if (!t) return;
-  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'tags') renderTags(); else if (STATE.view === 'graph') renderKnowledgeGraph(); else if (STATE.view === 'reader' && STATE.currentId) renderReader(STATE.currentId); }
+  if (t.dataset.lang)  { STATE.settings.lang = t.dataset.lang;   saveLang(t.dataset.lang); saveSettings(); syncSettingsUI(); applySettings(); translateStaticDOM(); if (STATE.view === 'home') renderHome(); else if (STATE.view === 'tags') renderTags(); else if (STATE.view === 'graph') renderKnowledgeGraph(); else if (STATE.view === 'documents') renderDocuments(STATE.currentId || 'research-index', readerPassage(location.hash), true); }
   if (t.dataset.size)  { STATE.settings.size = t.dataset.size;   saveSettings(); syncSettingsUI(); }
   if (t.dataset.theme) { STATE.settings.theme = t.dataset.theme; saveSettings(); syncSettingsUI(); }
   if (t.dataset.width) { STATE.settings.width = t.dataset.width; saveSettings(); syncSettingsUI(); }
@@ -799,10 +679,12 @@ cacheBtn.addEventListener('click', async () => {
         fetches.push(fetch(`/data/${a.id}.${lng}.json`, { cache: 'reload' }));
       }
     }
-    // New required data files: search + knowledge graph must work offline too.
+    fetches.push(fetch('/data/corpus.json', { cache: 'reload' }));
+    // Search and knowledge graph remain available offline too.
     fetches.push(fetch('/data/search-index.json', { cache: 'reload' }));
     fetches.push(fetch('/data/knowledge-graph.json', { cache: 'reload' }));
-    await Promise.all(fetches);
+    const responses = await Promise.all(fetches);
+    if (responses.some(response => !response.ok)) throw new Error('Some documents could not be saved.');
     cacheBtn.textContent = t('settings.saved', STATE.settings.lang);
     cacheBtn.classList.add('done');
   } catch (e) {

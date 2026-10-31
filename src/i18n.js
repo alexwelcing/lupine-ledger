@@ -10,8 +10,8 @@ const STRINGS = {
     'nav.research': 'Research index',
     'nav.science': 'Lupine Science ↗',
     'brand.title': 'Lupine Library',
-    'meta.title': 'Lupine Library — Materials Science Research & Knowledge Graph',
-    'meta.description': 'Explore materials-science research, interatomic potentials, MLIP benchmarks and uncertainty through a connected knowledge graph and an open, source-aware article library.',
+    'meta.title': 'Lupine Library — Materials Science Research',
+    'meta.description': 'Read the Lupine Science research library: materials science, interatomic potentials, MLIP benchmarks and uncertainty. Search the full collection and move directly between connected articles.',
 
     'home.loading': 'Loading library…',
     'home.hero': 'Lupine Science <em>Library</em>',
