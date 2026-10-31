@@ -28,6 +28,8 @@ const SHELL_ASSETS = [
   '/publicResearchEvidence.js',
   '/publicResearchEvidenceView.js',
   '/publicResearchView.js',
+  '/researchPresentation.js',
+  '/researchEditorial.js',
   '/researchConnections.js',
   '/researchConnectionsView.js',
   '/readerPassage.js',

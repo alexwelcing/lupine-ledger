@@ -1,3 +1,4 @@
+import { researchPresentation, sourcePresentation } from './researchPresentation.js';
 import { canonicalEvidence, evidenceHash, researchEvidenceGraph, validatePublicEvidence } from './publicResearchEvidence.js';
 
 export const RESEARCH_ROLES = Object.freeze(['evidence', 'methods', 'reviewer', 'principal']);
@@ -75,6 +76,7 @@ export function buildResearchConnections(state = {}, { limit = 24, focusReportId
     const prefixComplete = evidence.priorReports.every(prior => known.has(prior.publicationId));
     const report = {
       id: record.id, title: record.title, route: route(record.id), role: evidence.report.role,
+      presentation: researchPresentation(record, evidence),
       summary: evidence.report.summary, disposition: evidence.report.disposition,
       model: evidence.provenance.model, provider: evidence.provenance.provider,
       modelIdentity: evidence.provenance.modelIdentity, completedAt: evidence.provenance.completedAt,
@@ -106,7 +108,7 @@ export function buildResearchConnections(state = {}, { limit = 24, focusReportId
       }
       if (group.identity !== sourceIdentity(source)) group.consistent = false;
       group.topicIds.add(topic.id); group.reportIds.add(record.id);
-      if (!topic.sources.some(s => s.reference === source.reference)) topic.sources.push({ ...source });
+      if (!topic.sources.some(s => s.reference === source.reference)) topic.sources.push({ ...source, presentation: sourcePresentation(source) });
     }
     evidence.report.questions.forEach((text, index) => {
       let question = topic.questions.find(question => question.text === text);
@@ -152,7 +154,10 @@ export function buildResearchConnections(state = {}, { limit = 24, focusReportId
     topic.openQuestions = topic.questions.filter(question => question.status === 'proposed');
     topic.currentReports = topic.reports.filter(report => !report.superseded);
     topic.superseded = topic.currentReports.length === 0;
-    topic.route = (topic.currentReports.at(-1) || topic.reports.at(-1)).route;
+    const current = topic.currentReports.at(-1) || topic.reports.at(-1);
+    topic.route = current.route;
+    // Editorial navigation is separate from the exact recorded question used by lineage.
+    topic.presentation = { ...current.presentation, subjects: [...current.presentation.subjects] };
     // Occupied role cells alone are not proof of a single ordered four-role branch.
     topic.completeChains = topic.reports.filter(report => report.role === 'principal' && report.prefixComplete)
       .map(report => ({ principalId: report.id, reportIds: [...report.linkedPriorIds, report.id],

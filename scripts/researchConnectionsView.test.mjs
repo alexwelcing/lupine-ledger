@@ -178,3 +178,50 @@ test('an absent topic bookmark does not silently show an unrelated investigation
     assert.equal(d.routes.at(-1), '#/connections');
   } finally { dispose?.(); await settle(); d.restore(); }
 });
+
+test('research area facets include unclassified work and compose with the other filters', async () => {
+  const items = await Promise.all([independent(21), independent(22)]), store = storeFor(await prepare(items), items), d = dom(); let dispose;
+  try {
+    dispose = renderResearchConnections(d.mount, store, '#/connections');
+    const areas = nodes(d.mount).find(n => n.tag === 'select');
+    assert.equal(areas.attributes['aria-label'], 'Filter by research area');
+    assert.equal(areas.value, 'all');
+    assert.deepEqual(areas.children.map(n => n.textContent), ['All research areas (2)', 'Unclassified (2)']);
+    areas.value = 'Unclassified'; areas.onchange();
+    assert.equal(byClass(d.mount, 'connections-list-heading').textContent, '2 research questions');
+    button(d.mount, 'Follow-ups').onclick();
+    assert.ok(d.mount.textContent.includes('No matching connections'));
+    assert.equal(areas.value, 'Unclassified');
+    button(d.mount, 'All questions').onclick();
+    const search = nodes(d.mount).find(n => n.tag === 'input'); search.value = 'Independent software test question 22'; search.oninput();
+    assert.equal(byClass(d.mount, 'connections-list-heading').textContent, '1 research question');
+    search.value = ''; search.oninput(); areas.value = 'all'; areas.onchange();
+    assert.equal(byClass(d.mount, 'connections-list-heading').textContent, '2 research questions');
+    assert.ok(d.mount.textContent.includes('Evidence scope not yet classified'));
+  } finally { dispose?.(); await settle(); d.restore(); }
+});
+
+test('source-context headings keep exact recorded titles and questions searchable without changing evidence', async () => {
+  const item = await fixture();
+  item.record.title = 'Evidence: patch_4July2026';
+  const url = 'https://github.com/lammps/lammps/releases/tag/patch_4July2026';
+  item.record.sources = [{ label: 'Source 1', url }];
+  item.evidence.sources[0].title = 'patch_4July2026'; item.evidence.sources[0].url = url;
+  item.evidence.topic.question = 'What supported, useful next research questions follow from “patch_4July2026”?';
+  const state = await prepare([item]), before = JSON.stringify(item), store = storeFor(state, [item]), d = dom(); let dispose;
+  try {
+    dispose = renderResearchConnections(d.mount, store, '#/connections');
+    const title = byClass(d.mount, 'connections-question-head').children.find(n => n.tag === 'h2').textContent;
+    assert.equal(title, 'Research questions about LAMMPS software release · patch_4July2026');
+    assert.ok(byClass(d.mount, 'connections-title-provenance').textContent.includes(item.evidence.topic.question));
+    assert.ok(byClass(d.mount, 'connections-title-provenance').textContent.includes(item.record.title));
+    assert.ok(d.mount.textContent.includes('Original source title: patch_4July2026'));
+    const search = nodes(d.mount).find(n => n.tag === 'input');
+    for (const value of ['LAMMPS', 'patch_4July2026', item.record.title, item.evidence.topic.question, 'Unclassified']) {
+      search.value = value; search.oninput();
+      assert.equal(byClass(d.mount, 'connections-list-heading').textContent, '1 research question', `missing original or editorial search: ${value}`);
+    }
+    assert.equal(JSON.stringify(item), before);
+    assert.ok(d.mount.textContent.includes('Evidence review'));
+  } finally { dispose?.(); await settle(); d.restore(); }
+});

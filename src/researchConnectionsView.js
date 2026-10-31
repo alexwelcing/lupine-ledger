@@ -1,4 +1,5 @@
 import { buildResearchConnections, MAX_CONNECTION_REPORTS, RESEARCH_ROLES } from './researchConnections.js';
+import { RESEARCH_ROLE_LABELS } from './researchPresentation.js';
 import { publicActivityStore } from './publicActivityStore.js';
 
 const el = (tag, text, className) => {
@@ -12,7 +13,10 @@ const link = (text, href, className) => {
   if (href.startsWith('https:')) { n.target = '_blank'; n.rel = 'noopener noreferrer'; }
   return n;
 };
-const labels = { evidence: 'Evidence', methods: 'Methods', reviewer: 'Review', principal: 'Direction' };
+const labels = RESEARCH_ROLE_LABELS;
+const topicTitle = topic => topic.presentation?.topicTitle || topic.question;
+const reportTitle = report => report.presentation?.title || report.title;
+const areaOf = topic => topic.presentation?.area || 'Unclassified';
 const date = value => new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 const topicRoute = (id, reportId) => `#/connections?topic=${encodeURIComponent(id)}${reportId ? `&report=${encodeURIComponent(reportId)}` : ''}`;
 function action(text, fn, className = 'connections-button') {
@@ -24,7 +28,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
   const params = new URLSearchParams(hash.split('?')[1] || '');
   let focusTopicId = /^topic-[a-f0-9]{64}$/.test(params.get('topic') || '') ? params.get('topic') : null;
   let focusReportId = /^discovery-[a-f0-9]{64}$/.test(params.get('report') || '') ? params.get('report') : null;
-  let limit = 12, mode = 'all', query = '', disposed = false, model, selectedId = focusTopicId;
+  let limit = 12, mode = 'all', area = 'all', query = '', disposed = false, model, selectedId = focusTopicId;
   const requested = new Set(), queue = []; let running = 0;
   mount.classList.remove('public-research-view');
   const root = el('div', null, 'research-connections');
@@ -44,7 +48,9 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
   for (const [key, label] of [['all', 'All questions'], ['followups', 'Follow-ups'], ['sources', 'Shared sources']]) {
     const b = action(label, () => { mode = key; draw(); }); b.setAttribute('aria-pressed', String(key === mode)); filterButtons.set(key, b); filters.append(b);
   }
-  toolbar.append(searchLabel, filters);
+  const areaLabel = el('label', 'Research area', 'connections-area-filter');
+  const areaSelect = el('select'); areaSelect.setAttribute('aria-label', 'Filter by research area'); areaLabel.append(areaSelect);
+  toolbar.append(searchLabel, areaLabel, filters);
   const grid = el('div', null, 'connections-grid'), sidebar = el('aside', null, 'connections-topic-list'), detail = el('section', null, 'connections-detail');
   sidebar.setAttribute('aria-label', 'Research questions'); detail.setAttribute('aria-label', 'Selected research question');
   grid.append(sidebar, detail);
@@ -88,7 +94,8 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     const b = action('', () => select(topic.id), small ? 'connections-topic-inline' : 'connections-topic');
     b.dataset.topicId = topic.id; b.setAttribute('aria-pressed', String(topic.id === selectedId));
     if (!small) b.append(el('span', topic.parent ? 'FOLLOW-UP INVESTIGATION' : topic.declaredParent ? 'PARENT NOT YET VERIFIED' : 'RESEARCH QUESTION', 'connections-eyebrow'));
-    b.append(el('span', topic.question, 'connections-topic-title'));
+    b.append(el('span', topicTitle(topic), 'connections-topic-title'));
+    if (!small) b.append(el('span', areaOf(topic), 'connections-topic-area'));
     if (!small) {
       const progress = el('span', null, 'connections-mini-stages');
       for (const stage of topic.stages) { const s = el('span', labels[stage.role]); s.dataset.present = String(stage.reportIds.length > 0); progress.append(s); }
@@ -99,29 +106,45 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
   function draw() {
     if (!model || disposed) return;
     for (const [key, b] of filterButtons) b.setAttribute('aria-pressed', String(key === mode));
+    const areas = new Map();
+    for (const topic of model.topics) areas.set(areaOf(topic), (areas.get(areaOf(topic)) || 0) + 1);
+    const choices = [['all', `All research areas (${model.topics.length})`], ...[...areas].sort(([a], [b]) => a.localeCompare(b)).map(([name, count]) => [name, `${name} (${count})`])];
+    if (area !== 'all' && !areas.has(area)) choices.push([area, `${area} (0)`]);
+    areaSelect.replaceChildren(...choices.map(([value, label]) => { const option = el('option', label); option.value = value; return option; }));
+    areaSelect.value = area;
     const sharedTopics = new Set(model.sharedSources.flatMap(s => s.topicIds));
     const needle = query.trim().toLowerCase();
-    const visible = model.topics.filter(t => (!needle || [t.question, ...t.sources.map(s => s.title), ...t.reports.map(r => r.summary), ...t.questions.map(q => q.text)].join(' ').toLowerCase().includes(needle)) &&
+    const visible = model.topics.filter(t => (area === 'all' || areaOf(t) === area) && (!needle || [t.question, topicTitle(t), areaOf(t), ...(t.presentation?.subjects || []), t.presentation?.evidenceBasis, ...t.sources.flatMap(s => [s.title, s.presentation?.title]), ...t.reports.flatMap(r => [r.title, reportTitle(r), r.summary, ...(r.presentation?.aliases || [])]), ...t.questions.map(q => q.text)].join(' ').toLowerCase().includes(needle)) &&
       (mode === 'all' || mode === 'followups' && (t.parent || t.children.length) || mode === 'sources' && sharedTopics.has(t.id)));
-    const exactFocusMissing = focusTopicId && !model.topics.some(t => t.id === focusTopicId) && !needle && mode === 'all';
-    if (!focusTopicId && !needle && mode === 'all') selectedId = visible.find(t => t.children.length)?.id || visible[0]?.id || null;
+    const exactFocusMissing = focusTopicId && !model.topics.some(t => t.id === focusTopicId) && !needle && mode === 'all' && area === 'all';
+    if (!focusTopicId && !needle && mode === 'all' && area === 'all') selectedId = visible.find(t => t.children.length)?.id || visible[0]?.id || null;
     else if (!exactFocusMissing && !visible.some(t => t.id === selectedId)) selectedId = visible[0]?.id || null;
     sidebar.replaceChildren(el('h2', `${visible.length} research ${visible.length === 1 ? 'question' : 'questions'}`, 'connections-list-heading'), ...visible.map(t => topicButton(t)));
     detail.replaceChildren();
     const topic = visible.find(t => t.id === selectedId);
     if (!topic) {
-      detail.append(el('h2', exactFocusMissing ? 'This question is not yet in the loaded evidence.' : needle || mode !== 'all' ? 'No matching connections in this view.' : 'Opening the research trail…'),
+      detail.append(el('h2', exactFocusMissing ? 'This question is not yet in the loaded evidence.' : needle || mode !== 'all' || area !== 'all' ? 'No matching connections in this view.' : 'Opening the research trail…'),
         el('p', model.coverage.loading || model.coverage.unloaded ? 'Loading and verifying published reports. Connections appear when their evidence is available.' : 'Try another filter or load more publications. Unavailable reports remain in the chronological archive.', 'connections-note'));
-      if (!needle && mode === 'all' && focusReportId && !model.reports.some(r => r.id === focusReportId)) detail.append(link('Read the requested public record', `#/activity/${focusReportId}`));
+      if (!needle && mode === 'all' && area === 'all' && focusReportId && !model.reports.some(r => r.id === focusReportId)) detail.append(link('Read the requested public record', `#/activity/${focusReportId}`));
       if (exactFocusMissing) detail.append(action('Show available questions', () => { focusTopicId = focusReportId = selectedId = null; history.replaceState(null, '', '#/connections'); draw(); }));
       return;
     }
     const title = el('header', null, 'connections-question-head');
-    title.append(el('p', 'FOLLOW THE QUESTION', 'connections-eyebrow'), el('h2', topic.question), link('Permalink to this question ↗', topicRoute(topic.id, topic.reports.at(-1)?.id), 'connections-permalink'));
+    title.append(el('p', 'FOLLOW THE QUESTION', 'connections-eyebrow'), el('h2', topicTitle(topic)), link('Permalink to this question ↗', topicRoute(topic.id, topic.reports.at(-1)?.id), 'connections-permalink'));
+    const taxonomy = el('div', null, 'connections-taxonomy');
+    taxonomy.setAttribute('aria-label', 'Research classification');
+    taxonomy.append(el('span', areaOf(topic), 'connections-area'));
+    for (const subject of topic.presentation?.subjects || []) taxonomy.append(el('span', subject, 'connections-subject'));
+    title.append(taxonomy, el('p', `Evidence basis: ${topic.presentation?.evidenceBasis || 'Evidence scope not yet classified'}`, 'connections-evidence-basis'));
+    const provenance = el('details', null, 'connections-title-provenance');
+    provenance.append(el('summary', 'Recorded question & original titles'), el('p', topic.question));
+    for (const report of topic.reports) provenance.append(link(report.title, report.route));
+    provenance.append(el('p', 'Library descriptions and subject terms aid navigation. The recorded question, report text and evidence identities are unchanged.', 'connections-note'));
+    title.append(provenance);
     detail.append(title);
     if (topic.parent) {
       const parent = model.topics.find(t => t.id === topic.parent.parentTopicId), branch = el('div', null, 'connections-parent');
-      branch.append(el('span', 'BRANCHES FROM', 'connections-eyebrow'), link(`Question ${topic.parent.parentQuestionIndex + 1} in the earlier direction report`, topic.parent.parentRoute));
+      branch.append(el('span', 'BRANCHES FROM', 'connections-eyebrow'), link(`Question ${topic.parent.parentQuestionIndex + 1} in the earlier research-priorities report`, topic.parent.parentRoute));
       if (parent) branch.append(topicButton(parent, true));
       detail.append(branch);
     } else if (topic.declaredParent) detail.append(el('p', 'A parent is declared, but its exact question and report sequence are not verified in this view.', 'connections-note'));
@@ -131,7 +154,8 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
       cell.append(el('span', String(RESEARCH_ROLES.indexOf(stage.role) + 1).padStart(2, '0'), 'connections-stage-number'), el('strong', labels[stage.role]));
       const reports = topic.reports.filter(r => r.role === stage.role);
       for (const report of reports) {
-        cell.append(link(report.superseded ? 'Historical report ↗' : reports.length > 1 ? `Read report · ${date(report.completedAt)}` : 'Read report ↗', report.route));
+        const reportLink = link(report.superseded ? 'Historical report ↗' : reports.length > 1 ? `Read report · ${date(report.completedAt)}` : 'Read report ↗', report.route);
+        reportLink.setAttribute('aria-label', `${labels[report.role]}: ${reportTitle(report)}`); cell.append(reportLink);
         for (const route of report.correctionRoutes) cell.append(link('Read correction ↗', route));
       }
       if (!reports.length) cell.append(el('span', 'Not published in this view', 'connections-stage-gap'));
@@ -153,7 +177,8 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     const lower = el('div', null, 'connections-evidence-grid'), sources = el('section'), questions = el('section');
     sources.append(el('h3', 'Sources connecting the work'));
     for (const s of topic.sources) {
-      const row = el('div', null, 'connections-source'); row.append(link(s.title, s.url));
+      const row = el('div', null, 'connections-source'); row.append(link(s.presentation?.title || s.title, s.url));
+      if (s.presentation?.title && s.presentation.title !== s.title) row.append(el('span', `Original source title: ${s.title}`, 'connections-meta'));
       const shared = model.sharedSources.find(x => x.reference === s.reference);
       if (shared) {
         row.append(el('span', `Shared source snapshot · ${shared.topicIds.length} questions`, 'connections-meta'));
@@ -170,7 +195,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     lower.append(sources, questions); detail.append(lower);
     const trail = el('details', null, 'connections-report-trail'); trail.append(el('summary', 'Report lineage & model attribution'));
     for (const r of topic.reports) {
-      const row = el('div'); row.append(link(r.title, r.route), el('p', `${r.model} · ${r.provider} · controller-reported`, 'connections-meta'));
+      const row = el('div'); row.append(link(reportTitle(r), r.route), el('p', `${r.model} · ${r.provider} · controller-reported`, 'connections-meta'));
       if (r.superseded) { row.append(el('p', 'Historical report — a correction is published.', 'connections-note')); for (const route of r.correctionRoutes) row.append(link('Read correction →', route)); }
       if (r.linkedPriorIds.length) { const p = el('p', 'Builds on: '); for (const id of r.linkedPriorIds) { const prior = model.reports.find(p => p.id === id); if (prior) p.append(link(labels[prior.role], prior.route), document.createTextNode(' · ')); } row.append(p); }
       else row.append(el('p', r.priorIds.length ? 'Earlier report sequence is not fully verified in this view.' : 'First report in this investigation.', 'connections-note'));
@@ -201,6 +226,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     }
   }
   search.oninput = () => { query = search.value; draw(); };
+  areaSelect.onchange = () => { area = areaSelect.value; draw(); };
   const unsubscribe = store.subscribe(paint);
   detail.setAttribute('tabindex', '-1');
   store.refresh(); if (!store.state.archiveComplete) store.loadMore();

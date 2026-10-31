@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "library-editorial-titles.v1",
+  "policy": "Presentation labels only. Apply only to the exact article ID, source path, language and raw source SHA-256. Preserve catalog labels, source heading and source content; a mismatch keeps the source catalog presentation until re-reviewed.",
+  "entries": [
+    {
+      "id": "mlip-ni-paired-accuracy-live",
+      "source": "articles/docs/mlip-ni-paired-accuracy-live-report.md",
+      "sourceSha256": "4457908a4c6c6b6746cf430e1ba773a4e11772719a4761209a02581fea1d0536",
+      "language": "en",
+      "title": "Nickel MLIP corrections: paired accuracy benchmark",
+      "subtitle": "Dated benchmark snapshot: 25 paired comparisons, no improvements and ten regressions; the transfer correction was rejected."
+    },
+    {
+      "id": "mlip-ni-zero-point-policy-replay",
+      "source": "articles/docs/mlip-ni-zero-point-policy-replay.md",
+      "sourceSha256": "ad8fdf263aac60124016c8a296b4da32b5eb902b08575a8a4110dac9e63149e0",
+      "language": "en",
+      "title": "Nickel MLIP corrections: zero-point replay and cloud validation",
+      "subtitle": "A same-material support correction improved six tested energy-volume and relaxation pairs in local replay and a bounded cloud check."
+    },
+    {
+      "id": "mlip-mptrj-broad-dft-canary",
+      "source": "articles/docs/mlip-mptrj-broad-dft-canary.md",
+      "sourceSha256": "27ecd26a785941d63e16551a5e9eabac58a1a015a034459c432c9b1760e8cab6",
+      "language": "en",
+      "title": "MLIP correction on MPtrj: support floors and selective abstention",
+      "subtitle": "A bounded cloud check recorded six improved pairs, two unchanged pairs and no regressions; a later policy remains a local replay candidate."
+    },
+    {
+      "id": "mlip-elastic-operator-failure-diagnosis",
+      "source": "articles/mlip-elastic-benchmark/operator-failure-diagnosis-2026-06-27.md",
+      "sourceSha256": "f5ff07686b9f4f0e3a095578cbb8b16fbabefe533e5af7424004fc9942b9582f",
+      "language": "en",
+      "title": "Why the global PCA correction worsened MLIP elastic predictions",
+      "subtitle": "A 16-element benchmark diagnosis of the global correction failure and a proposed scalar-bulk alternative; empirical corrections remain uncertified."
+    },
+    {
+      "id": "formal-methodology",
+      "source": "articles/docs/formal-methodology.md",
+      "sourceSha256": "88f798581f9bbe36e52541d4a9365b663096522d44ebc3740727e423e629cc80",
+      "language": "en",
+      "title": "Formal validation of interatomic-potential claims with Lean",
+      "subtitle": "A methodology for separating proved properties, synthetic examples and unresolved physical-validation gaps."
+    },
+    {
+      "id": "research-evolution",
+      "source": "articles/docs/research_evolution_2026_05_05.md",
+      "sourceSha256": "1a4004dc757822d31bc84bac05542d72707a655e5bc904adda514243574c921b",
+      "language": "en",
+      "title": "How Lupine’s research loop detected statistical artifacts",
+      "subtitle": "Historical May 2026 account of matched-sample bootstrap checks and self-correction; later empirical claims were re-audited."
+    },
+    {
+      "id": "extraction-complete",
+      "source": "articles/docs/EXTRACTION_COMPLETE.md",
+      "sourceSha256": "9317ac0bf7d51cee9571b718a6e860317ec0c7ba31ae07768beb9e344215548e",
+      "language": "en",
+      "title": "Information-theoretic model compression: extraction log",
+      "subtitle": "Historical process record for extracting the information-theoretic model-compression review; original session paths are stale."
+    },
+    {
+      "id": "extraction-report",
+      "source": "articles/docs/EXTRACTION_REPORT.md",
+      "sourceSha256": "235652d0a26d6245bf22cd6435edd48ab33511c893105886cdd149085d61a6ef",
+      "language": "en",
+      "title": "Phonon benchmarking review: extraction log",
+      "subtitle": "Historical process record for extracting the phonon-frequency benchmarking review and findings summary; original session paths are stale."
+    },
+    {
+      "id": "extraction-notes",
+      "source": "articles/docs/EXTRACTION_NOTES.md",
+      "sourceSha256": "4611f11f4e5622238809fb07bafed7485882207a435423babb7d5d9a682e71a9",
+      "language": "en",
+      "title": "Renormalization-group coarse-graining: extraction notes",
+      "subtitle": "Historical extraction notes for the renormalization-group coarse-graining review; original session paths are stale."
+    },
+    {
+      "id": "t1-wander-gate",
+      "source": "articles/docs/analysis/t1-wander-gate.md",
+      "sourceSha256": "6d7d1dca33f49e4f5c57c020a4967999d6784c6bc558cc943ab6970cacabd954",
+      "language": "en",
+      "title": "Comparing energy barriers across DFT engines: the offset-wander gate",
+      "subtitle": "The T1 gate uses variation in GPAW–VASP energy offsets along a reaction path to qualify cross-engine barrier comparisons."
+    }
+  ]
+}

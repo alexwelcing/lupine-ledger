@@ -457,6 +457,11 @@ async function renderReader(id, passage = '') {
 
     head.append(el('h1', { class: 'reader-title' }, t(article.title, STATE.settings.lang)));
     if (article.subtitle) head.append(el('p', { class: 'reader-sub' }, t(article.subtitle, STATE.settings.lang)));
+    if (article.editorial?.applied) {
+      const original = el('details', { class: 'reader-original-title' });
+      original.append(el('summary', {}, 'Library description & original title'), el('p', {}, `The Library title describes this archived document. Original catalog title: ${article.originalTitle}`));
+      head.append(original);
+    }
     const meta = el('div', { class: 'reader-meta' });
     meta.append(el('span', {}, `${article.readMinutes} ${t('reader.meta.read', STATE.settings.lang)}`));
     meta.append(el('span', {}, `${article.words.toLocaleString()} ${t('home.stats.words', STATE.settings.lang)}`));

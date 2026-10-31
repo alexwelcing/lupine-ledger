@@ -1,4 +1,5 @@
 import { activityFreshness } from './researchActivity.js';
+import { researchPresentation, sourcePresentation } from './researchPresentation.js';
 import { publicActivityStore } from './publicActivityStore.js';
 
 function node(tag, className, content) {
@@ -17,14 +18,18 @@ function list(title, values, className = '') {
   const ul = node('ul'); values.forEach(value => ul.append(node('li', '', value))); section.append(ul); return section;
 }
 export function renderRecord(record, index = 0) {
+  const presentation = researchPresentation(record);
   const card = node('article', 'research-activity-card');
   const meta = node('div', 'research-activity-tags');
   meta.append(node('span', `research-state research-state-${record.state}`, record.state));
   meta.append(node('span', '', { archived_analysis: 'Archived-data analysis', research_cycle: 'Research discussion', workflow_repair: 'Workflow repair' }[record.evidenceKind]));
   meta.append(node('span', '', { pending: 'Verification pending', arithmetic_checked: 'Arithmetic checked', source_checked: 'Sources checked' }[record.verification]));
-  const title = node('h3'); const permalink = node('a', '', record.title);
+  if (presentation.status !== 'original') meta.append(node('span', '', presentation.roleLabel));
+  const title = node('h3'); const permalink = node('a', '', presentation.title);
   permalink.href = `#/activity/${encodeURIComponent(record.id)}`; title.append(permalink);
-  card.append(meta, title, node('p', 'research-activity-summary', record.summary));
+  card.append(meta, title);
+  if (presentation.status === 'editorial') card.append(node('p', 'research-taxonomy', `${presentation.area} · ${presentation.subjects.join(' · ')}`), node('p', 'research-evidence-basis', `Evidence basis: ${presentation.evidenceBasis}.`));
+  card.append(node('p', 'research-activity-summary', record.summary));
   const timestamps = node('div', 'research-activity-times');
   timestamps.append(time('Observed', record.observedAt), time('Reviewed', record.reviewedAt)); card.append(timestamps);
   const evidence = node('details', 'research-activity-detail');
@@ -37,11 +42,14 @@ export function renderRecord(record, index = 0) {
   next.append(node('h4', '', 'Next question or test'), node('p', '', record.nextStep)); evidence.append(next);
   const details = node('details', 'research-activity-sources');
   details.append(node('summary', '', 'Sources and provenance'));
+  if (presentation.title !== record.title) details.append(node('p', '', `Library description above. Original report title: ${record.title}`));
   const links = [...record.sources, ...record.repositoryLinks, ...record.releaseLinks];
   if (links.length) {
     const ul = node('ul');
     for (const source of links) {
-      const li = node('li'), a = node('a', '', source.label);
+      const shown = sourcePresentation(source);
+      const li = node('li'), a = node('a', '', shown.title);
+      if (shown.title !== shown.originalTitle) a.title = `Recorded source label: ${shown.originalTitle}`;
       a.href = source.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.append(a); ul.append(li);
     }
     details.append(ul);
@@ -54,7 +62,7 @@ export function renderRecord(record, index = 0) {
   card.append(evidence);
   if (index < 2) return card;
   const older = node('details', 'research-activity-older');
-  older.append(node('summary', '', `${record.title} · ${record.state}`), card); return older;
+  older.append(node('summary', '', `${presentation.title} · ${record.state}`), card); return older;
 }
 
 export function renderResearchActivity(mount) {

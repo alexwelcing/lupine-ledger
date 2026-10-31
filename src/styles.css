@@ -3028,3 +3028,19 @@ html[data-view="connections"] #view { max-width: 1440px; padding: 0 clamp(20px,4
   html[data-view="home"] .topbar { padding-inline:16px; }
 }
 @media(prefers-reduced-motion:reduce) { .research-connections * { scroll-behavior:auto!important; } }
+
+/* Research navigation separates subject, role and evidence scope. */
+.connections-area-filter { display:grid; gap:9px; flex:0 1 300px; min-width:200px; max-width:100%; font:10px/1.5 var(--font-mono); color:var(--text-dim); }
+.connections-area-filter select { width:100%; min-height:44px; padding:12px 34px 12px 14px; border:1px solid var(--connection-line); border-radius:4px; background:var(--bg-raised); color:var(--text); font:11px/1.5 var(--font-mono); }
+.connections-area-filter select:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.connections-topic-area { color:var(--accent); font:9px/1.5 var(--font-mono); }
+.connections-taxonomy { display:flex; flex-wrap:wrap; gap:7px; margin:20px 0 12px; }
+.connections-taxonomy span { border:1px solid var(--connection-line); border-radius:3px; padding:5px 8px; font:9px/1.5 var(--font-mono); }
+.connections-taxonomy .connections-area { border-color:color-mix(in srgb,var(--accent) 45%,transparent); color:var(--accent); background:color-mix(in srgb,var(--accent) 7%,transparent); }
+.connections-evidence-basis { max-width:72ch; font:11px/1.8 var(--font-mono); color:var(--text-dim); }
+.connections-title-provenance { margin-top:16px; padding-top:12px; border-top:1px solid var(--connection-line); }
+.connections-title-provenance summary { color:var(--accent); font:10px/1.6 var(--font-mono); cursor:pointer; }
+.connections-title-provenance>p { margin:12px 0; font-size:14px; line-height:1.65; }
+.connections-title-provenance>a { display:block; margin:9px 0; font:10px/1.6 var(--font-mono); overflow-wrap:anywhere; }
+.connections-title-provenance>.connections-note { font:10px/1.8 var(--font-mono); }
+@media(max-width:700px) { .connections-area-filter { flex:1 1 100%; } .connections-stage-flow strong { font-size:18px; } }
