@@ -121,9 +121,10 @@ if (library && searchIndex) {
 
   const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
   for (const id of libraryIds) {
-    const route = `https://library.lupine.science/data/${encodeURIComponent(id)}.json`;
+    const route = `https://library.lupine.science/articles/${encodeURIComponent(id)}/`;
     if (!sitemap.includes(`<loc>${route}</loc>`)) errors.push(`sitemap missing article route: ${id}`);
-    if (!fs.existsSync(path.join(DIST, 'data', `${id}.json`))) errors.push(`sitemap route has no built article: ${id}`);
+    if (!fs.existsSync(path.join(DIST, 'articles', id, 'index.html'))) errors.push(`sitemap route has no built HTML article: ${id}`);
+    if (!fs.existsSync(path.join(DIST, 'data', `${id}.json`))) errors.push(`machine article is missing: ${id}`);
   }
 }
 

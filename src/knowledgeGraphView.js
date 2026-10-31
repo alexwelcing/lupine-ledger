@@ -1,3 +1,4 @@
+import { renderPublishedResearchGraph } from './publicResearchEvidenceView.js';
 import { reviewedPassageRoute } from './readerPassage.js';
 import { t } from './i18n.js';
 
@@ -271,6 +272,7 @@ export async function renderKnowledgeGraphView(mount, {
 
   root.append(head, body);
   mount.replaceChildren(root);
+  const cleanupResearchGraph = renderPublishedResearchGraph(mount);
 
   function connectedLinks(nodeId) {
     return linksByNode.get(nodeId) || [];
@@ -633,5 +635,5 @@ export async function renderKnowledgeGraphView(mount, {
 
   syncUrl({ replace: true });
   update();
-  return () => {};
+  return cleanupResearchGraph;
 }

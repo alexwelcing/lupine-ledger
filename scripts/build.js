@@ -13,13 +13,70 @@ import { CATALOG as FALLBACK_CATALOG, LEAN_INVENTORY } from './catalog.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
+import { writeSeoPages } from './generate-seo.mjs';
 import { loadResearchActivity } from './research-activity-build.mjs';
 import { contentSourceSnapshot } from './content-provenance.mjs';
+import { extractDocumentDate } from './document-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DEFAULT_CONTENT_BUNDLE = path.join(ROOT, 'content', 'latest');
 const ONTOLOGY_PATH = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
+const EDITORIAL_PATH = path.join(ROOT, 'content', 'editorial-titles.json');
+
+export function validateEditorialTitles(document) {
+  if (document?.schemaVersion !== 'library-editorial-titles.v1' || !Array.isArray(document.entries)) {
+    throw new Error('Unsupported editorial title overlay');
+  }
+  const seen = new Set();
+  for (const entry of document.entries) {
+    const key = `${entry.id}:${entry.language}`;
+    if (!entry.id || !entry.source || !/^[a-f0-9]{64}$/.test(entry.sourceSha256 || '') ||
+        entry.language !== 'en' || typeof entry.title !== 'string' || !entry.title.trim() ||
+        typeof entry.subtitle !== 'string' || !entry.subtitle.trim() || seen.has(key)) {
+      throw new Error(`Invalid or duplicate editorial title entry: ${key}`);
+    }
+    seen.add(key);
+  }
+  return document.entries;
+}
+
+// This is an editorial view of exact retained source bytes, never a source edit.
+export function resolveEditorialMetadata(article, entries) {
+  const { id, source, lang, sourceSha256, title, subtitle, sourceTitle } = article;
+  const candidate = entries.find(entry => entry.id === id && entry.language === lang);
+  const applied = Boolean(candidate && candidate.source === source && candidate.sourceSha256 === sourceSha256);
+  return {
+    title: applied ? candidate.title : title,
+    subtitle: applied ? candidate.subtitle : subtitle,
+    originalTitle: title,
+    originalSubtitle: subtitle,
+    sourceTitle,
+    searchAliases: [...new Set([title, subtitle, sourceTitle].filter(Boolean))],
+    editorial: {
+      schema: 'library.article-editorial.v1',
+      applied,
+      status: applied ? 'source-pinned' : candidate ? 'source-changed' : 'original',
+      sourceSha256,
+      ...(candidate ? { reviewedSourceSha256: candidate.sourceSha256 } : {}),
+    },
+  };
+}
+
+// Keep all graph facts, positions, provenance and topology; replace article labels only.
+export function projectEditorialGraph(graph, articles) {
+  const byId = new Map(articles.map(article => [article.id, article]));
+  return {
+    ...graph,
+    nodes: graph.nodes.map(node => {
+      const article = node.type === 'article' && byId.get(node.articleId);
+      if (!article) return node;
+      return { ...node, label: article.title, title: article.title, subtitle: article.subtitle,
+        originalTitle: article.originalTitle, originalSubtitle: article.originalSubtitle,
+        sourceTitle: article.sourceTitle, searchAliases: article.searchAliases, editorial: article.editorial };
+    }),
+  };
+}
 
 function loadContentConfig() {
   const bundleRoot = process.env.LIBRARY_CONTENT_BUNDLE
@@ -380,13 +437,15 @@ function loadVersion() {
   };
   visit(path.join(ROOT, 'src'));
   hash.update(fs.readFileSync(path.join(ROOT, 'package-lock.json')));
-  hash.update(fs.readFileSync(path.join(ROOT, 'scripts/build.js')));
+  for (const script of ['build.js', 'generate-seo.mjs', 'generate-indexes.mjs', 'document-date.mjs']) hash.update(fs.readFileSync(path.join(ROOT, 'scripts', script)));
+  hash.update(fs.readFileSync(EDITORIAL_PATH));
   return `${CONTENT_VERSION || 'local'}-${hash.digest('hex').slice(0,12)}`;
 }
 
 function build() {
   // Reject unreviewed shapes/private fields before changing the deploy output.
   const activity = loadResearchActivity(ROOT);
+  const editorialEntries = validateEditorialTitles(JSON.parse(fs.readFileSync(EDITORIAL_PATH, 'utf8')));
   // Clean dist
   fs.rmSync(DIST, { recursive: true, force: true });
   fs.mkdirSync(DIST, { recursive: true });
@@ -402,11 +461,18 @@ function build() {
       console.warn(`[skip] ${sourcePath} not found`);
       return null;
     }
-    const rawMd = hydrateLeanInventory(fs.readFileSync(absPath, 'utf8'));
+    const sourceBytes = fs.readFileSync(absPath);
+    const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex');
+    const rawMd = hydrateLeanInventory(sourceBytes.toString('utf8'));
     const md = preprocess(rawMd, sourcePath);
     const id = entry.id || slugify(path.basename(sourcePath, path.extname(sourcePath)));
     const title = entry.title || extractTitle(md, id);
     const subtitle = entry.subtitle || extractSubtitle(md);
+    const editorial = resolveEditorialMetadata({ id, source: sourcePath, lang, sourceSha256, title, subtitle,
+      sourceTitle: extractTitle(rawMd, title) }, editorialEntries);
+    if (editorial.editorial.status === 'source-changed') {
+      console.warn(`[editorial] ${id}: source pin changed; retaining original catalog title`);
+    }
     const { md: mdMath, cells } = extractMath(md);
     const html = rewriteInternalLinks(renderMathToHtml(marked.parse(mdMath), cells), sourcePath);
     const plain = stripTags(html);
@@ -415,8 +481,8 @@ function build() {
 
     return {
       id,
-      title,
-      subtitle,
+      ...editorial,
+      documentDate: extractDocumentDate(rawMd),
       category: entry.category,
       tags: entry.tags || [],
       source: sourcePath,
@@ -442,6 +508,8 @@ function build() {
 
     const title = { en: defaultArticle.title };
     const subtitle = { en: defaultArticle.subtitle };
+    const originalTitle = { en: defaultArticle.originalTitle };
+    const originalSubtitle = { en: defaultArticle.originalSubtitle };
 
     // Internationalized variants
     if (entry.i18n) {
@@ -452,6 +520,8 @@ function build() {
           corpus.push(variant);
           title[lang] = variant.title;
           subtitle[lang] = variant.subtitle;
+          originalTitle[lang] = variant.originalTitle;
+          originalSubtitle[lang] = variant.originalSubtitle;
           fs.writeFileSync(
             path.join(DATA_DIR, `${variant.id}.${lang}.json`),
             JSON.stringify(variant)
@@ -464,6 +534,12 @@ function build() {
       id: defaultArticle.id,
       title,
       subtitle,
+      originalTitle,
+      originalSubtitle,
+      sourceTitle: defaultArticle.sourceTitle,
+      searchAliases: defaultArticle.searchAliases,
+      editorial: defaultArticle.editorial,
+      documentDate: defaultArticle.documentDate,
       category: defaultArticle.category,
       tags: defaultArticle.tags,
       words: defaultArticle.words,
@@ -495,7 +571,9 @@ function build() {
   writeOntology();
   // Build the graph from the same bundle the articles were rendered from —
   // a LIBRARY_CONTENT_BUNDLE override must not produce a graph/articles mismatch.
-  writeKnowledgeGraph({ manifestPath: path.join(REPO_ROOT, 'manifest.json') });
+  const graph = writeKnowledgeGraph({ manifestPath: path.join(REPO_ROOT, 'manifest.json') });
+  fs.writeFileSync(path.join(DATA_DIR, 'knowledge-graph.json'), `${JSON.stringify(
+    projectEditorialGraph(graph, corpus.filter(article => article.lang === 'en')), null, 2)}\n`);
 
   // Copy static src -> dist, substituting __VERSION__ placeholder.
   for (const name of fs.readdirSync(SRC)) {
@@ -517,7 +595,25 @@ function build() {
     throw new Error(`Lupine ontology not found: ${ONTOLOGY_PATH}`);
   }
   const ontology = JSON.parse(fs.readFileSync(ONTOLOGY_PATH, 'utf8'));
-  writeMachineIndexes({ catalog: CATALOG, ontology, outputRoot: DIST });
+  const articleById = new Map(corpus.filter(article => article.lang === 'en').map(article => [article.id, article]));
+  const presentationCatalog = { ...CATALOG, entries: CATALOG.entries.map(entry => {
+    const article = articleById.get(entry.id);
+    return article ? { ...entry, title: article.title, subtitle: article.subtitle } : entry;
+  }) };
+  writeMachineIndexes({ catalog: presentationCatalog, ontology, outputRoot: DIST });
+  writeSeoPages({ articles: corpus.filter(article => article.lang === 'en'), manifest, outputRoot: DIST });
+  const searchPath = path.join(DATA_DIR, 'search-index.json');
+  const searchIndex = JSON.parse(fs.readFileSync(searchPath, 'utf8'));
+  for (const entry of searchIndex.articles) {
+    const article = articleById.get(entry.id);
+    if (article) Object.assign(entry, { originalTitle: article.originalTitle, originalSubtitle: article.originalSubtitle,
+      sourceTitle: article.sourceTitle, searchAliases: article.searchAliases, editorial: article.editorial });
+  }
+  fs.writeFileSync(searchPath, `${JSON.stringify(searchIndex, null, 2)}\n`);
+  const guidePath = path.join(DIST, 'llms-full.txt');
+  fs.writeFileSync(guidePath, fs.readFileSync(guidePath, 'utf8').replace(
+    'and content/ontology/lupine-ontology.json.',
+    'and content/ontology/lupine-ontology.json, with source-pinned presentation labels from content/editorial-titles.json.'));
 
   // Bundle KaTeX CSS + fonts so math renders offline and on the deployed site.
   const KATEX_DIST = path.join(ROOT, 'node_modules', 'katex', 'dist');
@@ -535,4 +631,4 @@ function build() {
   console.log(`Output: ${path.relative(process.cwd(), DIST)}`);
 }
 
-build();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) build();
