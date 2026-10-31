@@ -23,6 +23,9 @@ const SHELL_ASSETS = [
   '/',
   '/index.html',
   '/app.js',
+  '/articleCorpus.js',
+  '/knowledgeHome.js',
+  '/knowledgeHomeModel.js',
   '/publicSearch.js',
   '/publicActivityStore.js',
   '/publicResearchEvidence.js',
@@ -33,24 +36,9 @@ const SHELL_ASSETS = [
   '/researchConnections.js',
   '/researchConnectionsView.js',
   '/readerPassage.js',
-  '/universeView.js',
-  '/researchWorkspace.js',
-  '/workspaceState.js',
   '/fonts/newsreader-var.woff2',
   '/fonts/newsreader-italic-var.woff2',
   '/fonts/plex-mono-400.woff2',
-  '/vendor/html2canvas.js',
-  '/vendor/pretext/layout.js',
-  '/vendor/pretext/analysis.js',
-  '/vendor/pretext/measurement.js',
-  '/vendor/pretext/bidi.js',
-  '/vendor/pretext/generated/bidi-data.js',
-  '/vendor/pretext/line-text.js',
-  '/vendor/pretext/line-break.js',
-  '/vendor/pretext/rich-inline.js',
-  '/assets/media/bluebonnet-chrome.jpg',
-  '/assets/media/manifest.json',
-  '/data/corpus.json',
   '/mlipFlywheelView.js',
   '/researchActivity.js',
   '/researchActivityView.js',
@@ -142,7 +130,8 @@ self.addEventListener('fetch', (event) => {
 
   // HTML navigations — network-first; fall back to cached shell for offline
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
-    event.respondWith(networkFirst(SHELL_CACHE, req, '/index.html'));
+    const fallback = /^\/(?:articles|topics|categories|guides)(?:\/|$)/.test(url.pathname) ? undefined : '/index.html';
+    event.respondWith(networkFirst(SHELL_CACHE, req, fallback));
     return;
   }
 

@@ -24,16 +24,23 @@ const MIME = {
   '.ico':  'image/x-icon',
   '.webmanifest': 'application/manifest+json',
   '.txt':  'text/plain; charset=utf-8',
+  '.xml':  'application/xml; charset=utf-8',
 };
 
 const server = http.createServer((req, res) => {
-  const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
-  let file = path.join(DIST, urlPath === '/' ? 'index.html' : urlPath);
-  if (!file.startsWith(DIST)) { res.writeHead(403); return res.end('forbidden'); }
+  let urlPath;
+  try { urlPath = decodeURIComponent((req.url || '/').split('?')[0]); }
+  catch { res.writeHead(400); return res.end('invalid path'); }
+  let file = path.resolve(DIST, `.${urlPath === '/' ? '/index.html' : urlPath}`);
+  if (file !== DIST && !file.startsWith(DIST + path.sep)) { res.writeHead(403); return res.end('forbidden'); }
 
   fs.stat(file, (err, stat) => {
-    if (err || !stat.isFile()) {
-      // SPA fallback
+    if (!err && stat.isDirectory()) {
+      if (!urlPath.endsWith('/')) { res.writeHead(308, { Location: `${urlPath}/` }); return res.end(); }
+      file = path.join(file, 'index.html');
+    } else if (err || !stat.isFile()) {
+      // Missing canonical documents must not masquerade as a successful homepage.
+      if (/^\/(?:articles|topics|categories|guides)(?:\/|$)/.test(urlPath)) { res.writeHead(404); return res.end('Document not found'); }
       file = path.join(DIST, 'index.html');
     }
     const ext = path.extname(file).toLowerCase();

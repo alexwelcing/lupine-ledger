@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { articlePath, seoPaths } from './generate-seo.mjs';
 
 const LIBRARY_ORIGIN = 'https://library.lupine.science';
 
@@ -75,7 +76,8 @@ export function generateLlmsFull(catalog, ontology) {
       `- Category: \`${entry.category}\``,
       `- Status: \`${entry.status || 'unspecified'}\``,
       `- Tags: ${entry.tags.length ? entry.tags.map((tag) => `\`${tag}\``).join(', ') : '(none)'}`,
-      `- Library route: ${LIBRARY_ORIGIN}/#/read/${encodeURIComponent(entry.id)}`,
+      `- Canonical article: ${LIBRARY_ORIGIN}${articlePath(entry.id)}`,
+      `- Interactive reader: ${LIBRARY_ORIGIN}/#/read/${encodeURIComponent(entry.id)}`,
       `- Machine-readable article: ${LIBRARY_ORIGIN}/data/${encodeURIComponent(entry.id)}.json`,
       '',
     );
@@ -86,6 +88,10 @@ export function generateLlmsFull(catalog, ontology) {
     '',
     '- Short guide: /llms.txt',
     '- Full guide and complete index: /llms-full.txt',
+    '- Crawlable HTML article index: /articles/',
+    '- Research keyword index: /topics/',
+    '- Reading paths through existing research (not a college curriculum): /guides/',
+    '- Canonical HTML + JSON discovery map: /data/discovery.json',
     '- Search index: /data/search-index.json',
     '- Library manifest: /data/library.json',
     '- Sitemap: /sitemap.xml',
@@ -120,6 +126,7 @@ export function generateSearchIndex(catalog) {
       featuredRole: entry.featuredRole || null,
       group: entry.group || null,
       route: `#/read/${encodeURIComponent(entry.id)}`,
+      canonicalUrl: `${LIBRARY_ORIGIN}${articlePath(entry.id)}`,
       extracted_knowledge: {},
     })),
   };
@@ -127,15 +134,11 @@ export function generateSearchIndex(catalog) {
 
 export function generateSitemap(catalog) {
   const entries = validateCatalog(catalog);
-  const staticRoutes = ['/', '/llms.txt', '/llms-full.txt', '/brand.json', '/data/library.json', '/data/search-index.json'];
-  const locations = [
-    ...staticRoutes.map((route) => `${LIBRARY_ORIGIN}${route}`),
-    ...entries.map((entry) => `${LIBRARY_ORIGIN}/data/${encodeURIComponent(entry.id)}.json`),
-  ];
+  const locations = seoPaths(catalog).map(route => `${LIBRARY_ORIGIN}${route}`);
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...locations.map((location) => `  <url><loc>${location}</loc></url>`),
+    ...locations.map((location) => `  <url><loc>${location.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}</loc></url>`),
     '</urlset>',
     '',
   ].join('\n');

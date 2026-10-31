@@ -7,10 +7,10 @@ import { renderResearchConnections } from './researchConnectionsView.js';
 // Lupine Library — mobile-first research reader.
 // Single-page app with hash routing. No framework — dependencies are in the DOM.
 
-import { preloadCorpus, renderUniverse } from './universeView.js';
+import { preloadCorpus } from './articleCorpus.js';
+import { renderKnowledgeHome } from './knowledgeHome.js';
 import { t, detectLang, saveLang, DEFAULT_LANG, SUPPORTED_LANGS } from './i18n.js';
 import { renderMlipFlywheelView } from './mlipFlywheelView.js';
-import { renderResearchActivity } from './researchActivityView.js';
 import { parseHashRoute, parseKnowledgeGraphHash, renderKnowledgeGraphView } from './knowledgeGraphView.js';
 import {
   buildTagIndex,
@@ -299,8 +299,7 @@ async function renderHome() {
   try {
     const [manifest, graph] = await Promise.all([fetchManifest(), fetchKnowledgeGraph()]);
     if (cancelled) return;
-    const corpus = preloadCorpus(a => STATE.articleCache.set(`${a.id}:${a.lang}`, a));
-    cleanup = await renderUniverse(VIEW, { manifest, graph, corpus, onArticleLink: handleArticleLinkClick, renderActivity: renderResearchActivity });
+    cleanup = renderKnowledgeHome(VIEW, { manifest, graph });
     if (cancelled) cleanup?.();
   } catch (error) {
     if (!cancelled) VIEW.innerHTML = '<div class="loading">The knowledge field is unavailable. <a href="#/tags">Open the document index →</a></div>';
@@ -836,7 +835,6 @@ window.addEventListener('keydown', (e) => {
 
 applySettings();
 translateStaticDOM();
-preloadCorpus(a => STATE.articleCache.set(`${a.id}:${a.lang}`, a)).catch(() => {});
 route();
 
 // Register service worker (offline + fast repeat loads). When a new version

@@ -13,8 +13,10 @@ import { CATALOG as FALLBACK_CATALOG, LEAN_INVENTORY } from './catalog.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
+import { writeSeoPages } from './generate-seo.mjs';
 import { loadResearchActivity } from './research-activity-build.mjs';
 import { contentSourceSnapshot } from './content-provenance.mjs';
+import { extractDocumentDate } from './document-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -435,7 +437,7 @@ function loadVersion() {
   };
   visit(path.join(ROOT, 'src'));
   hash.update(fs.readFileSync(path.join(ROOT, 'package-lock.json')));
-  hash.update(fs.readFileSync(path.join(ROOT, 'scripts/build.js')));
+  for (const script of ['build.js', 'generate-seo.mjs', 'generate-indexes.mjs', 'document-date.mjs']) hash.update(fs.readFileSync(path.join(ROOT, 'scripts', script)));
   hash.update(fs.readFileSync(EDITORIAL_PATH));
   return `${CONTENT_VERSION || 'local'}-${hash.digest('hex').slice(0,12)}`;
 }
@@ -480,6 +482,7 @@ function build() {
     return {
       id,
       ...editorial,
+      documentDate: extractDocumentDate(rawMd),
       category: entry.category,
       tags: entry.tags || [],
       source: sourcePath,
@@ -536,6 +539,7 @@ function build() {
       sourceTitle: defaultArticle.sourceTitle,
       searchAliases: defaultArticle.searchAliases,
       editorial: defaultArticle.editorial,
+      documentDate: defaultArticle.documentDate,
       category: defaultArticle.category,
       tags: defaultArticle.tags,
       words: defaultArticle.words,
@@ -597,6 +601,7 @@ function build() {
     return article ? { ...entry, title: article.title, subtitle: article.subtitle } : entry;
   }) };
   writeMachineIndexes({ catalog: presentationCatalog, ontology, outputRoot: DIST });
+  writeSeoPages({ articles: corpus.filter(article => article.lang === 'en'), manifest, outputRoot: DIST });
   const searchPath = path.join(DATA_DIR, 'search-index.json');
   const searchIndex = JSON.parse(fs.readFileSync(searchPath, 'utf8'));
   for (const entry of searchIndex.articles) {

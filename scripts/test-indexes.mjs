@@ -45,9 +45,9 @@ for (const [index, article] of searchIndex.articles.entries()) {
 
 const sitemap = generateSitemap(catalog);
 assert.equal(sitemap, generateSitemap(catalog), 'sitemap generation must be deterministic');
-const sitemapArticleIds = [...sitemap.matchAll(/<loc>https:\/\/library\.lupine\.science\/data\/([^<]+)\.json<\/loc>/g)]
+const sitemapArticleIds = [...sitemap.matchAll(/<loc>https:\/\/library\.lupine\.science\/articles\/([^<]+)\/<\/loc>/g)]
   .map((match) => decodeURIComponent(match[1]))
   .filter((id) => articleIds.includes(id));
-assert.deepEqual(sitemapArticleIds, articleIds, 'sitemap must contain one valid data route per manifest article');
+assert.deepEqual(sitemapArticleIds, articleIds, 'sitemap must contain one canonical HTML route per manifest article');
 
 console.log(`[ok] deterministic machine indexes cover all ${catalog.entries.length} manifest articles.`);

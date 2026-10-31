@@ -21,9 +21,15 @@ test('install precaches public module graph dependencies and serves them offline
     fetch:async()=>{throw Error('Offline network must not be needed');},
   });
   let installed;handlers.get('install')({waitUntil:value=>{installed=value;}});await installed;
-  for(const module of ['publicSearch.js','publicActivityStore.js','publicResearchView.js','readerPassage.js']){
+  for(const module of ['publicSearch.js','publicActivityStore.js','publicResearchView.js','readerPassage.js','knowledgeHome.js','knowledgeHomeModel.js','articleCorpus.js']){
     assert.equal(added.filter(path=>path===`/${module}`).length,1,`install must fetch ${module} once`);
     let response;handlers.get('fetch')({request:new Request(`${origin}/${module}`),respondWith:value=>{response=value;}});
     const result=await response;assert.equal(result.status,200);assert.equal(await result.text(),`module /${module}`);
+  }
+  assert(!added.includes('/data/corpus.json'), 'the full text corpus stays on demand');
+  for (const route of ['/articles/unavailable/', '/topics/unavailable/', '/guides/unavailable/', '/categories/unavailable/']) {
+    let response;
+    handlers.get('fetch')({request:{url:origin+route,mode:'navigate',method:'GET'},respondWith:value=>{response=value;}});
+    assert.equal((await response).status,503,'an unavailable canonical page must not become the homepage');
   }
 });
