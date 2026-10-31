@@ -15,8 +15,8 @@ function object(v, keys) {
 }
 export function isPublicEvidenceText(v) {
   if(typeof v!=='string')return false;
-  // Exact scientific identifier only. This changes the validation view, never the published bytes.
-  const checked=v.replace(/(?<![\p{L}\p{N}_.\/\\-])KOKKOS\/GPU\/OPENMP(?![\p{L}\p{N}_\/\\-]|\.[\p{L}\p{N}_])/gu,'KOKKOS_GPU_OPENMP');
+  // Exact scientific identifiers only. This changes the validation view, never the published bytes.
+  const checked=v.replace(/(?<![\p{L}\p{M}\p{N}_.%\/\\-])(?:KOKKOS\/GPU\/OPENMP|train\/validation\/test)(?![\p{L}\p{M}\p{N}_%\/\\-]|\.[\p{L}\p{M}\p{N}_])/gu,token=>token.replaceAll('/','_'));
   return isPublicText(checked) && !privateExecution.test(checked) && !/(?:\b\d{1,3}(?:\.\d{1,3}){3}\b|\b[A-Za-z0-9.-]+\.ts\.net\b|(?:^|\s|[\"'(])(?:\.{1,2}\/|\/(?:[^\s/]+\/)+|(?:outputs|work|data|evidence|tools)\/)|(?:[^\s/]+\/){2,}[^\s/]+)/i.test(checked);
 }
 function text(v, max) {

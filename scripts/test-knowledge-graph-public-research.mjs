@@ -105,6 +105,18 @@ test('typed graph edges reject crossed prior-role branches and changed topic met
  assert.throws(()=>researchEvidenceGraph(reviewer.record,reviewer.evidence,new Map([[first.record.id,first],[methods.record.id,changed]])));
  const partial=researchEvidenceGraph(reviewer.record,reviewer.evidence,new Map([[first.record.id,first]]));assert.ok(!partial.edges.some(e=>e.relation==='inconclusive'));assert.ok(partial.unresolved.some(e=>e.kind==='role-prefix'));
 });
+test('train/validation/test prose retains exact signed bytes without admitting paths or oversize text',async()=>{
+ for(const value of ['train/validation/test','A train/validation/test split.','Use (train/validation/test), then compare.'])assert.equal(isPublicEvidenceText(value),true,value);
+ for(const value of ['work/train/validation/test','/train/validation/test','train/validation/test/private','train/validation/test.txt',
+  'xtrain/validation/test','train/validation/testx','αtrain/validation/test','train/validation/testα','train/validation/test-other',
+  'train/validation/test%2Fprivate','train/validation/test%252Fprivate','train/validation/test\u0301','\u0301train/validation/test','KOKKOS/GPU/OPENMP%2Fprivate','Train/validation/test','train/validation/other','train/validation/test and work/private/file','train/validation/test user@example.org'])assert.equal(isPublicEvidenceText(value),false,value);
+ const f=await fixture(),summary='A MACE demonstration uses a simple train/validation/test split.',statement='A train/validation/test split may overstate generalization.';
+ f.evidence.report.summary=summary;f.evidence.report.claims[0].statement=statement;f.record.hashes[0].sha256=await digest(canonicalEvidence(f.evidence));
+ const before=canonicalEvidence(f.evidence),accepted=await fetchPublicEvidence(f.record,{endpoint,fetcher:async()=>response(f.evidence)});
+ assert.equal(accepted.evidence.report.summary,summary);assert.equal(accepted.evidence.report.claims[0].statement,statement);assert.equal(canonicalEvidence(accepted.evidence),before);
+ f.evidence.report.summary='train/validation/test '+'é'.repeat(890);assert.ok(new TextEncoder().encode(f.evidence.report.summary).length>1800);
+ assert.throws(()=>validatePublicEvidence(f.evidence,f.record));
+});
 
 
 test('evidence cannot display private execution identity or join a future parent question',async()=>{
