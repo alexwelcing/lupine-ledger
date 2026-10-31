@@ -1,12 +1,12 @@
-import { HOME_VIEWS, buildHomeGraph, filterHomeGraph, layoutHomeGraph, normalizeKeyword, keywordLabel } from './knowledgeHomeModel.js';
+import { createKnowledgeMolecule } from './knowledgeMolecule.js';
+import { HOME_VIEWS, buildHomeGraph, filterHomeGraph, normalizeKeyword, keywordLabel } from './knowledgeHomeModel.js';
 const el = (tag,text,cls) => {const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};
-const svgEl = (tag,attrs={}) => {const n=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
 const link = (text,url) => {const n=el('a',text);n.href=url;return n;};
 const colors=['#a9a2e6','#71c6bf','#dea479','#91bbdb','#cc95bb','#c2c079','#bc9b89','#93bfa0'];
 const plural = (n,word) => `${n} ${word}${n===1?'':'s'}`;
 
 export function renderKnowledgeHome(mount,{manifest,graph}) {
-  const model=buildHomeGraph(manifest,graph);let query='',mode='equal',selected=null,active=-1,open=false,filterOptions=false,disposed=false;
+  const model=buildHomeGraph(manifest,graph);let query='',mode='category',selected=null,active=-1,open=false,filterOptions=false,disposed=false;
   const root=el('section',null,'knowledge-home');root.setAttribute('aria-labelledby','knowledge-home-title');
   const head=el('header',null,'knowledge-home-head');const title=el('h1','Materials science, connected.');title.id='knowledge-home-title';
   head.append(title,el('p','Find a keyword. See the work around it.'));
@@ -19,9 +19,15 @@ export function renderKnowledgeHome(mount,{manifest,graph}) {
   const options=el('div',null,'knowledge-home-options');options.id='knowledge-keyword-options';options.setAttribute('role','listbox');options.setAttribute('aria-label','Keywords sorted by article count');options.hidden=true;
   keyword.append(fieldLabel,inputWrap,options);
   const viewLabel=el('label','Visual emphasis','knowledge-home-view');viewLabel.htmlFor='knowledge-view';
-  const view=el('select');view.id='knowledge-view';for(const option of HOME_VIEWS){const item=el('option',option.label);item.value=option.id;view.append(item);}viewLabel.append(view);controls.append(keyword,viewLabel);
+  const view=el('select');view.id='knowledge-view';for(const option of HOME_VIEWS){const item=el('option',option.label);item.value=option.id;view.append(item);}view.value=mode;viewLabel.append(view);controls.append(keyword,viewLabel);
   const status=el('p','', 'knowledge-home-status');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
-  const chart=el('div',null,'knowledge-home-chart');chart.setAttribute('aria-label','Article knowledge graph');
+  const chart=el('div',null,'knowledge-home-chart');chart.setAttribute('aria-label','Library knowledge molecule');
+  const stage=el('div',null,'knowledge-home-molecular-stage');
+  const stageTools=el('div',null,'knowledge-home-stage-tools');
+  const instruction=el('span','Drag to turn · Select an article');
+  const reset=el('button','Reset view');reset.type='button';reset.setAttribute('aria-label','Reset molecule orientation');
+  stageTools.append(instruction,reset);chart.append(stage,stageTools);
+  const molecule=createKnowledgeMolecule(stage,{onSelect:(id,keyboard)=>select(id,keyboard)});reset.onclick=()=>molecule.reset();
   const legend=el('div',null,'knowledge-home-legend');const detail=el('section',null,'knowledge-home-detail');detail.setAttribute('aria-label','Selected article');
   const list=el('details',null,'knowledge-home-list'),listSummary=el('summary'),listBody=el('ul');list.append(listSummary,listBody);
   const footer=el('nav',null,'knowledge-home-more');footer.setAttribute('aria-label','More ways to explore');
@@ -48,28 +54,22 @@ export function renderKnowledgeHome(mount,{manifest,graph}) {
     if(disposed)return;filtered=filterHomeGraph(model,query);
     if(selected&&!filtered.nodes.some(n=>n.id===selected))selected=null;
     count.textContent=plural(filtered.nodes.length,'article');listSummary.textContent=`Read as a list · ${plural(filtered.nodes.length,'article')}`;
-    const size=Math.max(280,chart.clientWidth||900),layout=layoutHomeGraph(filtered.nodes,size,mode,filtered.links),byId=new Map(layout.nodes.map(n=>[n.id,n]));
-    const svg=svgEl('svg',{viewBox:`0 0 ${layout.width} ${layout.height}`,width:'100%',height:layout.height,'aria-label':`${plural(filtered.nodes.length,'article')} in the knowledge graph`,role:'group'});
-    const selectedLinks=filtered.links.filter(l=>l.source===selected||l.target===selected),connected=new Set(selectedLinks.flatMap(l=>[l.source,l.target]));
+    const byId=new Map(filtered.nodes.map(n=>[n.id,n]));
+    const selectedLinks=filtered.links.filter(l=>l.source===selected||l.target===selected);
     const categories=[...new Set(model.nodes.map(n=>n.categoryLabel))].sort(),statuses=[...new Set(model.nodes.map(n=>n.statusLabel))].sort();
     const colorFor=n=>mode==='recent'&&!n.date?'#737887':mode==='category'?colors[categories.indexOf(n.categoryLabel)%colors.length]:mode==='status'?(n.statusLabel==='Not classified'?'#7e8392':colors[statuses.indexOf(n.statusLabel)%colors.length]):'#a9a2e6';
-    for(const edge of filtered.links){const a=byId.get(edge.source),b=byId.get(edge.target),line=svgEl('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,'class':edge.source===selected||edge.target===selected?'is-connected':''});line.dataset.relation=edge.relation;svg.append(line);}
-    for(const n of layout.nodes){
-      const button=svgEl('g',{role:'button',tabindex:'0','aria-label':`${n.title}; ${plural(n.connectionCount,'connection')}${n.date?`; ${n.date.kind} ${n.date.value.slice(0,10)}`:''}`,'aria-pressed':String(n.id===selected),'class':`knowledge-home-node${n.id===selected?' is-selected':''}${selected&&!connected.has(n.id)?' is-muted':''}`});
-      const tooltip=svgEl('title');tooltip.textContent=n.title;button.append(tooltip,svgEl('circle',{cx:n.x,cy:n.y,r:17,'class':'knowledge-home-hit'}),svgEl('circle',{cx:n.x,cy:n.y,r:n.radius,fill:colorFor(n),'class':'knowledge-home-dot'}));
-      button.onclick=()=>select(n.id);button.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(n.id,true);}};svg.append(button);
-    }
-    chart.replaceChildren(svg);legend.replaceChildren();
+    molecule.update({nodes:filtered.nodes,links:filtered.links,mode,selected,colorFor});legend.replaceChildren();
     if(mode==='category'||mode==='status')for(const value of mode==='category'?categories:statuses){const chip=el('span',value);const dot=el('i');dot.style.background=mode==='status'&&value==='Not classified'?'#7e8392':colors[(mode==='category'?categories:statuses).indexOf(value)%colors.length];chip.prepend(dot);legend.append(chip);}
     const dated=filtered.nodes.filter(n=>n.date).length;
-    const notes={equal:'Each dot is an article. Select one to explore its connections.',connections:'Larger dots have more article connections in the full map.',recent:`Document dates: ${dated} known · ${filtered.nodes.length-dated} unknown. Newer dated articles are larger; undated dots stay neutral.`,category:'Colors show research areas from the Library taxonomy.',status:'Colors show recorded evidence status. A status is not independent validation.'};
+    const notes={equal:'Each atom is an article. Select one to explore its connections.',connections:'Larger atoms have more article connections in the full map.',recent:`Document dates: ${dated} known · ${filtered.nodes.length-dated} unknown. Newer dated articles are larger; undated atoms stay neutral.`,category:'Colors show research areas from the Library taxonomy.',status:'Colors show recorded evidence status. A status is not independent validation.'};
     status.textContent=filtered.nodes.length?notes[mode]:'No articles match this keyword. Try a broader term.';
     const current=byId.get(selected);detail.replaceChildren();
+    instruction.textContent=current?current.title:'Drag to turn · Select an article';instruction.title=current?current.title:'';
     if(current){detail.append(el('p',current.categoryLabel,'knowledge-home-kicker'),link(current.title,`/articles/${encodeURIComponent(current.id)}/`),el('p',current.subtitle));
       const meta=[`${plural(current.connectionCount,'connection')} in full map`,current.date?`${current.date.kind} ${current.date.value.slice(0,10)}`:'Date unavailable',current.statusLabel];detail.append(el('p',meta.join(' · '),'knowledge-home-meta'));
       if(selectedLinks.length){const neighbors=el('ul');for(const e of selectedLinks){const other=byId.get(e.source===selected?e.target:e.source),item=el('li');item.append(link(other.title,`/articles/${encodeURIComponent(other.id)}/`),el('span',` · ${e.label||e.relation}${e.evidence?`: ${String(e.evidence).split(',').map(value=>keywordLabel(value.trim())).join(', ')}`:''}`));neighbors.append(item);}detail.append(neighbors);}
       else detail.append(el('p','No direct article connections in this selection.','knowledge-home-meta'));
-    }else detail.append(el('p','Lines connect articles that share multiple keywords. They do not establish scientific agreement. Select a dot for its title and related work.','knowledge-home-meta'));
+    }else detail.append(el('p','A molecular view of the Library: atoms are articles, bonds are shared-keyword connections. These links suggest related reading, not scientific agreement or chemical bonds.','knowledge-home-meta'));
     listBody.replaceChildren(...filtered.nodes.map(n=>{const li=el('li');li.append(link(n.title,`/articles/${encodeURIComponent(n.id)}/`),el('span',n.categoryLabel));return li;}));
   }
   input.onfocus=showOptions;input.onclick=showOptions;
@@ -82,6 +82,6 @@ export function renderKnowledgeHome(mount,{manifest,graph}) {
   };
   view.onchange=()=>{mode=HOME_VIEWS.some(v=>v.id===view.value)?view.value:'equal';draw();};
   const outside=e=>{if(!keyword.contains(e.target))closeOptions();};document.addEventListener('pointerdown',outside);
-  const resize=typeof ResizeObserver==='function'?new ResizeObserver(()=>draw()):null;resize?.observe(chart);draw();
-  return()=>{disposed=true;resize?.disconnect();document.removeEventListener('pointerdown',outside);};
+  draw();
+  return()=>{disposed=true;molecule.destroy();document.removeEventListener('pointerdown',outside);};
 }

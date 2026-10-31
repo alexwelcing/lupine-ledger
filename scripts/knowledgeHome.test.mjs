@@ -57,7 +57,7 @@ test('actual Library keyword counts reconcile with metadata and every article re
 
 class Element {
  constructor(tag){this.tag=tag;this.children=[];this.attributes={};this.style={};this.dataset={};this.textContent='';this.hidden=false;this.value='';this.clientWidth=390;}
- append(...items){for(const n of items){if(n&&typeof n==='object')n.parent=this;this.children.push(n);}}prepend(...items){this.children.unshift(...items);}
+ append(...items){for(const n of items){if(n&&typeof n==='object'){if(n.parent)n.parent.children=n.parent.children.filter(c=>c!==n);n.parent=this;}this.children.push(n);}}prepend(...items){this.children.unshift(...items);}
  replaceChildren(...items){this.children=[];this.append(...items);}setAttribute(k,v){this.attributes[k]=String(v);}removeAttribute(k){delete this.attributes[k];}
  contains(n){return this===n||this.children.some(c=>c?.contains?.(n));}focus(){this.focused=true;}scrollIntoView(){}
  querySelector(){return descendants(this).find(n=>n.attributes['aria-pressed']==='true');}
@@ -74,11 +74,11 @@ test('homepage has two primary controls, counts/dropdown, keyboard selection, em
   assert.equal(input.attributes.role,'combobox');input.onfocus();assert.equal(input.attributes['aria-expanded'],'true');
   const optionRows=nodes().filter(n=>n.attributes.role==='option');assert.equal(optionRows.length,4);assert(text(optionRows[1]).includes('Lean'));assert(text(optionRows[1]).includes('2 articles'));
   input.onkeydown({key:'ArrowDown',preventDefault(){}});input.onkeydown({key:'ArrowDown',preventDefault(){}});input.onkeydown({key:'Enter',preventDefault(){}});
-  assert.equal(input.value,'Lean formal verification');assert.equal(input.attributes['aria-expanded'],'false');assert.equal(nodes().filter(n=>n.tag==='g').length,2);
+  assert.equal(input.value,'Lean formal verification');assert.equal(input.attributes['aria-expanded'],'false');assert.equal(nodes().filter(n=>n.tag==='g'&&n.attributes.role==='button').length,2);
   input.onclick();assert.equal(nodes().filter(n=>n.attributes.role==='option').length,4); // reopen full count-sorted vocabulary, not only the selected word
-  input.value='missing';input.oninput();assert.equal(nodes().filter(n=>n.tag==='g').length,0);assert(text(mount).includes('No articles match'));
+  input.value='missing';input.oninput();assert.equal(nodes().filter(n=>n.tag==='g'&&n.attributes.role==='button').length,0);assert(text(mount).includes('No articles match'));
   input.value='';input.oninput();select.value='recent';select.onchange();assert(text(mount).includes('0 known · 3 unknown'));
-  const button=nodes().find(n=>n.tag==='g');button.onkeydown({key:'Enter',preventDefault(){}});assert(nodes().some(n=>n.tag==='a'&&n.href.startsWith('/articles/')));
+  const button=nodes().find(n=>n.tag==='g'&&n.attributes.role==='button');button.onkeydown({key:'Enter',preventDefault(){}});assert(nodes().some(n=>n.tag==='a'&&n.href.startsWith('/articles/')));
   cleanup();assert.equal(events.size,0);
  }finally{globalThis.document=old;}
 });

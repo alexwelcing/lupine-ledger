@@ -3063,15 +3063,23 @@ html[data-view="connections"] #view { max-width: 1440px; padding: 0 clamp(20px,4
 .knowledge-home-option span:last-child { flex-shrink: 0; color: #aaa5d6; font-size: 12px; }
 .knowledge-home-option:hover, .knowledge-home-option[aria-selected="true"] { background: #2b2942; }
 .knowledge-home-status { min-height: 18px; font-size: 12px; color: #a0a1af; margin: 17px 0 5px; }
-.knowledge-home-chart { width: 100%; border-bottom: 1px solid #292a35; }
-.knowledge-home-chart svg { display: block; max-width: 100%; }
-.knowledge-home-chart line { stroke: #77728f; stroke-width: 1; opacity: .17; pointer-events: none; }
-.knowledge-home-chart line.is-connected { opacity: .8; stroke: #c4bce9; stroke-width: 1.5; }
-.knowledge-home-node { cursor: pointer; outline: none; }
-.knowledge-home-hit { fill: transparent; }
-.knowledge-home-dot { stroke: #111219; stroke-width: 1.5; opacity: .84; }
-.knowledge-home-node.is-muted .knowledge-home-dot { opacity: .25; }
-.knowledge-home-node:hover .knowledge-home-dot, .knowledge-home-node:focus .knowledge-home-dot, .knowledge-home-node.is-selected .knowledge-home-dot { opacity: 1; stroke: #f6f1ff; stroke-width: 2.5; }
+.knowledge-home-chart { width: 100%; margin-top: 10px; border: 1px solid #303139; border-radius: 12px; overflow: hidden; background: radial-gradient(ellipse at 50% 44%, #1c252c 0%, #11181f 45%, #0b1119 83%); }
+.knowledge-home-molecular-stage { width: 100%; height: 440px; }
+.knowledge-home-molecular-stage svg { display: block; width: 100%; height: 100%; overflow: hidden; touch-action: pan-y; user-select: none; }
+.knowledge-molecule { cursor: grab; outline: none; }
+.knowledge-molecule:active { cursor: grabbing; }
+.knowledge-molecule:focus-visible { outline: 2px solid #b9aedb; outline-offset: -3px; }
+.knowledge-molecule-atom { cursor: pointer; outline: none; }
+.knowledge-molecule-hit { fill: transparent; }
+.knowledge-molecule-ring { pointer-events: none; }
+.knowledge-molecule-atom:hover .knowledge-molecule-ring,
+.knowledge-molecule-atom:focus-visible .knowledge-molecule-ring { opacity: 1; }
+.knowledge-molecule-bond { pointer-events: none; }
+.knowledge-home-stage-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; padding: 0 16px 8px; color: #a5adb8; font-size: 11px; }
+.knowledge-home-stage-tools > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.knowledge-home-stage-tools button { flex-shrink: 0; min-height: 36px; border: 1px solid #39424e; border-radius: 4px; padding: 0 12px; background: #15202a; color: #cbd1dc; font: inherit; cursor: pointer; }
+.knowledge-home-stage-tools button:focus-visible { outline: 2px solid #b9aedb; outline-offset: 2px; }
+@media (max-width: 600px) { .knowledge-home-molecular-stage { height: 370px; }.knowledge-home-stage-tools { padding: 0 10px 6px; font-size: 10px; } }
 .knowledge-home-legend { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 14px; font-size: 11px; color: #aaaab7; }
 .knowledge-home-legend:empty { display: none; }.knowledge-home-legend span { display: flex; align-items: center; gap: 6px; }.knowledge-home-legend i { width: 7px; height: 7px; border-radius: 50%; }
 .knowledge-home-detail { padding: 20px 0; }.knowledge-home-detail > a { display: inline-block; font: 400 clamp(21px, 2.5vw, 29px)/1.2 var(--font-serif, 'Newsreader', serif); text-decoration: none; }
