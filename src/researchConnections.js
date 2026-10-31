@@ -1,8 +1,10 @@
 import { researchPresentation, sourcePresentation } from './researchPresentation.js';
 import { canonicalEvidence, evidenceHash, researchEvidenceGraph, validatePublicEvidence } from './publicResearchEvidence.js';
+import {sourceAvailabilityHash} from './sourceAvailabilityNotice.js';
 
 export const RESEARCH_ROLES = Object.freeze(['evidence', 'methods', 'reviewer', 'principal']);
 export const MAX_CONNECTION_REPORTS = 40;
+export const MAX_CONNECTION_NOTICES = 8;
 const route = id => `#/activity/${encodeURIComponent(id)}`;
 const byNewest = (a, b) => b.observedAt.localeCompare(a.observedAt) || a.id.localeCompare(b.id);
 const sourceIdentity = source => canonicalEvidence(source);
@@ -169,8 +171,29 @@ export function buildResearchConnections(state = {}, { limit = 24, focusReportId
       meaning: 'These investigations cite the same source snapshot; this is provenance, not mutual support.' }))
     .sort((a, b) => b.topicIds.length - a.topicIds.length || a.reference.localeCompare(b.reference));
   const questions = topicList.flatMap(topic => topic.questions.map(question => ({ ...question, topicId: topic.id })));
+  // Availability relations are separate from scientific lineage and counts.
+  // Only already-verified exact targets in this selected report view can join.
+  const noticeCandidates=(Array.isArray(state.records)?state.records:[]).filter(sourceAvailabilityHash).sort(byNewest);
+  const noticeSelection=noticeCandidates.slice(0,MAX_CONNECTION_NOTICES),availabilityNotices=[],noticeEdges=[];
+  for(const record of noticeSelection){
+    const entry=state.notices?.[record.id],target=entry?.target&&known.get(entry.target.publicationId);
+    if(entry?.status!=='verified'||!target||entry.sha256!==sourceAvailabilityHash(record)
+      ||entry.noticeRecordIdentity!==JSON.stringify(record)||entry.targetRecordIdentity!==JSON.stringify(target.record)
+      ||entry.notice?.publicationId!==target.record.id||entry.notice.evidenceSha256!==evidenceHash(target.record))continue;
+    const sources=target.evidence.sources.filter(source=>source.semanticSha256===entry.notice.sourceSemanticSha256);
+    if(sources.length!==1||sourceIdentity(sources[0])!==sourceIdentity(entry.target.source))continue;
+    const notice={id:record.id,route:route(record.id),title:'Source availability notice',publicationId:target.record.id,
+      publicationRoute:route(target.record.id),topicId:target.evidence.topic.id,source:sources[0],observedAt:entry.notice.observedAt,
+      meaning:'This source snapshot was withdrawn from the discovery feed. This is not evidence of publisher retraction or scientific falsity.'};
+    availabilityNotices.push(notice);
+    noticeEdges.push({from:record.id,to:target.record.id,relation:'publication:availability-notice-for'},
+      {from:record.id,to:sources[0].reference,relation:'publication:source-withdrawn-from-feed'});
+  }
   return {
     selectionIds: selected.map(record => record.id),
+    noticeSelectionIds:noticeSelection.map(record=>record.id),availabilityNotices,noticeEdges,
+    noticeCoverage:{candidates:noticeCandidates.length,selected:noticeSelection.length,verified:availabilityNotices.length,
+      limit:MAX_CONNECTION_NOTICES,hidden:Math.max(0,noticeCandidates.length-noticeSelection.length)},
     topics: topicList, reports, followUps, sharedSources, questions,
     totals: { topics: topicList.length, reports: reports.length, followUps: followUps.length,
       sharedSources: sharedSources.length, sources: sourceGroups.size, questions: questions.length,

@@ -1,4 +1,4 @@
-import { buildResearchConnections, MAX_CONNECTION_REPORTS, RESEARCH_ROLES } from './researchConnections.js';
+import { buildResearchConnections, MAX_CONNECTION_REPORTS, MAX_CONNECTION_NOTICES, RESEARCH_ROLES } from './researchConnections.js';
 import { RESEARCH_ROLE_LABELS } from './researchPresentation.js';
 import { publicActivityStore } from './publicActivityStore.js';
 
@@ -29,7 +29,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
   let focusTopicId = /^topic-[a-f0-9]{64}$/.test(params.get('topic') || '') ? params.get('topic') : null;
   let focusReportId = /^discovery-[a-f0-9]{64}$/.test(params.get('report') || '') ? params.get('report') : null;
   let limit = 12, mode = 'all', area = 'all', query = '', disposed = false, model, selectedId = focusTopicId;
-  const requested = new Set(), queue = []; let running = 0;
+  const requested = new Set(), noticeRequested=new Set(), queue = []; let running = 0;
   mount.classList.remove('public-research-view');
   const root = el('div', null, 'research-connections');
   const head = el('header', null, 'connections-head');
@@ -62,6 +62,8 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
   });
   const refresh = action('Refresh publications', () => {
     for (const id of requested) if (store.state.evidence?.[id]?.status === 'unavailable') store.loadEvidence(id, { retry: true });
+    for (const id of noticeRequested) if (store.state.notices?.[id]?.status === 'unavailable') queue.push({id,kind:'notice',retry:true});
+    pump();
     store.refresh(); if (!store.state.archiveLoading) store.loadMore({ refresh: store.state.archiveComplete === true });
   });
   const footer = el('footer', null, 'connections-footer');
@@ -71,13 +73,18 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
 
   function request(id) {
     if (disposed || !/^discovery-[a-f0-9]{64}$/.test(id || '') || requested.has(id) || requested.size >= MAX_CONNECTION_REPORTS) return;
-    requested.add(id); queue.push(id); pump();
+    requested.add(id); queue.push({id,kind:'report'}); pump();
+  }
+  function requestNotice(id){
+    if(disposed||!store.loadNotice||noticeRequested.has(id)||noticeRequested.size>=MAX_CONNECTION_NOTICES)return;
+    noticeRequested.add(id);queue.push({id,kind:'notice',retry:false});pump();
   }
   function pump() {
     while (!disposed && running < 3 && queue.length) {
-      const id = queue.shift(); running++;
+      const {id,kind,retry} = queue.shift(); running++;
       Promise.resolve().then(async () => {
         if (disposed) return;
+        if(kind==='notice'){await store.loadNotice(id,{retry,loadTarget:false});return;}
         await store.loadRecord(id);
         if (!disposed) await store.loadEvidence(id);
       }).catch(() => {}).finally(() => { running--; pump(); });
@@ -184,6 +191,9 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
         row.append(el('span', `Shared source snapshot · ${shared.topicIds.length} questions`, 'connections-meta'));
         for (const id of shared.topicIds.filter(id => id !== topic.id)) { const other = model.topics.find(t => t.id === id); if (other) row.append(topicButton(other, true)); }
       }
+      for(const notice of model.availabilityNotices.filter(n=>n.topicId===topic.id&&n.source.reference===s.reference)){
+        row.append(link('Source availability notice ↗',notice.route),el('p',notice.meaning,'connections-note'));
+      }
       sources.append(row);
     }
     sources.append(el('p', 'Shared citations show common provenance, not agreement between findings.', 'connections-note'));
@@ -196,6 +206,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     const trail = el('details', null, 'connections-report-trail'); trail.append(el('summary', 'Report lineage & model attribution'));
     for (const r of topic.reports) {
       const row = el('div'); row.append(link(reportTitle(r), r.route), el('p', `${r.model} · ${r.provider} · controller-reported`, 'connections-meta'));
+      for(const notice of model.availabilityNotices.filter(n=>n.publicationId===r.id))row.append(link('Source availability notice for this report ↗',notice.route));
       if (r.superseded) { row.append(el('p', 'Historical report — a correction is published.', 'connections-note')); for (const route of r.correctionRoutes) row.append(link('Read correction →', route)); }
       if (r.linkedPriorIds.length) { const p = el('p', 'Builds on: '); for (const id of r.linkedPriorIds) { const prior = model.reports.find(p => p.id === id); if (prior) p.append(link(labels[prior.role], prior.route), document.createTextNode(' · ')); } row.append(p); }
       else row.append(el('p', r.priorIds.length ? 'Earlier report sequence is not fully verified in this view.' : 'First report in this investigation.', 'connections-note'));
@@ -212,6 +223,7 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
     status.textContent = `${c.verified} of ${c.selected} selected reports verified · ${state.records.length} public records loaded · ${c.archiveComplete ? 'archive snapshot fully loaded' : 'partial archive'}. ${c.unavailable + c.rejected} unavailable or rejected. View limit ${limit}/${MAX_CONNECTION_REPORTS}.`;
     if (c.source !== 'live') status.textContent += ' Showing saved or unavailable feed data.';
     if (c.archiveError) status.textContent += ' An archive request failed; loaded evidence is retained.';
+    if(model.noticeCoverage.candidates)status.textContent+=` ${model.noticeCoverage.verified} of ${model.noticeCoverage.selected} selected availability notices linked to loaded reports; at most ${MAX_CONNECTION_NOTICES} notice identities per view, with explicit retry. Notices do not alter report counts.`;
     more.disabled = state.archiveLoading || (limit >= MAX_CONNECTION_REPORTS && c.archiveComplete);
     more.textContent = state.archiveLoading ? 'Loading publications…' : limit >= MAX_CONNECTION_REPORTS ? 'Load older archive records' : 'Load more research';
     refresh.disabled = state.archiveLoading || state.refreshing;
@@ -224,6 +236,9 @@ export function renderResearchConnections(mount, store = publicActivityStore(), 
       for (const prior of e.priorReports) request(prior.publicationId);
       if (e.topic.parentPublicationId) request(e.topic.parentPublicationId);
     }
+    // Let the selected report reads settle before a loaded-target-only join.
+    // A fast notice response must not race a slower original evidence read.
+    if(c.loading===0&&c.unloaded===0)for(const id of model.noticeSelectionIds)requestNotice(id);
   }
   search.oninput = () => { query = search.value; draw(); };
   areaSelect.onchange = () => { area = areaSelect.value; draw(); };

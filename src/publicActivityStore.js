@@ -1,6 +1,7 @@
 import { evidenceHash, fetchPublicEvidence } from './publicResearchEvidence.js';
 import { createActivityController, validateActivity, validateFeed, readPublicJSON } from './researchActivity.js';
 import { researchActivityEndpoint } from './researchActivityConfig.js';
+import {sourceAvailabilityHash,fetchSourceAvailabilityNotice,verifySourceAvailabilityTarget} from './sourceAvailabilityNotice.js';
 export const ARCHIVE_SCHEMA = 'lupine.public_research_activity.archive.v1';
 export function validateArchive(value, after, snapshot) {
   if (!value || value.schema !== ARCHIVE_SCHEMA || !Array.isArray(value.records) || value.records.length > 50 ||
@@ -21,10 +22,12 @@ export function validateArchive(value, after, snapshot) {
   return value;
 }
 export function createPublicActivityStore({ endpoint, fetcher = fetch, storage } = {}) {
-  const listeners = new Set(), records = new Map(), evidence = new Map();
-  let state = { evidence: {}, feed: null, source: null, error: false, records: [], archiveComplete: false, archiveLoading: false, archiveError: false };
+  const listeners = new Set(), records = new Map(), evidence = new Map(), notices=new Map();
+  let state = { evidence: {}, notices:{}, feed: null, source: null, error: false, records: [], archiveComplete: false, archiveLoading: false, archiveError: false };
   let cursor = null, completedSnapshot = 0, busy = false;
-  const emit = () => { for(const [id,entry] of evidence)if(entry.status==='verified'&&entry.sha256!==evidenceHash(records.get(id)))evidence.set(id,{status:'unavailable'}); state = { ...state, evidence:Object.fromEntries(evidence), records: [...records.values()].sort((a,b)=>b.observedAt.localeCompare(a.observedAt)||b.id.localeCompare(a.id)) }; listeners.forEach(fn=>fn(state)); };
+  const emit = () => { for(const [id,entry] of evidence)if(entry.status==='verified'&&entry.sha256!==evidenceHash(records.get(id)))evidence.set(id,{status:'unavailable'});
+    for(const [id,entry] of notices)if(entry.status==='verified'&&(entry.noticeRecordIdentity!==JSON.stringify(records.get(id))||entry.targetRecordIdentity!==JSON.stringify(records.get(entry.target.publicationId))))notices.set(id,{status:'unavailable'});
+    state = { ...state, evidence:Object.fromEntries(evidence),notices:Object.fromEntries(notices), records: [...records.values()].sort((a,b)=>b.observedAt.localeCompare(a.observedAt)||b.id.localeCompare(a.id)) }; listeners.forEach(fn=>fn(state)); };
   const controller = createActivityController({ endpoint, fetcher, storage, onChange(next) {
     for (const r of next.feed?.items || []) records.set(r.id,r);
     state = { ...state, ...next }; emit();
@@ -73,7 +76,22 @@ export function createPublicActivityStore({ endpoint, fetcher = fetch, storage }
     catch { evidence.set(id,{status:'unavailable'}); }
     emit();
   }
-  return { loadRecord, loadEvidence, endpoint, subscribe(fn) { listeners.add(fn); fn(state); return ()=>listeners.delete(fn); },
+  async function loadNotice(id,{retry=false,loadTarget=true}={}){
+    const record=records.get(id),current=notices.get(id);
+    if(!record||!sourceAvailabilityHash(record)||current?.status==='loading'||current?.status==='verified'||current&&!retry)return;
+    if(!notices.has(id)&&notices.size>=32){const oldest=[...notices].find(([,v])=>v.status!=='loading');if(!oldest)return;notices.delete(oldest[0]);}
+    notices.set(id,{status:'loading'});emit();
+    try{const verified=await fetchSourceAvailabilityNotice(record,{endpoint,fetcher});
+      // The connections view uses loaded targets only: its notice reads cannot
+      // bypass the existing finite report request budget.
+      if(loadTarget){await loadRecord(verified.notice.publicationId);await loadEvidence(verified.notice.publicationId,{retry});}
+      const targetRecord=records.get(verified.notice.publicationId),targetEvidence=evidence.get(verified.notice.publicationId);
+      if(!targetRecord||targetEvidence?.status!=='verified')throw Error('Original publication unavailable');
+      const target=await verifySourceAvailabilityTarget(verified.notice,targetRecord,targetEvidence.evidence);
+      notices.set(id,{status:'verified',...verified,target,noticeRecordIdentity:JSON.stringify(record),targetRecordIdentity:JSON.stringify(targetRecord)});
+    }catch{notices.set(id,{status:'unavailable'});}emit();
+  }
+  return { loadRecord, loadEvidence, loadNotice, endpoint, subscribe(fn) { listeners.add(fn); fn(state); return ()=>listeners.delete(fn); },
     refresh:()=>controller.refresh(), loadMore, get state(){return state;} };
 }
 let shared;

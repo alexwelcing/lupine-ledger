@@ -37,6 +37,7 @@ const SHELL_ASSETS = [
   '/vendor/pretext/generated/bidi-data.js',
   '/publicSearch.js',
   '/publicActivityStore.js',
+  '/sourceAvailabilityNotice.js',
   '/publicResearchEvidence.js',
   '/publicResearchEvidenceView.js',
   '/publicResearchView.js',
