@@ -1,0 +1,31 @@
+{
+  "schema": "lupine.climate_scope_reviews.v1",
+  "reviews": [
+    {
+      "id": "halide-barrier-transport-scope-20261104",
+      "ontologyId": "climateTarget:CT2",
+      "sourceSha256": "153078c1a3e6d2a01539030fb79e9eeca2136046902f87aa43048f3adf35ea3e",
+      "sourcePointer": "/climateTargets/1/blocker",
+      "original": "Li⁺ hop barrier underestimated 60%+ → ~3 orders in conductivity",
+      "statement": "A barrier error changes an Arrhenius hop rate under specified temperature and prefactor assumptions. Conductivity error is not determined by the barrier alone.",
+      "reason": "The proved exponential factor concerns a scalar rate. A conductivity conclusion also needs a transport model. This review does not verify the original material-specific 60% estimate or the proposed correction mechanism.",
+      "missingPremises": [
+        "Initial-state and activation-barrier convention",
+        "Temperature and prefactor ratio",
+        "Carrier populations, jump geometry, network and correlation model"
+      ],
+      "reviewedOn": "2026-11-04",
+      "reviewedBy": "Codex specification review; not independent physical validation",
+      "evidence": [
+        {
+          "label": "Anchored-barrier specification and limits",
+          "url": "https://github.com/alexwelcing/lupine-rhizo/blob/03d3a0b2a08dd727c48981e7cd6f8c54104d202c/glim-think/docs/anchored-barrier-evidence.md"
+        },
+        {
+          "label": "Pinned Lean verification",
+          "url": "https://github.com/alexwelcing/lupine-rhizo/actions/runs/41876301052"
+        }
+      ]
+    }
+  ]
+}
