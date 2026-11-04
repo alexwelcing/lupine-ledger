@@ -15,7 +15,8 @@ export function createPublicSearch() {
       put({ key: `activity:${record.id}`, id: record.id, kind: 'activity', title: record.title,
         supersedes: record.supersedes, correctionReason: record.correctionReason,
         subtitle: record.summary, observedAt: record.observedAt, route: `#/activity/${encodeURIComponent(record.id)}`,
-        body: [record.title, record.summary, record.correctionReason || '', ...record.findings, ...record.limitations, record.nextStep].join(' ') });
+        body: [record.title, record.summary, record.correctionReason || '', ...record.findings, ...record.limitations,
+          ...record.sources.map(source => source.label), record.nextStep].join(' ') });
     },
     remove(key) { records.delete(key); },
     search(query) {

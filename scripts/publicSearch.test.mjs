@@ -82,3 +82,26 @@ test('historical detail links successor and partial archive disclaims currentnes
   assert.ok(nodes.some(n=>n.href==='#/activity/old-record'));
  }finally{globalThis.document=previous;}
 });
+
+
+test('source labels retrieve the released overlap finding instead of only the earlier unresolved audit',()=>{
+ const feed=JSON.parse(fs.readFileSync(new URL('../content/research-activity.json',import.meta.url)));
+ const search=createPublicSearch();
+ for(const record of feed.items) search.activity(record);
+ const target=feed.items.find(record=>record.id==='pinned-source-overlap-20261006-completed-v1');
+ assert.ok(target);
+ const results=search.search('pinned pilot overlap');
+ assert.equal(results[0]?.id,target.id);
+ assert.ok(results.some(record=>record.id==='validation-eligibility-20261006-completed-v1'));
+ for(const limitation of target.limitations) assert.ok(results[0].body.includes(limitation));
+});
+test('indexes validated source labels without mutating records or indexing source URLs',()=>{
+ const record={...fixture,id:'source-label-case',sources:[{
+  label:'Evidence label sentinel',url:'https://evidence.example.org/urlsentinel'
+ }]};
+ const original=JSON.stringify(record),search=createPublicSearch();
+ search.activity(record);
+ assert.equal(search.search('evidence label sentinel')[0]?.id,record.id);
+ assert.equal(search.search('urlsentinel').length,0);
+ assert.equal(JSON.stringify(record),original);
+});
