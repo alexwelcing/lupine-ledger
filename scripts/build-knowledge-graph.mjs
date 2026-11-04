@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { normalizeOntology } from './build-ontology.mjs';
+import { loadNormalizedOntology } from './build-ontology.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -349,7 +349,6 @@ export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outp
     throw new Error(`Unsupported Library content schema: ${manifest.schemaVersion}`);
   }
   const ontologyText = fs.readFileSync(ontologyPath, 'utf8');
-  const atlasSource = JSON.parse(ontologyText);
   const bindingManifest = JSON.parse(fs.readFileSync(bindingsPath, 'utf8'));
   if (bindingManifest.schema !== 'lupine.reviewed_article_bindings.v1' || !Array.isArray(bindingManifest.bindings)) throw new Error('Invalid reviewed binding manifest');
   const articles = {};
@@ -364,7 +363,7 @@ export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outp
   const graph = buildKnowledgeGraph(manifest.catalog, {
     source: manifest.source,
     generatedAt: manifest.generatedAt,
-    ontology: normalizeOntology(atlasSource),
+    ontology: loadNormalizedOntology(ontologyPath),
     reviewedBindings: bindingManifest.bindings,
     bindingDocuments: { articles, ontology: ontologyText },
   });

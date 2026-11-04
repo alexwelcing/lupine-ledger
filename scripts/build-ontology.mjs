@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_SOURCE = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
 const DEFAULT_OUTPUT = path.join(ROOT, 'dist', 'data', 'ontology.json');
+const DEFAULT_SCOPE_REVIEWS = path.join(ROOT, 'content', 'ontology', 'climate-scope-reviews.json');
 const MARKERS = ['OBS', 'INF', 'TRN', 'PRP', 'FRC'];
 
 const COLLECTIONS = {
@@ -119,7 +121,56 @@ function normalizeRelation(row) {
   return relation;
 }
 
-export function normalizeOntology(source) {
+
+/** Apply reviewed climate-target qualifications only to their exact source.
+ * These are editorial scope reviews, not new observations or readiness grades.
+ */
+function applyClimateScopeReviews(nodes, rawAtlas, { sourceText, scopeReviews } = {}) {
+  if (scopeReviews === undefined) return;
+  if (!scopeReviews || scopeReviews.schema !== 'lupine.climate_scope_reviews.v1' ||
+      !Array.isArray(scopeReviews.reviews) || scopeReviews.reviews.length > 16 ||
+      typeof sourceText !== 'string' || JSON.stringify(JSON.parse(sourceText)) !== JSON.stringify(rawAtlas)) {
+    throw new Error('Invalid climate scope review source');
+  }
+  const sourceHash = createHash('sha256').update(sourceText).digest('hex');
+  const seen = new Set();
+  const targets = new Set();
+  const boundedText = (value, max = 1200) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
+  for (const review of scopeReviews.reviews) {
+    const pointer = typeof review.sourcePointer === 'string' && review.sourcePointer.match(/^\/climateTargets\/(0|[1-9][0-9]*)\/blocker$/);
+    const index = pointer ? Number(pointer[1]) : -1;
+    const expectedId = `climateTarget:CT${index + 1}`;
+    const target = nodes.find(node => node.id === review.ontologyId);
+    if (!boundedText(review.id, 120) || seen.has(review.id) || targets.has(review.ontologyId) ||
+        review.sourceSha256 !== sourceHash || !pointer || !Number.isSafeInteger(index) ||
+        review.ontologyId !== expectedId || !target || target.sourceSection !== 'climateTargets' ||
+        !boundedText(review.original) || target.blocker !== review.original ||
+        rawAtlas.climateTargets?.[index]?.blocker !== review.original ||
+        !boundedText(review.statement) || !boundedText(review.reason) || !boundedText(review.reviewedBy, 240) ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(review.reviewedOn || '') ||
+        !Number.isFinite(Date.parse(review.reviewedOn)) ||
+        new Date(review.reviewedOn).toISOString().slice(0, 10) !== review.reviewedOn ||
+        !Array.isArray(review.missingPremises) || !review.missingPremises.length || review.missingPremises.length > 8 ||
+        !review.missingPremises.every(item => boundedText(item, 240)) ||
+        !Array.isArray(review.evidence) || !review.evidence.length || review.evidence.length > 4 ||
+        !review.evidence.every(item => boundedText(item.label, 160) && boundedText(item.url, 2000) &&
+          /^https:\/\/github\.com\/alexwelcing\/lupine-rhizo\/(blob\/[a-f0-9]{40}\/|actions\/runs\/[0-9]+$)/.test(item.url))) {
+      throw new Error(`Stale or invalid climate scope review: ${review?.id || 'unknown'}`);
+    }
+    seen.add(review.id); targets.add(review.ontologyId);
+    target.blocker = review.statement;
+    target.scopeReviews = [clone(review)];
+  }
+}
+
+/** Shared production loader: both ontology.json and the graph receive reviews. */
+export function loadNormalizedOntology(sourcePath = DEFAULT_SOURCE, reviewsPath = DEFAULT_SCOPE_REVIEWS) {
+  const sourceText = fs.readFileSync(sourcePath, 'utf8');
+  const scopeReviews = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
+  return normalizeOntology(JSON.parse(sourceText), { sourceText, scopeReviews });
+}
+
+export function normalizeOntology(source, reviewContext) {
   const rawAtlas = clone(source);
   source = hydrateFormalProofInventory(source);
   const asOf = source.freshnessLayer.atlasDate;
@@ -154,6 +205,7 @@ export function normalizeOntology(source) {
     for (const className of classNames) addNode('superClasses', 'superClass', className, { name: className, group });
   }
 
+  applyClimateScopeReviews(nodes, rawAtlas, reviewContext);
   nodes.sort((left, right) => left.id.localeCompare(right.id));
   const nodeIds = new Set(nodes.map((node) => node.id));
   const links = [];
@@ -253,8 +305,7 @@ export function normalizeOntology(source) {
 }
 
 export function writeOntology({ sourcePath = DEFAULT_SOURCE, outputPath = DEFAULT_OUTPUT } = {}) {
-  const source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
-  const ontology = normalizeOntology(source);
+  const ontology = loadNormalizedOntology(sourcePath);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, `${JSON.stringify(ontology, null, 2)}\n`);
   return ontology;
