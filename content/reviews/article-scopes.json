@@ -13,11 +13,11 @@
       "reason": "The article's broad reuse and clean-gate wording can be read as certifying any cross-engine barrier comparison. Small measured wander does not establish the missing path, initial-state or coverage premises. The July 2026 observations and formalization sketch below remain a historical record; this review does not attribute those observations to a newly demonstrated mechanism.",
       "missingPremises": [
         "Match the actual configurations, cells and energy conventions before comparing offsets. Finite sampled images do not establish the unsampled continuous path.",
-        "For a forward barrier, name the initial state in each calculation and retain their actual cross-engine initial-energy difference.",
+        "For a forward barrier, name the initial state in each calculation, include it among that profile's evaluated configurations, and retain the actual cross-engine initial-energy difference.",
         "For separately selected profiles, bound offsets over a common candidate family and supply each selected profile's gap from that family's minimum peak. Unknown search gaps are not zero; a solver stopping criterion is not a global-optimality certificate.",
         "An energy or scalar-rate bound alone does not certify conductivity or transport. Temperature, prefactors and the applicable transport model remain separate premises."
       ],
-      "bound": "For offsets in [a, b] over the common finite candidate family, the forward-barrier difference ΔB = B_G − B_F obeys a − δ₀ − η_F ≤ ΔB ≤ b − δ₀ + η_G. Here δ₀ = G(j) − F(i) uses the actual initial states; η_F and η_G bound the selected peak's gap from its family's minimum peak for each energy function. With a shared initial configuration and zero search gaps, the wander bound is recovered. This remains a finite-family statement, not a global physical-path guarantee.",
+      "bound": "For offsets in [a, b] over the common finite candidate family, the forward-barrier difference ΔB = B_G − B_F obeys a − δ₀ − η_F ≤ ΔB ≤ b − δ₀ + η_G. Here δ₀ = G(j) − F(i) uses the actual initial states; η_F and η_G bound the selected peak's gap from the common family's minimum peak for each energy function. With a shared initial configuration included in both selected profiles and zero search gaps, the wander bound is recovered. This remains a finite-family statement, not a global physical-path guarantee.",
       "evidence": [
         {
           "label": "Pinned barrier and path-selection specification",
