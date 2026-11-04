@@ -1,0 +1,37 @@
+{
+  "schema": "lupine.article_scope_reviews.v1",
+  "reviews": [
+    {
+      "id": "t1-shared-profile-and-path-selection-20261104",
+      "articleId": "t1-wander-gate",
+      "source": "articles/docs/analysis/t1-wander-gate.md",
+      "sourceSha256": "6d7d1dca33f49e4f5c57c020a4967999d6784c6bc558cc943ab6970cacabd954",
+      "originalSubtitle": "Gate semantics for cross-engine barrier comparisons: |barrier_A − barrier_B| ≤ offset wander, so wander above the 40 meV gate downgrades a VASP-referenced verdict to convention-contaminated.",
+      "reviewedOn": "2026-11-04",
+      "subtitle": "For the same evaluated configurations, offset wander bounds the difference of sampled energy ranges. Forward barriers need explicit initial states; separately optimized paths also need search-quality and configuration-coverage evidence.",
+      "statement": "The historical max-minus-min bound is valid on the same finite set of configurations evaluated by both engines. It describes a sampled energy range. A forward barrier instead subtracts a specified initial energy; shared-initial and separately selected-path comparisons have additional premises.",
+      "reason": "The article's broad reuse and clean-gate wording can be read as certifying any cross-engine barrier comparison. Small measured wander does not establish the missing path, initial-state or coverage premises. The July 2026 observations and formalization sketch below remain a historical record; this review does not attribute those observations to a newly demonstrated mechanism.",
+      "missingPremises": [
+        "Match the actual configurations, cells and energy conventions before comparing offsets. Finite sampled images do not establish the unsampled continuous path.",
+        "For a forward barrier, name the initial state in each calculation and retain their actual cross-engine initial-energy difference.",
+        "For separately selected profiles, bound offsets over a common candidate family and supply each selected profile's gap from that family's minimum peak. Unknown search gaps are not zero; a solver stopping criterion is not a global-optimality certificate.",
+        "An energy or scalar-rate bound alone does not certify conductivity or transport. Temperature, prefactors and the applicable transport model remain separate premises."
+      ],
+      "bound": "For offsets in [a, b] over the common finite candidate family, the forward-barrier difference ΔB = B_G − B_F obeys a − δ₀ − η_F ≤ ΔB ≤ b − δ₀ + η_G. Here δ₀ = G(j) − F(i) uses the actual initial states; η_F and η_G bound the selected peak's gap from its family's minimum peak for each energy function. With a shared initial configuration and zero search gaps, the wander bound is recovered. This remains a finite-family statement, not a global physical-path guarantee.",
+      "evidence": [
+        {
+          "label": "Pinned barrier and path-selection specification",
+          "url": "https://github.com/alexwelcing/lupine-rhizo/blob/fada72af2ed2be6bbcf108f7cb785bbd48c07a7e/glim-think/docs/anchored-barrier-evidence.md"
+        },
+        {
+          "label": "Lean statements and proofs",
+          "url": "https://github.com/alexwelcing/lupine-rhizo/blob/fada72af2ed2be6bbcf108f7cb785bbd48c07a7e/lean-spec/OpenDistillationFactory/Materials/Theory/UniversalCorrection/BarrierTransfer.lean"
+        },
+        {
+          "label": "Successful Lean verification for the reviewed head",
+          "url": "https://github.com/alexwelcing/lupine-rhizo/actions/runs/41896029775"
+        }
+      ]
+    }
+  ]
+}

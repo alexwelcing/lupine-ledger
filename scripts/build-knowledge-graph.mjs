@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import { loadArticleCatalog } from './article-scope-reviews.mjs';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -360,7 +361,8 @@ export function writeKnowledgeGraph({ manifestPath = DEFAULT_MANIFEST_PATH, outp
     if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Article source escapes bundle');
     if (fs.existsSync(sourcePath)) articles[entry.id] = fs.readFileSync(sourcePath, 'utf8');
   }
-  const graph = buildKnowledgeGraph(manifest.catalog, {
+  const catalog = loadArticleCatalog(manifest, path.dirname(manifestPath));
+  const graph = buildKnowledgeGraph(catalog, {
     source: manifest.source,
     generatedAt: manifest.generatedAt,
     ontology: loadNormalizedOntology(ontologyPath),
