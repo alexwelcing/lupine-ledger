@@ -7,7 +7,7 @@ export function createPublicSearch() {
   return {
     article(article, body = '') {
       put({ key: `article:${article.id}`, id: article.id, kind: 'article', title: article.title,
-        subtitle: article.subtitle, route: `#/read/${encodeURIComponent(article.id)}`,
+        subtitle: article.subtitle, status: article.status || null, route: `#/read/${encodeURIComponent(article.id)}`,
         body: [text(article.title), text(article.subtitle), ...(article.tags || []), body].join(' ') });
     },
     activity(record) {
