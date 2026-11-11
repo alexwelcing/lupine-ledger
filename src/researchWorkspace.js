@@ -26,7 +26,13 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
   let pan = {x:38,y:26}, zoom = .82, pointer = null;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const nodeById = new Map(graph.nodes.map(n=>[n.id,n]));
-  const documents = [...manifest.articles].sort((a,b)=>(a.id==='research-index'?-1:b.id==='research-index'?1:a.id==='changelog'?-1:b.id==='changelog'?1:0));
+  // Reader-facing entry points first, in this order; everything else keeps manifest order.
+  const PINNED = ['research-index','conjecture-ledger','what-is-an-interatomic-potential','projection-law-in-plain-language','born-screening-re-audit','z1-union-campaign-verdict'];
+  const pinRank = id => { const i = PINNED.indexOf(id); return i < 0 ? PINNED.length : i; };
+  const documents = [...manifest.articles].sort((a,b)=>pinRank(a.id)-pinRank(b.id));
+  const label = v => typeof v === 'object' && v ? v.en : v || '';
+  const statusLabel = id => id ? label(manifest.statuses?.[id]?.label) || id : '';
+  const categoryLabel = id => label(manifest.categories?.find(c=>c.id===id)?.label) || 'Research';
   const docNodes = new Map(graph.nodes.filter(n=>n.type==='article'&&n.articleId).map(n=>[n.articleId,n]));
   const positions = new Map();
   const cols = 8, cellW = 248, cellH = 156;
@@ -36,14 +42,15 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
   root.innerHTML = `
     <section class="research-workspace" aria-label="Movable research workspace">
       <div class="workspace-intro" data-piece="title" tabindex="0" aria-label="Library title; select to move or remove">
-        <div class="piece-handle" data-drag-handle><span>001 / OPEN WORK</span><button data-remove="title" aria-label="Remove title from my view">×</button></div>
-        <h1>Into the<br><em>unknown.</em></h1>
+        <div class="piece-handle" data-drag-handle><span>LUPINE LIBRARY · EVIDENCE BEFORE CLAIM</span><button data-remove="title" aria-label="Remove title from my view">×</button></div>
+        <h1>What we tested,<br> <em>what held,<br> what failed.</em></h1>
+        <p class="workspace-intro-sub">Tested claims, refutations and corrections, each linked to its evidence. Start with the <a href="#/read/research-index">Research Index</a> or the <a href="#/read/conjecture-ledger">Hypothesis Ledger</a>.</p>
       </div>
       <section class="knowledge-field" data-piece="field" tabindex="0" aria-label="Knowledge field">
         <div class="piece-handle field-handle" data-drag-handle><span><b>${manifest.articles.length}</b> / <span class="field-count">${documents.length}</span></span><button data-remove="field" aria-label="Remove field from my view">×</button></div>
         <div class="field-viewport" tabindex="0" aria-label="Research field. Drag a document to open it. Drag empty space to move the field. Arrow keys pan.">
           <canvas class="connection-canvas" aria-label="Source relationships; dashed links are suggested"></canvas>
-          <div class="document-plane">${documents.map((a,i)=>`<article class="document-tile" data-article="${esc(a.id)}" data-piece="card:${esc(a.id)}" tabindex="0" aria-label="${esc(title(a))}; Enter to read, Delete to remove from this view" style="left:${i%cols*cellW}px;top:${Math.floor(i/cols)*cellH}px"><div class="tile-meta"><span>${String(i+1).padStart(2,'0')} / ${esc(a.category||'RESEARCH')}</span><button data-remove="card:${esc(a.id)}" aria-label="Remove ${esc(title(a))} from my view">×</button></div><h2>${esc(title(a))}</h2><div class="tile-bottom"><span>${esc(a.status || '')}</span><button data-open="${esc(a.id)}" aria-label="Read ${esc(title(a))}">↗</button></div></article>`).join('')}</div>
+          <div class="document-plane">${documents.map((a,i)=>`<article class="document-tile" data-article="${esc(a.id)}" data-piece="card:${esc(a.id)}" tabindex="0" aria-label="${esc(title(a))}; Enter to read, Delete to remove from this view" style="left:${i%cols*cellW}px;top:${Math.floor(i/cols)*cellH}px"><div class="tile-meta"><span>${String(i+1).padStart(2,'0')} / ${esc(categoryLabel(a.category))}</span><button data-remove="card:${esc(a.id)}" aria-label="Remove ${esc(title(a))} from my view">×</button></div><h2>${esc(title(a))}</h2><div class="tile-bottom"><span>${esc(statusLabel(a.status))}</span><button data-open="${esc(a.id)}" aria-label="Read ${esc(title(a))}">↗</button></div></article>`).join('')}</div>
         </div>
         <div class="field-foot"><span class="connection-key" hidden><i></i> Declared / derived <i class="suggested"></i> Suggested</span><div><button data-zoom="out" aria-label="Zoom out" title="Zoom out">−</button><button data-zoom="home" aria-label="Reset field position" title="Recenter">⌖</button><button data-zoom="in" aria-label="Zoom in" title="Zoom in">+</button></div></div>
       </section>
@@ -61,7 +68,7 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
       <div class="workspace-feedback" role="status" aria-live="polite"></div>
     </section>
     <section class="workspace-journal" data-piece="journal" tabindex="0" aria-label="Research journal"><div class="piece-handle" data-drag-handle><span>002</span><button data-remove="journal" aria-label="Remove journal from my view">×</button></div><div class="journal-content"></div></section>
-    <footer class="workspace-footer" data-piece="footer" tabindex="0"><div class="piece-handle" data-drag-handle><span></span><button data-remove="footer" aria-label="Remove footer from my view">×</button></div><a class="footer-brand" href="https://lupine.science"><img src="/lupine-science-icon.png" alt="" width="42" height="42"><span>Lupine Science</span></a><div><a href="#/read/changelog">Changelog ↗</a><a href="https://github.com/alexwelcing/lupine-rhizo">Source ↗</a></div></footer>`;
+    <footer class="workspace-footer" data-piece="footer" tabindex="0"><div class="piece-handle" data-drag-handle><span></span><button data-remove="footer" aria-label="Remove footer from my view">×</button></div><a class="footer-brand" href="https://lupine.science"><img src="/lupine-science-icon.png" alt="" width="42" height="42"><span>Lupine Science</span></a><div><a href="#/read/changelog">Changelog ↗</a><a href="https://lupine.science/corrections/">Corrections log ↗</a><a href="#/read/ai-and-data">AI and data ↗</a><a href="https://github.com/alexwelcing/lupine-rhizo">Source ↗</a></div><p class="workspace-licence">Code MIT · our text and data CC BY 4.0 unless noted · third-party material keeps its own licence</p></footer>`;
   const stage=root.querySelector('.research-workspace'), field=root.querySelector('.knowledge-field'), viewport=root.querySelector('.field-viewport');
   const canvas=root.querySelector('canvas'), ctx=canvas.getContext('2d'), plane=root.querySelector('.document-plane');
   const feedback=root.querySelector('.workspace-feedback'), search=root.querySelector('.workspace-search input');
@@ -101,7 +108,7 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
     const a=readerArticle(id);if(!a)return;
     const pane=document.createElement('section');pane.className='paper-window';pane.dataset.piece=`reader:${id}`;pane.tabIndex=0;pane.setAttribute('aria-label',`${a.title} full article`);
     pane.style.zIndex=++z;
-    pane.innerHTML=`<div class="piece-handle" data-drag-handle><span>${esc(a.title)}</span><div><button data-expand="${esc(id)}" aria-label="Expand article">↗</button><button data-remove="reader:${esc(id)}" aria-label="Close ${esc(a.title)}">×</button></div></div><div class="paper-source"><span>${esc(a.status||'')}</span><a href="#/read/${encodeURIComponent(id)}" aria-label="Open ${esc(a.title)} in dedicated reader" title="Dedicated reader">↗</a></div><div class="paper-body article-body">${a.html}</div>`;
+    pane.innerHTML=`<div class="piece-handle" data-drag-handle><span>${esc(a.title)}</span><div><button data-expand="${esc(id)}" aria-label="Expand article">↗</button><button data-remove="reader:${esc(id)}" aria-label="Close ${esc(a.title)}">×</button></div></div><div class="paper-source"><span>${esc(statusLabel(manifest.articles.find(m=>m.id===id)?.status))}</span><a href="#/read/${encodeURIComponent(id)}" aria-label="Open ${esc(a.title)} in dedicated reader" title="Dedicated reader">↗</a></div><div class="paper-body article-body">${a.html}</div>`;
     const body=pane.querySelector('.paper-body');
     pane.querySelector('[data-drag-handle]').addEventListener('dblclick',e=>{if(!e.target.closest('button,a'))pane.classList.toggle('paper-expanded');},{signal});
     // Scope anchors inside detached documents so multiple papers can coexist.
@@ -180,7 +187,7 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
       const originX=rect.left-(state.pieces[g.id]?.x||0),originY=rect.top-(state.pieces[g.id]?.y||0);
       state.pieces[g.id]={hidden:false,x:clamp(g.ox+dx,-originX+16,innerWidth-originX-80),y:clamp(g.oy+dy,-originY+64,innerHeight-originY-70)};applyPiece(g.id);
     }
-    if(g.kind==='article'){if(!ghost){const tile=pieces.get(`card:${g.id}`);tile.classList.add('is-lifted');ghost=document.createElement('div');ghost.className='paper-ghost';ghost.setAttribute('aria-hidden','true');ghost.innerHTML=`<span>${esc(documents.find(a=>a.id===g.id)?.category||'')}</span><h2>${esc(title(documents.find(a=>a.id===g.id)))}</h2>`;document.body.append(ghost);}ghost.style.left=`${e.clientX-70}px`;ghost.style.top=`${e.clientY-25}px`;ghost.style.rotate=`${clamp(dx*.025,-5,5)}deg`;}
+    if(g.kind==='article'){if(!ghost){const tile=pieces.get(`card:${g.id}`);tile.classList.add('is-lifted');ghost=document.createElement('div');ghost.className='paper-ghost';ghost.setAttribute('aria-hidden','true');ghost.innerHTML=`<span>${esc(categoryLabel(documents.find(a=>a.id===g.id)?.category))}</span><h2>${esc(title(documents.find(a=>a.id===g.id)))}</h2>`;document.body.append(ghost);}ghost.style.left=`${e.clientX-70}px`;ghost.style.top=`${e.clientY-25}px`;ghost.style.rotate=`${clamp(dx*.025,-5,5)}deg`;}
   },{signal});
   root.addEventListener('pointerup',e=>endGesture(e),{signal});root.addEventListener('pointercancel',e=>endGesture(e,true),{signal});
   root.addEventListener('click',e=>{

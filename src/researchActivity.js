@@ -3,9 +3,8 @@
 export const FEED_SCHEMA = 'lupine.public_research_activity_feed.v1';
 export const RECORD_SCHEMA = 'lupine.public_research_activity.v1';
 export const MAX_FEED_BYTES = 850_000;
-export const STALE_AFTER_MS = 6 * 60 * 60 * 1000;
 const encoder = new TextEncoder();
-const PRIVATE_TEXT = /(?:[\x00-\x1f\x7f<>]|[A-Za-z][A-Za-z0-9+.-]*:\/\/|(?:^|\s|["'(])(?:\/(?:Users|home|private|tmp|var|mnt|workspace)\/|~\/|[A-Za-z]:[\\/]|\\\\)|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}|\b(?:awphone|aledev|hermitage)\b)/i;
+const PRIVATE_TEXT = /(?:[\x00-\x1f\x7f<>]|[A-Za-z][A-Za-z0-9+.-]*:\/\/|(?:^|\s|["'(])(?:\/(?:Users|home|private|tmp|var|mnt|workspace)\/|~\/|[A-Za-z]:[\\/]|\\\\)|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i;
 const CREDENTIAL = /(?:\bBearer\s+\S+|\b(?:sk-(?:proj-)?|ghp_|gho_|github_pat_|AIza)[A-Za-z0-9_-]{12,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})/i;
 const SENSITIVE_QUERY = /(?:token|key|secret|signature|credential|authorization|password|session|email|auth|jwt)/i;
 const RECORD_KEYS = 'schema id activityId evidenceKind state verification title summary observedAt reviewedAt datasets findings limitations nextStep sources hashes repositoryLinks releaseLinks supersedes correctionReason'.split(' ');
@@ -38,7 +37,7 @@ export function isPublicSourceUrl(value) {
         host.endsWith('.ts.net') || host.endsWith('.localdomain') || host.endsWith('.home.arpa') || host.endsWith('.')) return false;
     let decoded = value;
     for (let i = 0; i < 2; i++) decoded = decodeURIComponent(decoded);
-    if (CREDENTIAL.test(decoded) || /(?:\/(?:Users|home|private|tmp|var|mnt|workspace)\/|(?:^|[\s/"'(])[A-Za-z]:[\\/]|\b(?:awphone|aledev|hermitage)\b)/i.test(decoded)) return false;
+    if (CREDENTIAL.test(decoded) || /(?:\/(?:Users|home|private|tmp|var|mnt|workspace)\/|(?:^|[\s/"'(])[A-Za-z]:[\\/])/i.test(decoded)) return false;
     for (const [key, content] of url.searchParams) {
       if (SENSITIVE_QUERY.test(key) || CREDENTIAL.test(content) || /(?:[a-z][a-z0-9+.-]*:\/\/|@)/i.test(content)) return false;
     }
@@ -97,13 +96,14 @@ export function validateFeed(value, now = Date.now()) {
   });
   return value;
 }
-export function activityFreshness(state, now = Date.now()) {
+// Evidence age comes only from observedAt. A successful check never makes an
+// entry newer; the view shows the latest entry's date instead of a staleness rule.
+export function activityFreshness(state) {
   const newest = state.feed?.items.reduce((latest, item) => item.observedAt > latest ? item.observedAt : latest, '') || null;
-  const stale = !!newest && now - Date.parse(newest) > STALE_AFTER_MS;
-  let mode = state.source === 'live' ? (stale ? 'stale' : 'live') : state.source === 'snapshot' ? 'snapshot' : 'saved';
+  let mode = state.source === 'live' ? 'live' : state.source === 'snapshot' ? 'snapshot' : 'saved';
   if (state.error) mode = state.online === false ? 'offline' : 'unavailable';
   else if (!state.feed) mode = 'loading';
-  return { mode, stale, newest };
+  return { mode, newest };
 }
 export async function readPublicJSON(response) {
   if (!response.ok) fail();

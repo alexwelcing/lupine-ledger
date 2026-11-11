@@ -24,7 +24,8 @@ export function createPublicActivityStore({ endpoint, fetcher = fetch, storage }
   let state = { feed: null, source: null, error: false, records: [], archiveComplete: false, archiveLoading: false, archiveError: false };
   let cursor = null, completedSnapshot = 0, busy = false;
   const emit = () => { state = { ...state, records: [...records.values()].sort((a,b)=>b.observedAt.localeCompare(a.observedAt)||b.id.localeCompare(a.id)) }; listeners.forEach(fn=>fn(state)); };
-  const controller = createActivityController({ endpoint, fetcher, storage, onChange(next) {
+  const online = () => typeof navigator === 'undefined' || navigator.onLine !== false;
+  const controller = createActivityController({ endpoint, fetcher, storage, online, onChange(next) {
     for (const r of next.feed?.items || []) records.set(r.id,r);
     state = { ...state, ...next }; emit();
   }});

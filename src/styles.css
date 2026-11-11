@@ -52,7 +52,7 @@
 .research-activity-kicker { text-transform: uppercase; font-size: .7rem; letter-spacing: .13em; color: var(--accent); font-weight: 700; }
 .research-activity h2 { font: 600 clamp(1.7rem, 4vw, 2.25rem)/1.2 var(--font-serif); margin: 5px 0 10px; }
 .research-activity-intro { color: var(--text-dim); max-width: 65ch; }
-.research-activity-refresh { flex-shrink: 0; padding: 9px 13px; border-radius: 9px; border: 1px solid var(--border); background: var(--glass-3); color: var(--text); cursor: pointer; font: inherit; font-size: .8rem; }
+.research-activity-refresh { flex-shrink: 0; min-height: 44px; padding: 9px 13px; border-radius: 9px; border: 1px solid var(--border); background: var(--glass-3); color: var(--text); cursor: pointer; font: inherit; font-size: .8rem; }
 .research-activity-refresh:focus-visible, .research-activity summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .research-activity-refresh:disabled { cursor: wait; opacity: .6; }
 .research-activity-status { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 15px 0; margin-top: 9px; font-size: .75rem; line-height: 1.6; color: var(--text-dim); border-bottom: 1px solid var(--border); }
