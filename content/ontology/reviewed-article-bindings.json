@@ -9,7 +9,7 @@
       "passageAnchor": "verdicts",
       "heading": "Verdicts",
       "ontologyId": "formalProof:FP1",
-      "ontologySha256": "153078c1a3e6d2a01539030fb79e9eeca2136046902f87aa43048f3adf35ea3e",
+      "ontologySha256": "0fd83568588712ecad3505e26e74a03f994c748291fe9972278fcc6efdee3f77",
       "relation": "documentsVerificationClaims",
       "reviewedBy": "Internal source check (AI-assisted)",
       "reviewedOn": "2026-11-11",
@@ -23,10 +23,10 @@
       "passageAnchor": "current-status-after-born-screening",
       "heading": "Current status after Born screening",
       "ontologyId": "materialClass:MC6",
-      "ontologySha256": "153078c1a3e6d2a01539030fb79e9eeca2136046902f87aa43048f3adf35ea3e",
+      "ontologySha256": "0fd83568588712ecad3505e26e74a03f994c748291fe9972278fcc6efdee3f77",
       "relation": "discussesMagneticModelLimitations",
       "reviewedBy": "Internal source check (AI-assisted)",
-      "reviewedOn": "2026-10-17",
+      "reviewedOn": "2026-11-11",
       "rationale": "The passage discusses Fe as a narrowed magnetic failure-mode suspect. This is a topical link, not proof of a magnetic cause or transfer to all magnets/rare-earth-free materials."
     }
   ]

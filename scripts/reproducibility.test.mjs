@@ -20,11 +20,11 @@ test('ontology provenance is portable and its content hashes verify', () => {
   const provenance = read('content/ontology/PROVENANCE.sha256');
   const lines = provenance.trimEnd().split('\n');
 
-  assert.equal(lines.length, 3);
+  assert.equal(lines.length, 2);
   assert.doesNotMatch(provenance, /(?:^|\s)\/(?:home|Users)\//m);
-  assert.match(lines[2], /^# source: Kimi Agent Centennial Ontology Project \(compiled \d{4}-\d{2}-\d{2}\)$/);
+  assert.match(lines[1], /^# source: Lupine ontology export \(compiled \d{4}-\d{2}-\d{2} with AI assistance; .+\)$/);
 
-  for (const line of lines.slice(0, 2)) {
+  for (const line of lines.slice(0, 1)) {
     const match = line.match(/^([a-f0-9]{64})  (content\/ontology\/.+)$/);
     assert.ok(match, `invalid provenance hash line: ${line}`);
     const [, expectedHash, relativePath] = match;

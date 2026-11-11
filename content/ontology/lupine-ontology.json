@@ -2,12 +2,12 @@
   "metadata": {
     "title": "The Lupine Ontological Atlas — machine-readable export",
     "compiled": "2026-07-30",
+    "status": "Direction: describes where this work is aimed; not a result. Result statuses live on each Library entry.",
     "corpus": {
       "doc:HMHE": {
         "title": "Hard Materials, Honest Errors",
         "authors": [
-          "Alex Welcing",
-          "Kimi 3"
+          "Alex Welcing (drafted with AI assistance)"
         ],
         "publisher": "Lupine Science",
         "edition": "first",
@@ -28,7 +28,8 @@
           "PP-4 From Predicted Crystal to Commercial Cell",
           "PP-5 Investing in the Trust Layer"
         ],
-        "status": "Draft"
+        "status": "Retired 2026-11-11",
+        "note": "Retired 2026-11-11. No organisation named in it is a Lupine partner, and it is not a Lupine result. See https://lupine.science/corrections/."
       }
     },
     "citationConventions": {
@@ -551,7 +552,7 @@
     }
   ],
   "lupineMethod": {
-    "name": "Environment error field + runtime correction + six-step loop",
+    "name": "Environment error field + six-step loop (correction is a research question, not a product)",
     "functionalForm": "E_model − E_ref ≈ Σᵢ P(cᵢ); cubic spline over first-shell coordination, P(12)=0 boundary",
     "anchors": [
       "γ₁₀₀ (c=11)",
@@ -574,7 +575,8 @@
     "selectiveCorrection": {
       "Ni(110)": "9.7% → 1.5% (6.5×)",
       "Cu(110)": "28.0% → 13.7% (2.0×)",
-      "bulkLatticeConstants": "unchanged"
+      "bulkLatticeConstants": "unchanged",
+      "scope": "Energy-only correction beside CHGNet, blind (110) surface energy: one model, two metals, one facet"
     },
     "deployment": {
       "overheadPython": "15.6%",
@@ -598,9 +600,9 @@
       "isotonic correction bounds",
       "impossibility proofs with counterexample witnesses"
     ],
-    "kernelRejectedClaim": "27/36 → 26/36 at 10⁻⁴ J/m² integer precision (one cell margin exactly zero)",
-    "barrierTheorems": "Conditional: under ErrorField decomposition + coordination-ordering hypotheses, softened models provably under-read barriers; corrected barriers provably equal reference",
-    "repository": "github.com/alexwelcing/lupine-rhizo (AGPL-3.0)"
+    "kernelRejectedClaim": "At the 10⁻⁴ precision used for checking, one cell's improvement rounds to zero, so we report 26 of 36 (27 of 36 at float64).",
+    "barrierTheorems": "Conditional statements only: under the ErrorField decomposition and coordination-ordering hypotheses, softened models would under-read barriers. Whether corrected barriers match the reference is a hypothesis to test; the preregistered Round 4 Li-ion migration-barrier gate failed (July 2026).",
+    "repository": "github.com/alexwelcing/lupine-rhizo (MIT)"
   },
   "acceptanceTests": [
     {
@@ -826,12 +828,12 @@
     {
       "phase": 1,
       "span": "0–24 months",
-      "work": "Replicate Rows 1–3 + PFT on target classes; observable-first public validation (MS25-style benchmark, Matbench Discovery, OpenKIM); NSF SBIR pitch → 2026-11-04 window"
+      "work": "Replicate Rows 1–3 + PFT on target classes; observable-first public validation (MS25-style benchmark, Matbench Discovery, OpenKIM)"
     },
     {
       "phase": 2,
       "span": "2–5 years",
-      "work": "Chain campaigns: barrier-targeted training → ≤40 meV; spin-aware Tc/coercivity bounds; disorder-native ≤2.5 meV/atom; Δ-learned adsorption ~0.1 eV; first industrial JDA (Kemira shape); ALCC"
+      "work": "Chain campaigns: barrier-targeted training → ≤40 meV; spin-aware Tc/coercivity bounds; disorder-native ≤2.5 meV/atom; Δ-learned adsorption ~0.1 eV; ALCC"
     },
     {
       "phase": 3,
@@ -907,12 +909,6 @@
   ],
   "timeGates": [
     {
-      "date": "2026-07-27",
-      "event": "NSF SBIR 26-510 first full-proposal deadline",
-      "family": "calendar",
-      "note": "passed 3 days before atlas date; verified"
-    },
-    {
       "date": "2026-08",
       "event": "ERCAP AY2027 window opens; closes early Oct",
       "family": "calendar"
@@ -920,11 +916,6 @@
     {
       "date": "2026-09",
       "event": "Chain Reaction Innovations cohort reopens",
-      "family": "calendar"
-    },
-    {
-      "date": "2026-11-04",
-      "event": "NSF SBIR second deadline — the venture's stated entry",
       "family": "calendar"
     },
     {
@@ -1063,34 +1054,34 @@
       "name": "Cobalt-free LMR cathodes",
       "spec": ">300 Wh/kg, >1,000 cycles, <$80/kWh",
       "blocker": "TM migration (oct→tet) barriers underestimated at under-coordinated TS",
-      "mechanism": "corrected migration barriers; ordering proofs"
+      "mechanism": "Hypothesis to test: corrected migration barriers (the preregistered Round 4 Li-ion migration-barrier gate failed)"
     },
     {
       "name": "Earth-abundant halide solid electrolytes",
       "spec": ">10 mS/cm, Li-metal stability, moisture tolerance",
       "blocker": "Li⁺ hop barrier underestimated 60%+ → ~3 orders in conductivity",
-      "mechanism": "field transfer across shared anion sublattice"
+      "mechanism": "Hypothesis to test: field transfer across shared anion sublattice (the preregistered Round 4 Li-ion migration-barrier gate failed)"
     },
     {
       "name": "MOF sorbents for DAC",
       "spec": ">2 mmol/g @400 ppm, 40–70% RH, <$50/kg",
       "blocker": "metal-linker hydrolysis at under-coordinated nodes",
-      "mechanism": "corrected hydrolysis barriers; impossibility proofs"
+      "mechanism": "Hypothesis to test: corrected hydrolysis barriers"
     },
     {
       "name": "Electrochemical ammonia catalysts",
       "spec": ">60% EE, >300 mA/cm²",
       "blocker": "N≡N activation (945 kJ/mol) at defect sites; scaling-relation propagation",
-      "mechanism": "corrected N₂ dissociation barriers; scaling-breaker flags"
+      "mechanism": "Hypothesis to test: corrected N₂ dissociation barriers; scaling-breaker flags (in Round 4, every selected Δ-correction made catalyst-adsorption holdout error worse)"
     },
     {
       "name": "Lead-free perovskite absorbers",
       "spec": ">20% certified PCE, >25-yr stability",
       "blocker": "Sn²⁺ oxidation via vacancy formation; metastable-phase blindness",
-      "mechanism": "corrected Sn-vacancy energetics; provable metastability boundaries"
+      "mechanism": "Hypothesis to test: corrected Sn-vacancy energetics"
     }
   ],
-  "climateAggregate": "5–12 GtCO₂/yr (sum of five independently sized estimates)",
+  "climateAggregate": "Retired 2026-11-11 as a Lupine outcome: the earlier 5–12 GtCO₂/yr figure summed five independently sized estimates; it is not a result of this work.",
   "relations": [
     {
       "name": "isA",
@@ -1266,12 +1257,6 @@
       "inverse": "constrains"
     },
     {
-      "name": "partnersWith",
-      "domain": "venture",
-      "range": "Agent",
-      "note": "role-typed: synthesis → characterization → integration → manufacturing"
-    },
-    {
       "name": "abates",
       "domain": "ClimateTarget",
       "range": "quantity (GtCO₂/yr)"
@@ -1286,9 +1271,7 @@
   "freshnessLayer": {
     "atlasDate": "2026-07-30",
     "verified": [
-      "NSF SBIR 26-510: 2026-07-27 deadline passed; remaining 2026-11-04, 2027-03-04 (Project Pitch gate reopened 2026-06-02)",
       "Rare-earth controls: April 2025 Announcement 18 in force; October 2025 package suspended through 2026-11-10; no extension announced",
-      "NSF X-Labs Topic 2 closed 2026-07-24 as anticipated",
       "MS25, barrier benchmark (Digital Discovery 2026-03-30), Ko & Ong 2025, Deng 2025 confirmed as cited"
     ],
     "nextScheduledReverification": "2026-11-10 (rare-earth suspension)"

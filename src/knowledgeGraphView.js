@@ -225,11 +225,12 @@ export async function renderKnowledgeGraphView(mount, {
     el('p', { class: 'kg-sub' }, t('graph.subtitle', lang))
   );
   if (graph.freshness) {
-    const { atlasDate, nextReverification, proofPackDate, proofPackStatus } = graph.freshness;
+    // The ontology is a Direction map (where the work is aimed), not a result.
+    // No scheduled re-verification date or retired proof pack is advertised.
+    const { atlasDate } = graph.freshness;
     head.append(el('aside', { class: 'kg-freshness', role: 'status' },
       el('strong', {}, t('graph.freshness.atlas', lang, { date: atlasDate })),
-      el('span', {}, t('graph.freshness.next', lang, { date: nextReverification })),
-      el('span', {}, t('graph.freshness.proofPack', lang, { status: proofPackStatus, date: proofPackDate })),
+      el('span', {}, t('graph.freshness.direction', lang)),
     ));
   }
 

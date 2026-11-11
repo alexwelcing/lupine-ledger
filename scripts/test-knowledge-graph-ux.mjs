@@ -20,7 +20,7 @@ test('English and Chinese graph chrome translations are complete', () => {
     'graph.title': ['Knowledge Graph', '知识图谱'],
     'graph.mode.ontology': ['Ontology', '本体'],
     'graph.search.placeholder': ['Focus MLIP, Lean, topology...', '聚焦 MLIP、Lean、拓扑…'],
-    'graph.freshness.next': ['Next re-verification {date}', '下次复核 {date}'],
+    'graph.freshness.direction': ['Ontology status: Direction. It maps where the work is aimed; it is not a result.', '本体状态：方向。它描述工作的目标方向，并非结果。'],
     'graph.relations': ['Relations', '关系'],
     'graph.stats.nodes': ['nodes', '节点'],
     'graph.inspector.selected': ['Selected', '已选择'],
