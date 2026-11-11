@@ -58,6 +58,8 @@
   .status-box ul { padding-left: 20px; margin: 10px 0; }
   .status-box li { margin-top: 7px; }
   .update { display: block; margin-top: 8px; color: #6b4a12; }
+  .kr .update { color: #e8b45a; font-size: 13.5px; }
+  .kr .update b { display: inline; font-family: inherit; font-size: inherit; color: inherit; margin: 0; font-weight: 600; }
 
   @media print {
     :root { --bg: #ffffff; --panel: #f6f5f1; --ink: #16181f; --ink-soft: #555a6b; --hair: rgba(20,22,30,0.18); --accent: #2e3a87; --accent-2: #0b7285; }
@@ -70,6 +72,7 @@
     a { color: var(--accent); }
     .colophon a::after { content: " (" attr(href) ")"; font-family: var(--mono); font-size: 8.5pt; color: var(--ink-soft); }
     .btn-primary { color: var(--accent) !important; }
+    .kr .update { color: #6b4a12; }
   }
 </style>
 </head>
@@ -94,6 +97,7 @@
   <p>These are working drafts from June 2026, kept as written so the record stays inspectable; they are not for citation. No Lupine paper has been peer-reviewed or accepted yet. Read them with these later results:</p>
   <ul>
     <li><b>Elastic correction.</b> On 16 elemental cubic metals with four MatPES MLIPs (128 cases; r2SCAN targets approximate), one bias direction per functional transfers out of sample. When the held-out reference sets how far to correct, MAE falls from 17.84 to 10.36 GPa: a ceiling, not a deployable correction. A correction that works without seeing the answer is still open, and derived moduli are uncertified. The earlier in-sample figures with “zero no-harm violations” are not a usable correction.</li>
+    <li><b>Functional clustering.</b> The p = 0.029 result was not reproduced by the preregistered Round-2 follow-up against DFT targets: the H1 and H2a kill conditions triggered (effect −0.14, permutation p = 0.13); H2b’s cosine was 0.53 against 0.8; conformal coverage was 86.7% against 90%. <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</li>
     <li><b>Round 4.</b> In four preregistered campaigns in July 2026 (Round 4), no gate passed: three failed and one abstained. <a href="https://lupine.science/articles/four-gates-three-honest-failures-one-live-experiment/">Round 4 results</a>.</li>
     <li><b>Hyper-ribbon.</b> The universal reading is no longer supported; the claim is Open and descriptive. “559 potentials” are 559 model–element tensors with 423 distinct KIM ids, and the historical counts are not re-verified. <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</li>
     <li><b>Self-corrections.</b> The BCC/FCC “causal shield” was 1.5% data contamination, and a d-band signal was a sample-size confounder.</li>
@@ -121,7 +125,7 @@
 
   <h3>Key results</h3>
   <div class="kr">
-    <div><b>p = 0.029</b>Foundation-model errors cluster by training functional, not architecture (S = +0.317 vs −0.093; exact permutation over all 70 labelings).</div>
+    <div><b>p = 0.029</b>Foundation-model errors cluster by training functional, not architecture (S = +0.317 vs −0.093; exact permutation over all 70 labelings). <span class="update"><b>Update 2026-11-11:</b> not reproduced by the Round-2 follow-up; see the status note.</span></div>
     <div><b>p = 0.017</b>DFT-implementation errors cluster by pseudopotential table, not simulation code (S = +0.526 vs +0.265); four independent codes sharing one table align at 0.70–0.87.</div>
     <div><b>17.84 → 10.36 GPa</b>A ceiling, not a deployable correction: the held-out reference sets how far to correct along the transferred direction (128 cases). A correction that works without seeing the answer is still open.</div>
     <div><b>4 of 7 failed</b>Registered predictions that missed their thresholds, reported as failures — including the clustering effect-size component itself.</div>
@@ -183,7 +187,7 @@
   <h2>Forty Years of Interatomic Potentials, One Error Geometry</h2>
   <p class="sub">Hyper-Ribbon Universality and Why Pooled Benchmarks Mislead · Working draft · June 2026 · archived 2026-11-11</p>
   <div class="status-box">
-    <p><b>Archived 11 November 2026.</b> Kept for the record; not for citation. The draft's central claim, a universal low-dimensional error geometry across “559 potentials”, is no longer supported: the 559 are model–element tensors with 423 distinct KIM ids, the historical counts are not re-verified, low participation ratios are partly rank-limited, and the hyper-ribbon claim is Open and descriptive. The crystal-structure (BCC/FCC) pattern it mentions was 1.5% data contamination. Current status: <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</p>
+    <p><b>Archived 11 November 2026.</b> Kept for the record; not for citation. The draft's central claim, a universal low-dimensional error geometry across “559 potentials”, is no longer supported: the 559 are model–element tensors with 423 distinct KIM ids, the historical counts are not re-verified, low participation ratios are partly rank-limited, and the hyper-ribbon claim is Open and descriptive. The crystal-structure (BCC/FCC) pattern it mentions was 1.5% data contamination. The draft’s <i>I</i>² = 98.6% and random-effects intervals were computed on dependent C<sub>11</sub>/C<sub>12</sub>/C<sub>44</sub> rows of the same tensors; they are anti-conservative and no longer reported as inference. Current status: <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</p>
   </div>
 
   <div class="actions">
