@@ -352,7 +352,9 @@ function estimateReadMinutes(words) {
 }
 
 function hydrateLeanInventory(source) {
-  return source.replaceAll('{{LEAN_DECLARATION_COUNT}}', String(LEAN_INVENTORY.count));
+  return source
+    .replaceAll('{{LEAN_DECLARATION_COUNT}}', String(LEAN_INVENTORY.count))
+    .replaceAll('{{LEAN_COUNTED_AT}}', String(LEAN_INVENTORY.counted_at));
 }
 
 function copyDir(src, dst) {
