@@ -28,11 +28,9 @@ function ontologySummary(ontology) {
   const groups = Object.entries(ontology?.superClasses || {});
   const classCount = groups.reduce((total, [, classes]) => total + requireArray(classes, 'superClasses group').length, 0);
   const atlasDate = ontology?.freshnessLayer?.atlasDate || ontology?.metadata?.compiled;
-  const reverification = String(ontology?.freshnessLayer?.nextScheduledReverification || '').match(/^\d{4}-\d{2}-\d{2}/)?.[0];
-  const proofPack = ontology?.metadata?.corpus?.['doc:PP'];
 
-  if (!atlasDate || !reverification || !proofPack?.date || !proofPack?.status) {
-    throw new Error('Ontology is missing normative atlas, reverification, or proof-pack metadata');
+  if (!atlasDate) {
+    throw new Error('Ontology is missing its normative atlas date');
   }
   if (classCount !== 37) {
     throw new Error(`Expected 37 ontology concept classes, found ${classCount}`);
@@ -42,12 +40,18 @@ function ontologySummary(ontology) {
     '## Ontology Summary',
     '',
     `- Atlas date: ${atlasDate}`,
-    `- Next scheduled reverification: ${reverification}`,
-    `- Climate Partnerships Proof Pack: ${proofPack.status}, dated ${proofPack.date}`,
+    '- Status: Direction. The ontology maps where the work is aimed; it is not a result. Result statuses live on each Library entry.',
     `- Structure: ${groups.length} super-class groups containing ${classCount} concept classes`,
     '- Count ruling: the machine-readable JSON list is normative at 37 concept classes; the atlas figure caption says 33 and is an acknowledged discrepancy.',
     `- Super-class groups: ${groups.map(([name, classes]) => `${name} (${classes.length})`).join('; ')}`,
   ].join('\n');
+}
+
+function statusLabel(catalog, status) {
+  if (!status) return 'no result status';
+  const label = catalog?.statuses?.[status]?.label;
+  const text = typeof label === 'object' ? label.en : label;
+  return text ? `${text} (\`${status}\`)` : `\`${status}\``;
 }
 
 export function generateLlmsFull(catalog, ontology) {
@@ -57,9 +61,9 @@ export function generateLlmsFull(catalog, ontology) {
     '',
     '> Deterministically generated from content/latest/manifest.json and content/ontology/lupine-ontology.json. Do not edit by hand.',
     '',
-    'Lupine Science is a public research program for the error geometry of interatomic potentials. LUPI is the browser-native viewer for inspectable evidence, and Lupine Library is the public research corpus.',
+    'Lupine Science measures where machine-learned models of atoms go wrong, against published references and pass/fail gates set in advance, and publishes every verdict, failures included. LUPI is its browser viewer; Lupine Library is its public research record.',
     '',
-    'Preserve each article’s epistemic status. Refutations and self-corrections are part of the method, not publication failures.',
+    'Quote each article’s status as written; a working draft is not a publication. Refutations and self-corrections are part of the method. No Lupine paper has been peer-reviewed or accepted yet.',
     '',
     ontologySummary(ontology),
     '',
@@ -73,7 +77,7 @@ export function generateLlmsFull(catalog, ontology) {
       '',
       `- ID: \`${entry.id}\``,
       `- Category: \`${entry.category}\``,
-      `- Status: \`${entry.status || 'unspecified'}\``,
+      `- Status: ${statusLabel(catalog, entry.status)}`,
       `- Tags: ${entry.tags.length ? entry.tags.map((tag) => `\`${tag}\``).join(', ') : '(none)'}`,
       `- Library route: ${LIBRARY_ORIGIN}/#/read/${encodeURIComponent(entry.id)}`,
       `- Machine-readable article: ${LIBRARY_ORIGIN}/data/${encodeURIComponent(entry.id)}.json`,

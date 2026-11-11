@@ -24,8 +24,9 @@ assert.deepEqual(
   'llms-full must list every manifest article exactly once and in manifest order',
 );
 assert.match(llmsFull, /Atlas date: 2026-07-30/);
-assert.match(llmsFull, /Next scheduled reverification: 2026-11-10/);
-assert.match(llmsFull, /Climate Partnerships Proof Pack: Draft, dated 2026-07-09/);
+assert.doesNotMatch(llmsFull, /scheduled reverification/i, 'llms-full must not publish scheduled dates');
+assert.doesNotMatch(llmsFull, /Proof Pack/, 'the retired proof pack is not advertised');
+assert.match(llmsFull, /Status: Direction\./);
 assert.match(llmsFull, /37 concept classes/);
 assert.match(llmsFull, /figure caption says 33/);
 

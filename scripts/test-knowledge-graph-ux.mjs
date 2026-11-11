@@ -19,7 +19,7 @@ test('English and Chinese graph chrome translations are complete', () => {
   const expected = {
     'graph.title': ['Knowledge Graph', '知识图谱'],
     'graph.mode.ontology': ['Ontology', '本体'],
-    'graph.search.placeholder': ['Focus MLIP, Lean, funding, topology...', '聚焦 MLIP、Lean、资助、拓扑…'],
+    'graph.search.placeholder': ['Focus MLIP, Lean, topology...', '聚焦 MLIP、Lean、拓扑…'],
     'graph.freshness.next': ['Next re-verification {date}', '下次复核 {date}'],
     'graph.relations': ['Relations', '关系'],
     'graph.stats.nodes': ['nodes', '节点'],
