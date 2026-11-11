@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Build the Lupine Ledger research library.
-// Reads markdown sources defined in scripts/catalog.js, renders each to HTML,
-// and emits a static site into dist/ for Cloudflare Pages.
+// Reads the verified content bundle (content/latest/manifest.json), renders each
+// article to HTML, and emits a static site into dist/ for Cloudflare Pages.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
-import { CATALOG as FALLBACK_CATALOG, LEAN_INVENTORY } from './catalog.js';
+import { LEAN_INVENTORY } from './lean-inventory.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
@@ -41,19 +41,9 @@ function loadContentConfig() {
       sourceSnapshot: contentSourceSnapshot(manifest),
     };
   }
-  if (process.env.ALLOW_LEGACY_CATALOG !== '1') {
-    throw new Error(
-      `Library content bundle not found at ${manifestPath}. Run npm run content:sync or set LIBRARY_CONTENT_BUNDLE.`,
-    );
-  }
-  return {
-    catalog: FALLBACK_CATALOG,
-    repoRoot: process.env.LIBRARY_CONTENT_ROOT
-      ? path.resolve(process.env.LIBRARY_CONTENT_ROOT)
-      : ROOT,
-    contentVersion: null,
-    sourceSnapshot: null,
-  };
+  throw new Error(
+    `Library content bundle not found at ${manifestPath}. Run npm run content:sync or set LIBRARY_CONTENT_BUNDLE.`,
+  );
 }
 
 const {
