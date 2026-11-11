@@ -114,18 +114,21 @@ for (const file of files) {
 }
 
 const sourceSha256 = sourceHash.digest('hex');
-let countedAt = '';
-try {
-  countedAt = execSync(
-    'git log -1 --format=%cs -- OpenDistillationFactory OpenDistillationFactory.lean',
-    { cwd: LEAN_SPEC, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-  ).trim();
-} catch {
-  const sourceInventory = path.join(LEAN_SPEC, 'theorem-count.json');
-  const prior = fs.existsSync(sourceInventory) ? JSON.parse(fs.readFileSync(sourceInventory, 'utf8')) : {};
-  if (prior.source_sha256 === sourceSha256) countedAt = prior.counted_at;
-  else if (process.env.SOURCE_DATE_EPOCH) {
-    countedAt = new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString().slice(0, 10);
+// When lupine-rhizo's own generated inventory describes exactly these files,
+// take its date, so the Library body and the rhizo export's Lean card agree.
+const sourceInventory = path.join(LEAN_SPEC, 'theorem-count.json');
+const prior = fs.existsSync(sourceInventory) ? JSON.parse(fs.readFileSync(sourceInventory, 'utf8')) : {};
+let countedAt = prior.source_sha256 === sourceSha256 && prior.count === count ? String(prior.counted_at ?? '') : '';
+if (!countedAt) {
+  try {
+    countedAt = execSync(
+      'git log -1 --format=%cs -- OpenDistillationFactory OpenDistillationFactory.lean',
+      { cwd: LEAN_SPEC, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+    ).trim();
+  } catch {
+    if (process.env.SOURCE_DATE_EPOCH) {
+      countedAt = new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString().slice(0, 10);
+    }
   }
 }
 if (!/^\d{4}-\d{2}-\d{2}$/.test(countedAt)) throw new Error('could not derive Lean source as-of date');
