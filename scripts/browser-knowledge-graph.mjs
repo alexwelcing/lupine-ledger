@@ -136,7 +136,7 @@ try {
     };
     window.fetch = async (...args) => {
       const url = String(args[0]);
-      if (url.includes('/data/readme.zh.json')) {
+      if (url.includes('/data/research-index.zh.json')) {
         return new Response('<!DOCTYPE html><title>SPA fallback</title>', {
           status: 200,
           headers: { 'content-type': 'text/html; charset=utf-8' },
@@ -243,7 +243,7 @@ try {
     'restored ontology mode',
   );
 
-  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/readme'`);
+  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/research-index'`);
   await waitFor(() => cdp.evaluate(`Boolean(document.querySelector('.reader .content'))`), 'reader fallback article');
   const readerFallback = await cdp.evaluate(`({
     notice: document.querySelector('.reader .lang-fallback')?.textContent || '',
@@ -252,8 +252,8 @@ try {
     errors: window.__qaConsoleErrors,
   })`);
   assert.ok(readerFallback.notice, 'missing zh JSON should render the language fallback notice');
-  assert.equal(readerFallback.title, 'Lupine — Project README');
-  assert.match(readerFallback.body, /Lupine Rhizo/);
+  assert.equal(readerFallback.title, 'Research Index');
+  assert.match(readerFallback.body, /what Lupine has investigated/);
   assert.deepEqual(readerFallback.errors, [], `reader fallback console errors: ${readerFallback.errors}`);
 
   await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/glossary'`);
