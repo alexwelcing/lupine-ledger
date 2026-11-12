@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkLeanBreakdown, leanBreakdownSentence } from './lean-breakdown.js';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEAN_INVENTORY_PATH = path.join(REPO_ROOT, 'content', 'ontology', 'lean-count.json');
@@ -11,3 +12,5 @@ export const LEAN_INVENTORY = JSON.parse(fs.readFileSync(LEAN_INVENTORY_PATH, 'u
 if (!Number.isSafeInteger(LEAN_INVENTORY.count) || LEAN_INVENTORY.count < 1 || LEAN_INVENTORY.zero_sorry !== true) {
   throw new Error(`Invalid fail-closed Lean inventory: ${LEAN_INVENTORY_PATH}`);
 }
+checkLeanBreakdown(LEAN_INVENTORY.breakdown, LEAN_INVENTORY.count);
+export const LEAN_BREAKDOWN_SENTENCE = leanBreakdownSentence(LEAN_INVENTORY.breakdown);

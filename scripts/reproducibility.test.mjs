@@ -7,6 +7,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { contentSourceSnapshot } from './content-provenance.mjs';
 import { normalizeOntology } from './build-ontology.mjs';
+import { checkLeanBreakdown, leanBreakdownSentence } from './lean-breakdown.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relativePath) => fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
@@ -44,6 +45,27 @@ test('ontology formal-proof inventory matches the current Lean evidence plane', 
   assert.equal(formalProof.inventoryAsOf, generated.counted_at);
   assert.equal(formalProof.sorryCount, 0);
   assert.equal(generated.zero_sorry, true);
+  assert.deepEqual(formalProof.inventoryBreakdown, generated.breakdown);
+});
+
+test('the generated Lean breakdown is checked and rendered beside the total, never typed', () => {
+  const generated = JSON.parse(read('content/ontology/lean-count.json'));
+  const breakdown = checkLeanBreakdown(generated.breakdown, generated.count);
+  const sentence = leanBreakdownSentence(breakdown);
+  assert.match(sentence, new RegExp(`Of these, ${breakdown.single_tactic_checks.total} are closed by a single`));
+  assert.match(sentence, new RegExp(`${breakdown.native_decide.declarations} use native_decide`));
+  assert.match(sentence, /not how much physics is validated/);
+
+  const page = read('dist/reports/working-papers.html');
+  assert.ok(page.includes(`held ${generated.count} theorem/lemma declarations on ${generated.counted_at}. ${sentence}`));
+  assert.doesNotMatch(read('src/reports/working-papers.html'), /Of these, \d/, 'the source page must use the placeholder');
+  assert.doesNotMatch(page, /\{\{LEAN_/);
+
+  const broken = structuredClone(generated.breakdown);
+  broken.single_tactic_checks.total += 1;
+  assert.throws(() => checkLeanBreakdown(broken, generated.count), /does not equal the sum/);
+  assert.throws(() => checkLeanBreakdown(undefined, generated.count), /missing/);
+  assert.equal(leanBreakdownSentence({ ...breakdown, registry_grades: null }).includes('registry'), false);
 });
 
 

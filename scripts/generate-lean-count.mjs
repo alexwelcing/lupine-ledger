@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { checkLeanBreakdown } from './lean-breakdown.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEAN_SPEC = path.resolve(process.argv[2] ?? path.join(ROOT, '..', 'lupine-rhizo', 'lean-spec'));
@@ -118,7 +119,14 @@ const sourceSha256 = sourceHash.digest('hex');
 // take its date, so the Library body and the rhizo export's Lean card agree.
 const sourceInventory = path.join(LEAN_SPEC, 'theorem-count.json');
 const prior = fs.existsSync(sourceInventory) ? JSON.parse(fs.readFileSync(sourceInventory, 'utf8')) : {};
-let countedAt = prior.source_sha256 === sourceSha256 && prior.count === count ? String(prior.counted_at ?? '') : '';
+const priorMatches = prior.source_sha256 === sourceSha256 && prior.count === count;
+let countedAt = priorMatches ? String(prior.counted_at ?? '') : '';
+// The breakdown (single-tactic checks, native_decide, registry grades) is shown
+// beside the total, so it must describe the same bytes. Fail closed otherwise.
+if (!priorMatches || !prior.breakdown) {
+  throw new Error(`${path.relative(ROOT, sourceInventory)} does not carry a breakdown for these Lean files; regenerate it with lupine-rhizo/lean-spec/scripts/generate-lean-count.mjs first`);
+}
+const breakdown = checkLeanBreakdown(prior.breakdown, count);
 if (!countedAt) {
   try {
     countedAt = execSync(
@@ -140,6 +148,7 @@ const inventory = {
   source: 'lupine-rhizo/lean-spec/OpenDistillationFactory{,.lean} (vendored packages excluded)',
   source_sha256: sourceSha256,
   rule: 'theorem/lemma declarations after stripping nested comments and strings; supports attributes, whitespace, and declaration modifiers; every active sorry token fails; regenerate with scripts/generate-lean-count.mjs — never hand-edit',
+  breakdown: { ...breakdown, copied_from: 'lupine-rhizo/lean-spec/theorem-count.json (same source_sha256 and count)' },
 };
 fs.writeFileSync(OUT, `${JSON.stringify(inventory, null, 2)}\n`);
 console.log(`generate-lean-count: ${count} declarations (sorry hits in proof code: ${sorryCount}) → ${path.relative(ROOT, OUT)}`);

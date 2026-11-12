@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
 import katex from 'katex';
-import { LEAN_INVENTORY } from './lean-inventory.js';
+import { LEAN_BREAKDOWN_SENTENCE, LEAN_INVENTORY } from './lean-inventory.js';
 import { writeOntology } from './build-ontology.mjs';
 import { writeKnowledgeGraph } from './build-knowledge-graph.mjs';
 import { writeMachineIndexes } from './generate-indexes.mjs';
@@ -342,9 +342,14 @@ function estimateReadMinutes(words) {
 }
 
 function hydrateLeanInventory(source) {
-  return source
+  const hydrated = source
     .replaceAll('{{LEAN_DECLARATION_COUNT}}', String(LEAN_INVENTORY.count))
-    .replaceAll('{{LEAN_COUNTED_AT}}', String(LEAN_INVENTORY.counted_at));
+    .replaceAll('{{LEAN_COUNTED_AT}}', String(LEAN_INVENTORY.counted_at))
+    .replaceAll('{{LEAN_BREAKDOWN}}', LEAN_BREAKDOWN_SENTENCE);
+  // Fail closed: an unknown Lean placeholder must not reach a reader as literal braces.
+  const unknown = hydrated.match(/\{\{LEAN_[A-Z_]+\}\}/);
+  if (unknown) throw new Error(`Unknown Lean inventory placeholder ${unknown[0]}`);
+  return hydrated;
 }
 
 function copyDir(src, dst) {
