@@ -33,7 +33,7 @@ test('normalizeOntology preserves all source sections and resolves documented im
   for (const [type, ids] of Object.entries({
     excludedClass: ['X1', 'X2', 'X3'],
     falsifier: ['F1', 'F2', 'F3'],
-    risk: ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'],
+    risk: ['R1', 'R2'],
     skepticEpisode: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'],
     climateTarget: ['CT1', 'CT2', 'CT3', 'CT4', 'CT5'],
   })) {
@@ -81,7 +81,7 @@ test('normalizeOntology preserves all fuzzy time gates and freshness dates', () 
   const dataset = normalizeOntology(source);
   const gates = dataset.nodes.filter((item) => item.type === 'timeGate');
 
-  assert.equal(gates.length, 10);
+  assert.equal(gates.length, 9);
   assert.deepEqual([...new Set(gates.map((item) => item.family))].sort(), ['calendar', 'weather']);
   assert.ok(gates.some((item) => item.date === '~2026-11'));
   assert.ok(gates.some((item) => item.date === 'end-2027'));

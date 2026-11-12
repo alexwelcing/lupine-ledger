@@ -40,7 +40,7 @@ function ontologySummary(ontology) {
     '## Ontology Summary',
     '',
     `- Atlas date: ${atlasDate}`,
-    '- Status: Direction. The ontology maps where the work is aimed; it is not a result. Result statuses live on each Library entry.',
+    '- Status: Direction map — where the work is aimed, not results. Result statuses live on each Library entry.',
     `- Structure: ${groups.length} super-class groups containing ${classCount} concept classes`,
     '- Count ruling: the machine-readable JSON list is normative at 37 concept classes; the atlas figure caption says 33 and is an acknowledged discrepancy.',
     `- Super-class groups: ${groups.map(([name, classes]) => `${name} (${classes.length})`).join('; ')}`,

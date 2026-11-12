@@ -2,7 +2,7 @@
   "metadata": {
     "title": "The Lupine Ontological Atlas — machine-readable export",
     "compiled": "2026-07-30",
-    "status": "Direction: describes where this work is aimed; not a result. Result statuses live on each Library entry.",
+    "status": "Direction map — where the work is aimed, not results. Result statuses live on each Library entry.",
     "corpus": {
       "doc:HMHE": {
         "title": "Hard Materials, Honest Errors",
@@ -578,11 +578,6 @@
       "bulkLatticeConstants": "unchanged",
       "scope": "Energy-only correction beside CHGNet, blind (110) surface energy: one model, two metals, one facet"
     },
-    "deployment": {
-      "overheadPython": "15.6%",
-      "overheadCompiledLAMMPS": "<1% expected",
-      "forcesVerified": "10⁻⁶ eV/Å on rattled slabs"
-    },
     "sixStepLoop": [
       "Simulate",
       "Identify",
@@ -807,21 +802,21 @@
   "killCriteria": [
     {
       "id": "K1",
-      "name": "The 90:10 fidelity wedge",
+      "name": "The 90:10 multi-fidelity test",
       "endpoint": "8×-equivalent reduction in high-fidelity labels reproduced within ±20% on two target classes by month 18",
-      "decisionRule": "Miss on either class: endpoint recorded failed; wedge narrows to pure dataset interventions"
+      "decisionRule": "Miss on either class: endpoint recorded failed; the multi-fidelity aim narrows to pure dataset interventions"
     },
     {
       "id": "K2",
-      "name": "Barrier wedge",
+      "name": "Barrier accuracy",
       "endpoint": "Held-out barrier MAE ≤195 meV by month 24 on two solid-electrolyte families (midpoint of 349→40 meV road)",
-      "decisionRule": "Above threshold: stop selling barrier accuracy; publish the negative result as an MS25-style benchmark artifact"
+      "decisionRule": "Above threshold: endpoint recorded failed and no barrier-accuracy claim is made; publish the negative result as an MS25-style benchmark artifact"
     },
     {
       "id": "K3",
-      "name": "Fusion long game",
+      "name": "Fusion-materials qualification",
       "endpoint": "By 2030: uncertainty bounds envelop an ion-irradiation observable suite AND at least one lab-led consortium or milestone-company team adopts the chain",
-      "decisionRule": "Miss either conjunct: exit Chain 7's qualification ambition; keep data-and-UQ services line"
+      "decisionRule": "Miss either conjunct: exit Chain 7's qualification ambition"
     }
   ],
   "roadmapPhases": [
@@ -902,7 +897,7 @@
       "currentReadings": "None as of 2026-07-17; register shows audits, not loops"
     },
     {
-      "claim": "The validation-first wedge",
+      "claim": "The validation-first approach",
       "killCondition": "Database-scale predictions convert into independently audited novel materials faster than small prospective funnels",
       "currentReadings": "Strongest counter-evidence: 736 independent GNoME syntheses"
     }
@@ -911,11 +906,6 @@
     {
       "date": "2026-08",
       "event": "ERCAP AY2027 window opens; closes early Oct",
-      "family": "calendar"
-    },
-    {
-      "date": "2026-09",
-      "event": "Chain Reaction Innovations cohort reopens",
       "family": "calendar"
     },
     {
@@ -969,32 +959,7 @@
     {
       "name": "Many-species data wall: composition space unlearnable to threshold",
       "likelihood": "High (observed)",
-      "residual": "High — the wedge-killer"
-    },
-    {
-      "name": "Solo-execution/credibility: one failed prediction is existential",
-      "likelihood": "Medium",
-      "residual": "Medium"
-    },
-    {
-      "name": "REE-lapse/export-control shock: 0.1% rule auto-revives 2026-11-10",
-      "likelihood": "Medium",
-      "residual": "Medium"
-    },
-    {
-      "name": "Compute-ladder gating at top (INCITE readiness; ALCC funding prerequisite)",
-      "likelihood": "High (structural)",
-      "residual": "Medium-low"
-    },
-    {
-      "name": "Instrument disappearance (OCED zeroed; SBIR lapsed 195 days)",
-      "likelihood": "Medium (precedented)",
-      "residual": "Medium"
-    },
-    {
-      "name": "Foundation-model commoditization closing the wedge early",
-      "likelihood": "Medium-high",
-      "residual": "Medium"
+      "residual": "High"
     }
   ],
   "skepticEpisodes": [
@@ -1252,7 +1217,7 @@
     },
     {
       "name": "constrainedBy",
-      "domain": "venture/class",
+      "domain": "MaterialClass",
       "range": "ControlMeasure/TimeGate",
       "inverse": "constrains"
     },

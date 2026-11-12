@@ -44,7 +44,7 @@ export function validateOntology(ontology) {
     if (!nodes.some((node) => node.type === type)) errors.push(issue(`ontology is missing required node type ${type}`));
   }
   const timeGates = nodes.filter((node) => node.type === 'timeGate');
-  if (timeGates.length !== 10 || !timeGates.some((node) => node.family === 'calendar') || !timeGates.some((node) => node.family === 'weather')) {
+  if (timeGates.length !== 9 || !timeGates.some((node) => node.family === 'calendar') || !timeGates.some((node) => node.family === 'weather')) {
     errors.push(issue('ontology time gates do not reconcile', timeGates.map((node) => ({ id: node.id, family: node.family }))));
   }
   return errors;

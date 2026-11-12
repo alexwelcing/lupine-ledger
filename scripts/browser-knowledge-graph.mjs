@@ -168,7 +168,7 @@ try {
       title: document.querySelector('.kg h1')?.textContent,
       ontology: document.querySelector('.kg-mode.active')?.textContent,
     })`),
-    { requests: 2, lang: 'zh', title: '知识图谱', ontology: '本体' },
+    { requests: 2, lang: 'zh', title: '知识图谱', ontology: '方向图' },
     'a stale English graph request must not overwrite the newer Chinese render',
   );
 
@@ -183,7 +183,7 @@ try {
     hitStroke: getComputedStyle(document.querySelector('.kg-node-hit')).strokeWidth,
   }))()`);
   assert.deepEqual(chromeState.title, '知识图谱');
-  assert.deepEqual(chromeState.ontology, '本体');
+  assert.deepEqual(chromeState.ontology, '方向图');
   assert.match(chromeState.placeholder, /聚焦/);
   assert.deepEqual(chromeState.selected, '已选择');
   assert.ok(chromeState.overflow <= 0, `mobile page overflows by ${chromeState.overflow}px`);
@@ -239,7 +239,7 @@ try {
   await cdp.evaluate('history.back()');
   await waitFor(() => cdp.evaluate(`location.hash === ${JSON.stringify(before.hash)}`), 'restored graph URL');
   await waitFor(
-    () => cdp.evaluate(`document.querySelector('.kg-mode.active')?.textContent === '本体'`),
+    () => cdp.evaluate(`document.querySelector('.kg-mode.active')?.textContent === '方向图'`),
     'restored ontology mode',
   );
 

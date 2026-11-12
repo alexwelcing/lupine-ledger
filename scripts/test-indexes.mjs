@@ -26,7 +26,7 @@ assert.deepEqual(
 assert.match(llmsFull, /Atlas date: 2026-07-30/);
 assert.doesNotMatch(llmsFull, /scheduled reverification/i, 'llms-full must not publish scheduled dates');
 assert.doesNotMatch(llmsFull, /Proof Pack/, 'the retired proof pack is not advertised');
-assert.match(llmsFull, /Status: Direction\./);
+assert.match(llmsFull, /Status: Direction map — where the work is aimed, not results\./);
 assert.match(llmsFull, /37 concept classes/);
 assert.match(llmsFull, /figure caption says 33/);
 
