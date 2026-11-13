@@ -82,3 +82,63 @@ test('historical detail links successor and partial archive disclaims currentnes
   assert.ok(nodes.some(n=>n.href==='#/activity/old-record'));
  }finally{globalThis.document=previous;}
 });
+
+
+test('source labels retrieve the released overlap finding instead of only the earlier unresolved audit',()=>{
+ const feed=JSON.parse(fs.readFileSync(new URL('../content/research-activity.json',import.meta.url)));
+ const search=createPublicSearch();
+ for(const record of feed.items) search.activity(record);
+ const target=feed.items.find(record=>record.id==='pinned-source-overlap-20261006-completed-v1');
+ assert.ok(target);
+ const results=search.search('pinned pilot overlap');
+ assert.equal(results[0]?.id,target.id);
+ assert.ok(results.some(record=>record.id==='validation-eligibility-20261006-completed-v1'));
+ for(const limitation of target.limitations) assert.ok(results[0].body.includes(limitation));
+});
+test('indexes validated source labels without mutating records or indexing source URLs',()=>{
+ const record={...fixture,id:'source-label-case',sources:[{
+  label:'Evidence label sentinel',url:'https://evidence.example.org/urlsentinel'
+ }]};
+ const original=JSON.stringify(record),search=createPublicSearch();
+ search.activity(record);
+ assert.equal(search.search('evidence label sentinel')[0]?.id,record.id);
+ assert.equal(search.search('urlsentinel').length,0);
+ assert.equal(JSON.stringify(record),original);
+});
+
+test('article search retains supplied lifecycle state across updates without inventing one',()=>{
+ const search=createPublicSearch(),article={id:'bounded-claim',title:'Intrinsic dimension',status:'refuted'};
+ search.article(article);
+ assert.equal(search.search('intrinsic dimension')[0].status,'refuted');
+ search.article({...article,status:'open'});
+ assert.equal(search.search('intrinsic dimension')[0].status,'open');
+ search.article({id:article.id,title:article.title});
+ assert.equal(search.search('intrinsic dimension')[0].status,null);
+ assert.equal(article.status,'refuted');
+});
+test('search result displays article state with its claim and preserves correction navigation',async()=>{
+ const {createPublicSearchResult}=await import('../src/publicSearchView.js');
+ class Element{
+  constructor(tag){this.tag=tag;this.children=[];this.textContent='';}
+  append(...children){this.children.push(...children);}
+ }
+ const previous=globalThis.document;globalThis.document={createElement:tag=>new Element(tag)};
+ try{
+  let navigated=0;
+  const options={statuses:{refuted:{label:{en:'Refuted by us'}}},translate:v=>typeof v==='string'?v:v.en,onNavigate:()=>navigated++};
+  const article=createPublicSearchResult({kind:'article',title:'Intrinsic dimension',subtitle:'A bounded observation remains',status:'refuted',route:'#/read/bounded-claim'},options);
+  const nodes=article.children[0].children;
+  assert.deepEqual(nodes.map(n=>n.textContent),['Intrinsic dimension','Status: Refuted by us','A bounded observation remains']);
+  assert.equal(article.children[0].href,'#/read/bounded-claim');
+  article.children[0].onclick();assert.equal(navigated,1);
+  const unknown=createPublicSearchResult({kind:'article',title:'Unclassified',status:'unresolved',route:'#/read/u'},options);
+  assert.equal(unknown.children[0].children[1].textContent,'Status: unresolved');
+  const absent=createPublicSearchResult({kind:'article',title:'No supplied state',route:'#/read/a'},options);
+  assert.equal(absent.children[0].children.length,1);
+  const activity=createPublicSearchResult({kind:'activity',title:'Historical finding',status:'open',route:'#/activity/old',supersededBy:'new-record'},options);
+  assert.equal(activity.children[0].children.length,1);
+  assert.equal(activity.children[1].textContent,'Superseded record · ');
+  assert.equal(activity.children[2].href,'#/activity/new-record');
+  activity.children[2].onclick();assert.equal(navigated,2);
+ }finally{globalThis.document=previous;}
+});

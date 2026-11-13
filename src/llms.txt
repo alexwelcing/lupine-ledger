@@ -23,6 +23,10 @@ Use this file to identify the public Lupine system correctly.
 - LUPI OMol25 molecule geometry: https://lupi.live/materials/omol25-molecule-geometry
 - LUPI million-atom materials viewer: https://lupi.live/materials/million-atom-viewer
 - Lupine Library: https://library.lupine.science
+- Complete HTML article index: https://library.lupine.science/articles/
+- Research keyword index: https://library.lupine.science/topics/
+- Reading guides (existing research, not a college curriculum): https://library.lupine.science/guides/
+- Canonical HTML and JSON discovery map: https://library.lupine.science/data/discovery.json
 - GitHub: https://github.com/alexwelcing/lupine
 
 ## What We Do
@@ -72,3 +76,30 @@ refutations, LUPI evidence routes, Library updates, and agent-readable files.
 
 - Full agent guide: /llms-full.txt
 - Structured brand metadata: /brand.json
+
+## Continuously published research
+
+- Library journal: https://library.lupine.science/#/research
+- Latest public records: https://glim-think-v1.aw-ab5.workers.dev/research/activity?limit=20
+- Snapshot-bound archive: https://glim-think-v1.aw-ab5.workers.dev/research/activity/archive?after=0&limit=50
+- Public research knowledge: https://glim-think-v1.aw-ab5.workers.dev/research/knowledge
+- Exact record: /research/activity/<id> on the research origin. Full report: /research/activity/<id>/evidence.
+- Full reports use lupine.public_discovery_report.v1. Verify exact response bytes against the record's SHA-256 labelled Public evidence.
+- Automated contract review is not external peer review or empirical validation. Preserve limitations, source hashes, corrections and the original observation clock.
+- The live research graph is separate from the curated article graph; bounded loaded records do not imply complete archive coverage.
+
+## Retrieving research without JavaScript
+
+Every reviewed static Library article has a canonical `/articles/<id>/` HTML page,
+with complete content, source provenance and links to its JSON representation.
+The `/articles/` and `/topics/` indexes link to these pages without JavaScript.
+`/data/discovery.json` maps each static article ID to canonical HTML and JSON,
+taxonomy and its retained source hash. The sitemap contains canonical HTML URLs.
+
+This static corpus is distinct from the continuously accepted research archive.
+Use the live API above for newly accepted reports; a Library build date or source
+export date is not a report publication, observation or validation date. Preserve
+scientific limitations and check correction history before relying on a claim.
+
+The agent guides supplement crawlable HTML and structured data; they do not
+guarantee search-engine indexing or discovery by any particular agent.

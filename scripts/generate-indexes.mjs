@@ -3,6 +3,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadArticleCatalog } from './article-scope-reviews.mjs';
+import { articlePath, seoPaths } from './generate-seo.mjs';
 
 const LIBRARY_ORIGIN = 'https://library.lupine.science';
 
@@ -55,7 +57,7 @@ export function generateLlmsFull(catalog, ontology) {
   const lines = [
     '# Lupine Science Agent Guide and Complete Library Index',
     '',
-    '> Deterministically generated from content/latest/manifest.json and content/ontology/lupine-ontology.json. Do not edit by hand.',
+    '> Deterministically generated from the content manifest, source-bound article scope reviews and content/ontology/lupine-ontology.json. Do not edit by hand.',
     '',
     'Lupine Science is a public research program for the error geometry of interatomic potentials. LUPI is the browser-native viewer for inspectable evidence, and Lupine Library is the public research corpus.',
     '',
@@ -75,8 +77,10 @@ export function generateLlmsFull(catalog, ontology) {
       `- Category: \`${entry.category}\``,
       `- Status: \`${entry.status || 'unspecified'}\``,
       `- Tags: ${entry.tags.length ? entry.tags.map((tag) => `\`${tag}\``).join(', ') : '(none)'}`,
-      `- Library route: ${LIBRARY_ORIGIN}/#/read/${encodeURIComponent(entry.id)}`,
+      `- Canonical article: ${LIBRARY_ORIGIN}${articlePath(entry.id)}`,
+      `- Interactive reader: ${LIBRARY_ORIGIN}/#/read/${encodeURIComponent(entry.id)}`,
       `- Machine-readable article: ${LIBRARY_ORIGIN}/data/${encodeURIComponent(entry.id)}.json`,
+      ...(entry.scopeReview ? [`- Scope reviewed ${entry.scopeReview.reviewedOn}: ${entry.subtitle}`] : []),
       '',
     );
   }
@@ -86,10 +90,20 @@ export function generateLlmsFull(catalog, ontology) {
     '',
     '- Short guide: /llms.txt',
     '- Full guide and complete index: /llms-full.txt',
+    '- Crawlable HTML article index: /articles/',
+    '- Research keyword index: /topics/',
+    '- Reading paths through existing research (not a college curriculum): /guides/',
+    '- Canonical HTML + JSON discovery map: /data/discovery.json',
     '- Search index: /data/search-index.json',
     '- Library manifest: /data/library.json',
     '- Sitemap: /sitemap.xml',
     '- Structured brand metadata: /brand.json',
+    '- Live reviewed research: https://glim-think-v1.aw-ab5.workers.dev/research/activity?limit=20',
+    '- Snapshot-paged public archive: https://glim-think-v1.aw-ab5.workers.dev/research/activity/archive?after=0&limit=50',
+    '- Public research knowledge graph: https://glim-think-v1.aw-ab5.workers.dev/research/knowledge',
+    '- Exact record: /research/activity/<id> on the research origin. Full evidence: /research/activity/<id>/evidence.',
+    '- Full report schema: lupine.public_discovery_report.v1. Verify SHA-256 of exact response bytes against the record hash labelled Public evidence before use.',
+    '- Automated contract review is not external peer review or empirical validation. Retain correction history, original observation times, source provenance and incomplete archive coverage.',
     '',
   );
   return `${lines.join('\n')}\n`;
@@ -114,22 +128,20 @@ export function generateSearchIndex(catalog) {
       featuredRole: entry.featuredRole || null,
       group: entry.group || null,
       route: `#/read/${encodeURIComponent(entry.id)}`,
+      canonicalUrl: `${LIBRARY_ORIGIN}${articlePath(entry.id)}`,
       extracted_knowledge: {},
+      ...(entry.scopeReview ? { scopeReview: entry.scopeReview } : {}),
     })),
   };
 }
 
 export function generateSitemap(catalog) {
   const entries = validateCatalog(catalog);
-  const staticRoutes = ['/', '/llms.txt', '/llms-full.txt', '/brand.json', '/data/library.json', '/data/search-index.json'];
-  const locations = [
-    ...staticRoutes.map((route) => `${LIBRARY_ORIGIN}${route}`),
-    ...entries.map((entry) => `${LIBRARY_ORIGIN}/data/${encodeURIComponent(entry.id)}.json`),
-  ];
+  const locations = seoPaths(catalog).map(route => `${LIBRARY_ORIGIN}${route}`);
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...locations.map((location) => `  <url><loc>${location}</loc></url>`),
+    ...locations.map((location) => `  <url><loc>${location.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}</loc></url>`),
     '</urlset>',
     '',
   ].join('\n');
@@ -151,6 +163,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/latest/manifest.json'), 'utf8'));
   const ontology = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/ontology/lupine-ontology.json'), 'utf8'));
   const outputRoot = process.argv[2] ? path.resolve(process.argv[2]) : path.join(ROOT, 'dist');
-  writeMachineIndexes({ catalog: manifest.catalog, ontology, outputRoot });
+  const catalog = loadArticleCatalog(manifest, path.join(ROOT, 'content/latest'));
+  writeMachineIndexes({ catalog, ontology, outputRoot });
   console.log(`Generated machine indexes for ${manifest.catalog.entries.length} articles in ${outputRoot}`);
 }
