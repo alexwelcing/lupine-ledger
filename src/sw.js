@@ -28,6 +28,7 @@ const SHELL_ASSETS = [
   '/documentLibraryModel.js',
   '/knowledgeHomeModel.js',
   '/documentLibrary.css',
+  '/publicSearchView.js',
   '/vendor/pretext/layout.js',
   '/vendor/pretext/analysis.js',
   '/vendor/pretext/measurement.js',

@@ -2,6 +2,31 @@ import { renderPublishedResearchGraph } from './publicResearchEvidenceView.js';
 import { reviewedPassageRoute } from './readerPassage.js';
 import { t } from './i18n.js';
 
+
+/** The review clock and original wording stay separate from source freshness. */
+export function renderScopeReviews(selected, lang = 'en') {
+  const reviews = selected.scopeReviews || [];
+  if (!reviews.length) return null;
+  const panel = el('section', { class: 'kg-inspector-section kg-scope-review' },
+    el('h3', {}, t('graph.scopeReview.title', lang)));
+  for (const review of reviews) {
+    panel.append(
+      el('p', { class: 'kg-node-meta' }, `${t('graph.scopeReview.reviewed', lang)} ${review.reviewedOn}`),
+      el('p', { class: 'kg-node-sub' }, review.statement),
+      el('p', { class: 'kg-node-sub' }, review.reason),
+      el('h4', {}, t('graph.scopeReview.premises', lang)),
+      el('ul', {}, ...review.missingPremises.map(premise => el('li', {}, premise))),
+      el('p', { class: 'kg-muted' }, review.reviewedBy),
+    );
+    for (const evidence of review.evidence) panel.append(
+      el('a', { class: 'kg-read-link', href: evidence.url, target: '_blank', rel: 'noopener noreferrer' }, evidence.label));
+    panel.append(el('details', {},
+      el('summary', {}, t('graph.scopeReview.original', lang)),
+      el('p', {}, review.original)));
+  }
+  return panel;
+}
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 const MODES = [
@@ -568,6 +593,8 @@ export async function renderKnowledgeGraphView(mount, {
       selectedPanel.append(el('a', { class: 'kg-read-link', href: `#/read/${selected.articleId}` }, t('graph.readArticle', lang)));
     }
     inspector.append(selectedPanel);
+    const scopeReview = renderScopeReviews(selected, lang);
+    if (scopeReview) inspector.append(scopeReview);
 
     const relationPanel = el('section', { class: 'kg-inspector-section' });
     relationPanel.append(el('p', { class: 'kg-inspector-kicker' }, t('graph.relations', lang)));

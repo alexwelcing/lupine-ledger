@@ -127,7 +127,17 @@ test('cold connections wait for delayed original evidence and then link notices 
  try{await store.refresh();store.state.archiveComplete=true;const mount=new Element('main');dispose=renderResearchConnections(mount,store,'#/connections');
   for(let i=0;i<5;i++)await new Promise(r=>setImmediate(r));
   assert.equal(evidenceReads,1);assert.equal(noticeReads,0);assert.equal(store.state.evidence[f.original.record.id].status,'loading');
-  release();for(let i=0;i<25;i++)await new Promise(r=>setImmediate(r));
+  // Await the verified state: WebCrypto completion is not tied to event-loop turns.
+  await new Promise((resolve,reject)=>{
+   let unsubscribe=()=>{};
+   const timer=setTimeout(()=>{unsubscribe();reject(new Error('Source notice verification did not finish'));},1000);
+   unsubscribe=store.subscribe(state=>{
+    if(state.notices[f.record.id]?.status==='verified'){
+     clearTimeout(timer);queueMicrotask(()=>unsubscribe());resolve();
+    }
+   });
+   release();
+  });
   assert.equal(noticeReads,1);assert.equal(store.state.notices[f.record.id].status,'verified');
   assert.equal(buildResearchConnections(store.state).noticeEdges.length,2);assert.ok(flat(mount).some(n=>n.href===`#/activity/${f.record.id}`));
  }finally{release();dispose?.();globalThis.document=saved;}

@@ -1,6 +1,7 @@
 import { publicResearchQuestion } from './publicResearchEvidence.js';
 import { readerPassage } from './readerPassage.js';
 import { createPublicSearch } from './publicSearch.js';
+import { createPublicSearchResult } from './publicSearchView.js';
 import { publicActivityStore } from './publicActivityStore.js';
 import { renderPublicResearch } from './publicResearchView.js';
 import { renderResearchConnections } from './researchConnectionsView.js';
@@ -586,17 +587,11 @@ function renderSearchResults(q) {
     : t('search.all', STATE.settings.lang);
   searchHint.textContent += ' · Public articles and loaded research records. Open Latest research to load the archive.';
   for (const a of list.slice(0, 30)) {
-    const li = el('li');
-    const link = el('a', { href: a.route,
-      onclick: () => searchDialog.close() });
-    link.append(el('div', { class: 'r-title' }, t(a.title, STATE.settings.lang)));
-    if (a.subtitle) link.append(el('div', { class: 'r-sub' }, t(a.subtitle, STATE.settings.lang)));
-    li.append(link);
-    if (a.supersededBy) {
-      li.append(el('span', { class: 'r-sub' }, 'Superseded record · '));
-      li.append(el('a', { href: `#/activity/${encodeURIComponent(a.supersededBy)}`, onclick: () => searchDialog.close() }, 'Read correction'));
-    }
-    searchResults.append(li);
+    searchResults.append(createPublicSearchResult(a, {
+      translate: value => t(value, STATE.settings.lang),
+      statuses: STATE.searchIndex.statuses || {},
+      onNavigate: () => searchDialog.close(),
+    }));
   }
 }
 function scoreMatch(a, q) {

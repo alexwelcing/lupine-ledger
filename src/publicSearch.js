@@ -9,7 +9,7 @@ export function createPublicSearch() {
   return {
     article(article, body = '') {
       put({ key: `article:${article.id}`, id: article.id, kind: 'article', title: article.title,
-        subtitle: article.subtitle, route: `#/read/${encodeURIComponent(article.id)}`,
+        subtitle: article.subtitle, status: article.status || null, route: `#/read/${encodeURIComponent(article.id)}`,
         body: [text(article.title), text(article.subtitle), text(article.originalTitle), text(article.originalSubtitle), ...(article.searchAliases || []), ...(article.tags || []), body].join(' ') });
     },
     activity(record) {
@@ -18,7 +18,7 @@ export function createPublicSearch() {
       put({ key: `activity:${record.id}`, id: record.id, kind: 'activity', title: presentation.title,
         supersedes: record.supersedes, correctionReason: record.correctionReason,
         subtitle: record.summary, observedAt: record.observedAt, route: `#/activity/${encodeURIComponent(record.id)}`,
-        body: [presentation.title, presentation.topicTitle, presentation.area, ...presentation.subjects, presentation.evidenceBasis, presentation.roleLabel, ...presentation.aliases, record.title, record.summary, record.correctionReason || '', ...record.findings, ...record.limitations, record.nextStep].join(' ') });
+        body: [presentation.title, presentation.topicTitle, presentation.area, ...presentation.subjects, presentation.evidenceBasis, presentation.roleLabel, ...presentation.aliases, record.title, record.summary, record.correctionReason || '', ...record.findings, ...record.limitations, ...record.sources.map(source => source.label), record.nextStep].join(' ') });
     },
     evidence(record,evidence) {
       validatePublicEvidence(evidence,record); const existing=records.get(`activity:${record.id}`); if(!existing)return;

@@ -148,7 +148,7 @@ export function layoutHomeGraph(nodes, width = 900, mode = 'equal', links = []) 
     for(const p of points){p.x+=Math.max(-5,Math.min(5,p.vx))*cooling;p.y+=Math.max(-5,Math.min(5,p.vy))*cooling;clamp(p);}
     separate();
   }
-  for(let pass=0;pass<500&&separate()>.001;pass++); // Resolve hit targets after cooling.
+  for(let pass=0;pass<2000&&separate()>.001;pass++); // Dense mobile clusters need more bounded relaxation.
   if(n===1){points[0].x=w/2;points[0].y=height/2;}
   if(positionCache.size>=8)positionCache.delete(positionCache.keys().next().value);
   positionCache.set(cacheKey,points.map(p=>[p.x,p.y]));

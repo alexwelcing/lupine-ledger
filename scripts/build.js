@@ -16,6 +16,7 @@ import { writeMachineIndexes } from './generate-indexes.mjs';
 import { writeSeoPages } from './generate-seo.mjs';
 import { loadResearchActivity } from './research-activity-build.mjs';
 import { contentSourceSnapshot } from './content-provenance.mjs';
+import { loadArticleCatalog, renderArticleScopeReview, ARTICLE_SCOPE_REVIEWS_PATH } from './article-scope-reviews.mjs';
 import { extractDocumentDate } from './document-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -92,7 +93,7 @@ function loadContentConfig() {
       throw new Error(`Library content manifest has no catalog entries: ${manifestPath}`);
     }
     return {
-      catalog: manifest.catalog,
+      catalog: loadArticleCatalog(manifest, bundleRoot),
       repoRoot: bundleRoot,
       contentVersion: manifest.source?.commit || manifest.generatedAt,
       sourceSnapshot: contentSourceSnapshot(manifest),
@@ -439,6 +440,8 @@ function loadVersion() {
   hash.update(fs.readFileSync(path.join(ROOT, 'package-lock.json')));
   for (const script of ['build.js', 'generate-seo.mjs', 'generate-indexes.mjs', 'document-date.mjs']) hash.update(fs.readFileSync(path.join(ROOT, 'scripts', script)));
   hash.update(fs.readFileSync(EDITORIAL_PATH));
+  hash.update(fs.readFileSync(path.join(ROOT, 'scripts/article-scope-reviews.mjs')));
+  hash.update(fs.readFileSync(ARTICLE_SCOPE_REVIEWS_PATH));
   return `${CONTENT_VERSION || 'local'}-${hash.digest('hex').slice(0,12)}`;
 }
 
@@ -470,14 +473,23 @@ function build() {
     const subtitle = entry.subtitle || extractSubtitle(md);
     const editorial = resolveEditorialMetadata({ id, source: sourcePath, lang, sourceSha256, title, subtitle,
       sourceTitle: extractTitle(rawMd, title) }, editorialEntries);
+    // Source-bound qualifications take precedence over shorter navigation copy.
+    if (entry.scopeReview) {
+      editorial.subtitle = entry.scopeReview.subtitle;
+      editorial.originalSubtitle = entry.scopeReview.originalSubtitle;
+    }
     if (editorial.editorial.status === 'source-changed') {
       console.warn(`[editorial] ${id}: source pin changed; retaining original catalog title`);
     }
     const { md: mdMath, cells } = extractMath(md);
-    const html = rewriteInternalLinks(renderMathToHtml(marked.parse(mdMath), cells), sourcePath);
+    const html = renderArticleScopeReview(entry.scopeReview) +
+      rewriteInternalLinks(renderMathToHtml(marked.parse(mdMath), cells), sourcePath);
     const plain = stripTags(html);
     const words = wordCount(plain);
-    const toc = headingsToToc(md);
+    const toc = [
+      ...(entry.scopeReview ? [{ depth: 2, text: 'Scope review', id: 'editorial-scope-review' }] : []),
+      ...headingsToToc(md),
+    ];
 
     return {
       id,
@@ -491,6 +503,7 @@ function build() {
       readMinutes: estimateReadMinutes(words),
       toc,
       html,
+      ...(entry.scopeReview ? { scopeReview: entry.scopeReview } : {}),
     };
   }
 
@@ -550,6 +563,7 @@ function build() {
       featuredRole: entry.featuredRole || null,
       status: entry.status || null,
       group: entry.group || null,
+      ...(entry.scopeReview ? { scopeReview: entry.scopeReview } : {}),
     };
     articles.push(meta);
   }

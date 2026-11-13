@@ -21,7 +21,7 @@ test('install precaches public module graph dependencies and serves them offline
     fetch:async()=>{throw Error('Offline network must not be needed');},
   });
   let installed;handlers.get('install')({waitUntil:value=>{installed=value;}});await installed;
-  for(const module of ['publicSearch.js','publicActivityStore.js','publicResearchView.js','sourceAvailabilityNotice.js','readerPassage.js','documentLibrary.js','documentLibraryModel.js','knowledgeHomeModel.js','articleCorpus.js','documentLibrary.css','vendor/pretext/layout.js','vendor/pretext/analysis.js','vendor/pretext/measurement.js','vendor/pretext/line-break.js','vendor/pretext/line-text.js','vendor/pretext/bidi.js','vendor/pretext/generated/bidi-data.js']){
+  for(const module of ['publicSearch.js','publicSearchView.js','publicActivityStore.js','publicResearchView.js','sourceAvailabilityNotice.js','readerPassage.js','documentLibrary.js','documentLibraryModel.js','knowledgeHomeModel.js','articleCorpus.js','documentLibrary.css','vendor/pretext/layout.js','vendor/pretext/analysis.js','vendor/pretext/measurement.js','vendor/pretext/line-break.js','vendor/pretext/line-text.js','vendor/pretext/bidi.js','vendor/pretext/generated/bidi-data.js']){
     assert.equal(added.filter(path=>path===`/${module}`).length,1,`install must fetch ${module} once`);
     let response;handlers.get('fetch')({request:new Request(`${origin}/${module}`),respondWith:value=>{response=value;}});
     const result=await response;assert.equal(result.status,200);assert.equal(await result.text(),`module /${module}`);
