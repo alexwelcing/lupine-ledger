@@ -1,13 +1,15 @@
 # Public research activity
 
-The home panel (the "Research journal") consumes
+The home panel ("Research activity") consumes
 `lupine.public_research_activity_feed.v1` from `GET /research/activity?limit=20`
 on Rhizo. The default public origin is set in
 `scripts/research-activity-build.mjs`. Only reviewed public records are
 eligible; private research-run snapshots and model packets are different inputs
 and are rejected. The founder reviews each summary before it is imported, and
 the import refuses to relabel failed or stopped work as completed (see
-`docs/public-research-activity.md` in lupine-rhizo).
+`docs/public-research-activity.md` in lupine-rhizo). The home panel carries a
+one-line introduction; this review rule and the glossary for terms used in the
+entries are stated on the Research activity page (`#/research`).
 
 ## Build and publication boundary
 

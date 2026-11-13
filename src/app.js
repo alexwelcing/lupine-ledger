@@ -654,7 +654,7 @@ function renderSearchResults(q) {
   const list = publicSearch.search(q);
   searchResults.innerHTML = '';
   if (!list.length) {
-    searchHint.textContent = `No results for “${q}” in loaded content. Open Latest research to load older records.`;
+    searchHint.textContent = `No results for “${q}” in loaded content. Open Research activity to load older records.`;
     searchHint.classList.add('err');
     return;
   }
@@ -662,7 +662,7 @@ function renderSearchResults(q) {
   searchHint.textContent = q
     ? (list.length === 1 ? t('search.results.one', STATE.settings.lang) : t('search.results.many', STATE.settings.lang, { count: list.length }))
     : t('search.all', STATE.settings.lang);
-  searchHint.textContent += ' · Public articles and loaded research records. Open Latest research to load the archive.';
+  searchHint.textContent += ' · Public articles and loaded research records. Open Research activity to load the archive.';
   for (const a of list.slice(0, 30)) {
     const li = el('li');
     const link = el('a', { href: a.route,

@@ -22,6 +22,13 @@ function list(title, values, className = '') {
   const section = node('div', className); section.append(node('h4', '', title));
   const ul = node('ul'); values.forEach(value => ul.append(node('li', '', value))); section.append(ul); return section;
 }
+// The longer explanation lives on the Research activity page (#/research), not on the first screen.
+export function activityExplanation() {
+  const review = node('p', 'research-activity-intro', 'Dated questions, checked findings and next tests from the Lupine research program. Only reviewed public summaries appear here: the founder reviews each one before it is imported, and failed or stopped work cannot be relabelled completed.');
+  const glossary = node('p', 'research-activity-intro research-activity-glossary', '“A6” in these entries is the keystone paper’s assumption of common-spatial-mode separability; its historical test remains inconclusive. Background: ');
+  const changelogLink = node('a', '', 'Changelog, 2 June 2026'); changelogLink.href = '#/read/changelog'; glossary.append(changelogLink, node('span', '', '.'));
+  return [review, glossary];
+}
 export function renderRecord(record, index = 0) {
   const card = node('article', 'research-activity-card');
   const meta = node('div', 'research-activity-tags');
@@ -70,15 +77,13 @@ export function renderRecord(record, index = 0) {
 export function renderResearchActivity(mount) {
   const section = node('section', 'research-activity'); section.id = 'research-journal'; section.setAttribute('aria-labelledby', 'research-activity-title');
   const header = node('div', 'research-activity-heading'), heading = node('div');
-  heading.append(node('p', 'research-activity-kicker', 'REVIEWED SUMMARIES'), node('h2', '', 'Research journal'));
+  heading.append(node('p', 'research-activity-kicker', 'REVIEWED SUMMARIES'), node('h2', '', 'Research activity'));
   heading.lastChild.id = 'research-activity-title';
   const refresh = node('button', 'research-activity-refresh', 'Refresh'); refresh.type = 'button';
   header.append(heading, refresh);
-  const intro = node('p', 'research-activity-intro', 'Dated questions, checked findings and next tests from the Lupine research program. Only reviewed public summaries appear here: the founder reviews each one before it is imported, and failed or stopped work cannot be relabelled completed.');
-  const glossary = node('p', 'research-activity-intro research-activity-glossary', '“A6” in these entries is the keystone paper’s assumption of common-spatial-mode separability; its historical test remains inconclusive. Background: ');
-  const changelogLink = node('a', '', 'Changelog, 2 June 2026'); changelogLink.href = '#/read/changelog'; glossary.append(changelogLink, node('span', '', '.'));
+  const intro = node('p', 'research-activity-intro', 'Dated summaries of recent work, each reviewed before it appears.');
   const status = node('div', 'research-activity-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
-  const content = node('div', 'research-activity-records'); section.append(header, intro, glossary, status, content); mount.append(section);
+  const content = node('div', 'research-activity-records'); section.append(header, intro, status, content); mount.append(section);
   let lastFeed = null;
   const controller = publicActivityStore();
   const unsubscribe = controller.subscribe(state => {
@@ -119,7 +124,7 @@ export function renderResearchActivity(mount) {
   refresh.addEventListener('click', check);
   document.addEventListener('visibilitychange', visible);
   window.addEventListener('online', visible);
-  const archiveLink = node('a', '', 'Browse research and history →'); archiveLink.href = '#/research'; section.append(archiveLink);
+  const archiveLink = node('a', '', 'All research activity →'); archiveLink.href = '#/research'; section.append(archiveLink);
   check();
   return () => {
     unsubscribe();

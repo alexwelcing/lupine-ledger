@@ -5,6 +5,14 @@ import { VIEW_KEY, blankView, readView } from './workspaceState.js';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const title = n => typeof n.title === 'object' ? n.title.en : n.title || n.label || n.id;
 const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+// First screen: the canonical one-liner and three ways in. Longer explanations
+// live in the Research Index and on the Research activity page.
+export const ONE_LINER = 'Lupine Science measures where machine-learned models of atoms go wrong, against published references and pass/fail gates set in advance, and publishes every verdict, failures included.';
+export const ENTRY_POINTS = [
+  ['#/read/research-index', 'Results & papers'],
+  ['#/read/conjecture-ledger', 'Hypothesis ledger'],
+  ['#/research', 'Research activity'],
+];
 const editTarget = el => el.closest('input,textarea,select,[contenteditable="true"]');
 const icon = name => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${{
   search:'<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
@@ -44,10 +52,11 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
       <div class="workspace-intro" data-piece="title" tabindex="0" aria-label="Library title; select to move or remove">
         <div class="piece-handle" data-drag-handle><span>LUPINE LIBRARY · EVIDENCE BEFORE CLAIM</span><button data-remove="title" aria-label="Remove title from my view">×</button></div>
         <h1>What we tested,<br> <em>what held,<br> what failed.</em></h1>
-        <p class="workspace-intro-sub">Tested claims, refutations and corrections, each linked to its evidence. Start with the <a href="#/read/research-index">Research Index</a> or the <a href="#/read/conjecture-ledger">Hypothesis Ledger</a>.</p>
+        <p class="workspace-intro-sub">${ONE_LINER}</p>
+        <nav class="workspace-entry" aria-label="Start here">${ENTRY_POINTS.map(([href,text])=>`<a href="${href}">${esc(text)} <span aria-hidden="true">→</span></a>`).join('')}</nav>
       </div>
       <section class="knowledge-field" data-piece="field" tabindex="0" aria-label="Knowledge field">
-        <div class="piece-handle field-handle" data-drag-handle><span><b>${manifest.articles.length}</b> / <span class="field-count">${documents.length}</span></span><button data-remove="field" aria-label="Remove field from my view">×</button></div>
+        <div class="piece-handle field-handle" data-drag-handle><span><b>${manifest.articles.length}</b> / <span class="field-count">${documents.length}</span> · <a href="#/tags">Browse all</a></span><button data-remove="field" aria-label="Remove field from my view">×</button></div>
         <div class="field-viewport" tabindex="0" aria-label="Research field. Drag a document to open it. Drag empty space to move the field. Arrow keys pan.">
           <canvas class="connection-canvas" aria-label="Source relationships; dashed links are suggested"></canvas>
           <div class="document-plane">${documents.map((a,i)=>`<article class="document-tile" data-article="${esc(a.id)}" data-piece="card:${esc(a.id)}" tabindex="0" aria-label="${esc(title(a))}; Enter to read, Delete to remove from this view" style="left:${i%cols*cellW}px;top:${Math.floor(i/cols)*cellH}px"><div class="tile-meta"><span>${String(i+1).padStart(2,'0')} / ${esc(categoryLabel(a.category))}</span><button data-remove="card:${esc(a.id)}" aria-label="Remove ${esc(title(a))} from my view">×</button></div><h2>${esc(title(a))}</h2><div class="tile-bottom"><span>${esc(statusLabel(a.status))}</span><button data-open="${esc(a.id)}" aria-label="Read ${esc(title(a))}">↗</button></div></article>`).join('')}</div>
@@ -67,7 +76,7 @@ export async function renderUniverse(root, { manifest, graph, corpus, onArticleL
       </nav>
       <div class="workspace-feedback" role="status" aria-live="polite"></div>
     </section>
-    <section class="workspace-journal" data-piece="journal" tabindex="0" aria-label="Research journal"><div class="piece-handle" data-drag-handle><span>002</span><button data-remove="journal" aria-label="Remove journal from my view">×</button></div><div class="journal-content"></div></section>
+    <section class="workspace-journal" data-piece="journal" tabindex="0" aria-label="Research activity"><div class="piece-handle" data-drag-handle><span>002</span><button data-remove="journal" aria-label="Remove research activity from my view">×</button></div><div class="journal-content"></div></section>
     <footer class="workspace-footer" data-piece="footer" tabindex="0"><div class="piece-handle" data-drag-handle><span></span><button data-remove="footer" aria-label="Remove footer from my view">×</button></div><a class="footer-brand" href="https://lupine.science"><img src="/lupine-science-icon.png" alt="" width="42" height="42"><span>Lupine Science</span></a><div><a href="#/read/changelog">Changelog ↗</a><a href="https://lupine.science/corrections/">Corrections log ↗</a><a href="#/read/ai-and-data">AI and data ↗</a><a href="https://github.com/alexwelcing/lupine-rhizo">Source ↗</a></div><p class="workspace-licence">Code MIT · our text and data CC BY 4.0 unless noted · third-party material keeps its own licence</p></footer>`;
   const stage=root.querySelector('.research-workspace'), field=root.querySelector('.knowledge-field'), viewport=root.querySelector('.field-viewport');
   const canvas=root.querySelector('canvas'), ctx=canvas.getContext('2d'), plane=root.querySelector('.document-plane');

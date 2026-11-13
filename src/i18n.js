@@ -6,9 +6,9 @@ export const SUPPORTED_LANGS = ['en', 'zh'];
 
 const STRINGS = {
   en: {
-    'nav.browse': 'Browse',
-    'nav.research': 'Research index',
-    'nav.science': 'Lupine Science ↗',
+    'nav.results': 'Results & papers',
+    'nav.ledger': 'Hypothesis ledger',
+    'nav.activity': 'Research activity',
     'brand.title': 'Lupine Library',
     'meta.title': 'Lupine Library — Evidence before claim.',
     'meta.description': 'Lupine Science measures where machine-learned models of atoms go wrong, against published references and pass/fail gates set in advance, and publishes every verdict, failures included.',
@@ -143,9 +143,9 @@ const STRINGS = {
   },
 
   zh: {
-    'nav.browse': '浏览',
-    'nav.research': '研究索引',
-    'nav.science': 'Lupine Science ↗',
+    'nav.results': '结果与论文',
+    'nav.ledger': '假设账本',
+    'nav.activity': '研究动态',
     'brand.title': 'Lupine 图书馆',
     'meta.title': 'Lupine 图书馆 — 先有证据，再下结论。',
     'meta.description': 'Lupine Science 对照已发表的参考值和预先设定的通过/未通过门槛，测量机器学习原子模型在哪里出错，并公布每一个结论，包括失败。',

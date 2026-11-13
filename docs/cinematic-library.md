@@ -4,6 +4,17 @@ The home route presents the existing research collection as an interactive field
 The canonical article readers, research index, source graph and reviewed activity
 contract remain the sources of research content.
 
+## First screen
+
+The first screen says what Lupine does (the canonical one-liner from
+`src/brand.json`) and offers three ways in, the same three as the top bar:
+Results & papers (the Research Index), the Hypothesis ledger and Research
+activity, plus search. Longer explanations live in those destinations: how to
+read a status is in the Research Index, and how journal entries are reviewed is
+on the Research activity page (`#/research`). The field below keeps every
+document with its status label, and "Browse all" opens the filterable
+catalogue. `scripts/firstScreen.test.mjs` holds this structure in place.
+
 ## Text and mathematics
 
 `scripts/build.js` generates `/data/corpus.json` from exactly the same article
