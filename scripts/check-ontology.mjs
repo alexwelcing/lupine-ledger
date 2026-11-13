@@ -31,7 +31,7 @@ export function validateOntology(ontology) {
   if (nodes.some(n => n.marker === 'OBS' && n.markerAssignment !== 'explicit')) errors.push(issue('observation marker requires explicit source annotation'));
   if (links.some(l => l.relation === 'inheritsErrorFrom' && ['materialClasses.dominantErrorTypes', 'scoreboard.types'].includes(l.sourceField))) errors.push(issue('classification represented as inheritance'));
   if (ontology.sourceTopLevelKeys?.length !== 27) errors.push(issue('ontology source section count is not 27', ontology.sourceTopLevelKeys?.length));
-  if (ontology.relations?.length !== 34) errors.push(issue('ontology relation definition count is not 34', ontology.relations?.length));
+  if (ontology.relations?.length !== 33) errors.push(issue('ontology relation definition count is not 33', ontology.relations?.length));
   if (ontology.stats?.superClassCount !== 37) errors.push(issue('ontology superclass count is not 37', ontology.stats?.superClassCount));
   if (duplicates.length) errors.push(issue('ontology has duplicate node ids', duplicates));
   if (badLinks.length) errors.push(issue('ontology has invalid links', badLinks.slice(0, 10)));
@@ -44,7 +44,7 @@ export function validateOntology(ontology) {
     if (!nodes.some((node) => node.type === type)) errors.push(issue(`ontology is missing required node type ${type}`));
   }
   const timeGates = nodes.filter((node) => node.type === 'timeGate');
-  if (timeGates.length !== 12 || !timeGates.some((node) => node.family === 'calendar') || !timeGates.some((node) => node.family === 'weather')) {
+  if (timeGates.length !== 9 || !timeGates.some((node) => node.family === 'calendar') || !timeGates.some((node) => node.family === 'weather')) {
     errors.push(issue('ontology time gates do not reconcile', timeGates.map((node) => ({ id: node.id, family: node.family }))));
   }
   return errors;

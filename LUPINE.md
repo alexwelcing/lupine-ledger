@@ -1,34 +1,34 @@
-# Lupine Constellation
+# Lupine repositories
 
-Lupine is a connected open-science system for making materials prediction
-inspectable: public claims, public evidence, public instruments, and public
-research machinery.
+Lupine Science measures where machine-learned models of atoms go wrong, against
+published references and pass/fail gates set in advance, and publishes every
+verdict, failures included. Lupine Science is an early-stage, founder-led
+research company (founder: Alex Welcing).
 
-## This Repo
+## This repo
 
-**Lupine Ledger** is the public evidence record at
-`https://library.lupine.science`.
+**Lupine Library** (repository `lupine-ledger`) is the reader for the public
+research record at `https://library.lupine.science`. It owns the reader,
+shelves, search, article routes, offline behaviour and the static deploy. It
+consumes exported content bundles; it does not own claims, Lean
+specifications, experiment code or paper source.
 
-It owns the reader, shelves, search, article routes, offline/PWA behavior, and
-the static deploy. It consumes exported content bundles; it does not own source
-claims, proof obligations, experiment code, or paper source.
-
-## Sibling Repos
+## Sibling repos
 
 - **Lupine Science**: `https://github.com/alexwelcing/lupine-science`
-  - Public front door.
-  - Site: `https://lupine.science`
-- **Lupi**: `https://github.com/alexwelcing/Lupi`
-  - Browser-native molecular viewer and agent-driven inspection surface.
-  - Site: `https://lupi.live`
+  - Company site, results with their scope and status, and the corrections
+    log: `https://lupine.science`
+- **LUPI**: `https://github.com/alexwelcing/Lupi`
+  - LUPI (lupi.live) opens structures and LAMMPS dump files in a
+    WebGPU-capable browser with no installation: `https://lupi.live`
 - **Lupine Rhizo**: `https://github.com/alexwelcing/lupine-rhizo`
-  - Deep science workbench and source of exported evidence/content contracts.
+  - Research workbench: data, analysis code, Lean specifications, ledgers, and
+    the source of the Library export.
+- **lupine**: `https://github.com/alexwelcing/lupine`
+  - Earlier repository with papers, data and historical development.
 
 ## Contract
 
-Ledger consumes `library-content.v1` from Rhizo. The bundle carries article
-metadata, markdown, source provenance, byte counts, and hashes. Ledger verifies
-the bundle before rendering it.
-
-Historical development lives in `https://github.com/alexwelcing/lupine` during
-the transition.
+The Library consumes `library-content.v1` from Rhizo. The bundle carries
+article metadata, markdown, source provenance, byte counts and hashes, and the
+Library verifies it before rendering.

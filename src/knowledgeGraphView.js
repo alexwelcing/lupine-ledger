@@ -225,11 +225,12 @@ export async function renderKnowledgeGraphView(mount, {
     el('p', { class: 'kg-sub' }, t('graph.subtitle', lang))
   );
   if (graph.freshness) {
-    const { atlasDate, nextReverification, proofPackDate, proofPackStatus } = graph.freshness;
+    // The ontology is a Direction map (where the work is aimed), not a result.
+    // No scheduled re-verification date or retired climate document is advertised.
+    const { atlasDate } = graph.freshness;
     head.append(el('aside', { class: 'kg-freshness', role: 'status' },
       el('strong', {}, t('graph.freshness.atlas', lang, { date: atlasDate })),
-      el('span', {}, t('graph.freshness.next', lang, { date: nextReverification })),
-      el('span', {}, t('graph.freshness.proofPack', lang, { status: proofPackStatus, date: proofPackDate })),
+      el('span', {}, t('graph.freshness.direction', lang)),
     ));
   }
 
@@ -420,6 +421,7 @@ export async function renderKnowledgeGraphView(mount, {
         type: 'button',
         class: `kg-mode${state.mode === mode.id ? ' active' : ''}`,
         'aria-pressed': state.mode === mode.id ? 'true' : 'false',
+        title: mode.id === 'ontology' ? t('graph.mode.ontology.hint', lang) : null,
         onClick: () => {
           state.mode = mode.id;
           resetRelationsForMode();
@@ -555,6 +557,8 @@ export async function renderKnowledgeGraphView(mount, {
     if (selected.subtitle) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.subtitle));
     if (selected.blurb) selectedPanel.append(el('p', { class: 'kg-node-sub' }, selected.blurb));
     if (selected.ontologyId) {
+      // Every ontology node belongs to the Direction map: say so where it is read.
+      selectedPanel.append(el('p', { class: 'kg-node-sub kg-direction-note' }, t('graph.mode.ontology.hint', lang)));
       selectedPanel.append(el('dl', { class: 'kg-epistemic', 'aria-label': t('graph.epistemic.aria', lang) },
         el('div', { class: 'kg-marker' }, el('dt', {}, t('graph.epistemic.marker', lang)), el('dd', {}, selected.marker)),
         el('div', { class: 'kg-readiness' }, el('dt', {}, t('graph.epistemic.readiness', lang)), el('dd', {}, `${selected.readiness.grade} — ${selected.readiness.annotation}`)),

@@ -1,9 +1,9 @@
 import { publicActivityStore } from './publicActivityStore.js';
-import { renderRecord } from './researchActivityView.js';
+import { renderRecord, activityExplanation } from './researchActivityView.js';
 export function renderPublicResearch(mount, id = null, store = publicActivityStore()) {
   let history = false;
   mount.classList.add('public-research-view');
-  const heading=document.createElement('h1'); heading.textContent=id?'Research record':'Latest reviewed research';
+  const heading=document.createElement('h1'); heading.textContent=id?'Research record':'Research activity';
   const nav=document.createElement('p'), link=document.createElement('a'); link.href='#/research'; link.textContent='Research archive'; nav.append(link);
   const status=document.createElement('p'); status.setAttribute('role','status');
   const content=document.createElement('div');
@@ -13,7 +13,7 @@ export function renderPublicResearch(mount, id = null, store = publicActivitySto
   const controls=document.createElement('div');controls.className='public-research-controls';
   refresh.className=toggle.className=more.className='research-activity-refresh';
   controls.append(refresh,toggle);
-  mount.replaceChildren(heading,nav,status,controls,content,more);
+  mount.replaceChildren(heading,...activityExplanation(),nav,status,controls,content,more);
   const paint=state=>{
     const successors=new Map(state.records.filter(r=>r.supersedes).map(r=>[r.supersedes,r.id]));
     const superseded=new Set(successors.keys());

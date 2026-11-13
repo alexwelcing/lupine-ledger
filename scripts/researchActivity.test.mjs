@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
-import { activityFreshness, createActivityController, isPublicSourceUrl, validateActivity, validateFeed, FEED_SCHEMA, RECORD_SCHEMA, STALE_AFTER_MS } from '../src/researchActivity.js';
+import os from 'node:os';
+import path from 'node:path';
+import { activityFreshness, createActivityController, isPublicSourceUrl, validateActivity, validateFeed, FEED_SCHEMA, RECORD_SCHEMA } from '../src/researchActivity.js';
 import { loadResearchActivity } from './research-activity-build.mjs';
 
 const NOW = Date.parse('2026-10-06T16:00:00.000Z');
@@ -30,7 +32,7 @@ test('workflow repairs retain their explicit kind without scientific receipts', 
 test('rejects private fields, paths, identifiers, tokens and malformed shapes', () => {
   const mutations = [
     r => { r.stdout = 'private model log'; }, r => { r.summary = '/Users/person/private/result.json'; },
-    r => { r.summary = 'Contact name@domain.com'; }, r => { r.summary = 'Produced on aledev'; },
+    r => { r.summary = 'Contact name@domain.com'; }, r => { r.summary = 'Saved under ~/private/run'; },
     r => { r.title = '<script>alert(1)</script>'; }, r => { r.summary = 'Bearer private-value'; },
     r => { r.datasets[0].configurations = true; }, r => { r.reviewedAt = '2026-10-06T17:00:00.000Z'; },
     r => { r.observedAt = '2026-10-06T15:30:00.000Z'; }, r => { r.sources[0].url = 'https://localhost/private'; },
@@ -50,11 +52,23 @@ test('rejects non-public or credential-bearing source links', () => {
   assert.equal(isPublicSourceUrl('https://www.nature.com/articles/s41524-025-01758-4'), true);
 });
 test('new fetch time cannot make old evidence fresh; fallback never becomes live', () => {
-  const state = { feed: feed(), source: 'live', checkedAt: NOW + STALE_AFTER_MS };
-  assert.equal(activityFreshness(state, NOW + STALE_AFTER_MS).mode, 'stale');
-  assert.equal(activityFreshness({ ...state, source: 'snapshot' }, NOW).mode, 'snapshot');
-  assert.equal(activityFreshness({ ...state, source: 'saved' }, NOW).mode, 'saved');
-  assert.equal(activityFreshness({ ...state, error: true, online: false }, NOW).mode, 'offline');
+  const state = { feed: feed(), source: 'live', checkedAt: NOW + 30 * 24 * 60 * 60 * 1000 };
+  assert.equal(activityFreshness(state).newest, record().observedAt);
+  assert.equal(activityFreshness(state).mode, 'live');
+  assert.equal(activityFreshness({ ...state, source: 'snapshot' }).mode, 'snapshot');
+  assert.equal(activityFreshness({ ...state, source: 'saved' }).mode, 'saved');
+  assert.equal(activityFreshness({ ...state, error: true, online: false }).mode, 'offline');
+});
+test('a configured private term blocks the reviewed snapshot at build time', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lupine-activity-terms-'));
+  try {
+    const file = path.join(dir, 'snapshot.json');
+    const snapshot = feed(); snapshot.items[0].summary = 'Produced on fictional-workstation-7';
+    fs.writeFileSync(file, JSON.stringify(snapshot));
+    const env = { LIBRARY_RESEARCH_ACTIVITY_SNAPSHOT: file };
+    assert.equal(loadResearchActivity(dir, env).feed.items.length, 1);
+    assert.throws(() => loadResearchActivity(dir, { ...env, LIBRARY_PRIVATE_TERMS: 'other, Fictional-Workstation-7' }), /private term/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 test('uncached live success is saved; failure preserves it without changing evidence or check time', async () => {
   const cache = storage(); let failing = false, latest;

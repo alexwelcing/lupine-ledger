@@ -21,34 +21,6 @@ const publicSearch = createPublicSearch();
 const searchBodies = new Map();
 publicActivityStore().subscribe(state => { for (const record of state.records) publicSearch.activity(record); if (document.getElementById('search-dialog')?.open) renderSearchResults(document.getElementById('search-input').value.trim()); });
 
-const BANNERS = [
-  {
-    role: 'preprint',
-    className: 'callout-preprint',
-    badge: 'Preprint',
-    title: 'IMMI: Interatomic Machine Learning Interface',
-    subtitle: 'A unified, open interface for machine learning interatomic potentials.',
-    href: '/immi_paper.pdf',
-    external: true,
-  },
-  {
-    role: 'report',
-    className: 'callout-featured',
-    badge: 'Interactive theorem demo + live GPU showcase',
-    title: 'Growing the Hyper-Ribbon',
-    subtitle: 'Start with the projected-ribbon theorem gate, then continue to framework, validation, compute log, and observatory.',
-    href: '#/reports',
-  },
-  {
-    role: 'live-lab',
-    className: 'callout-featured callout-live-lab',
-    badge: 'Library Live Lab',
-    title: 'MLIP Flywheel Visual Review',
-    subtitle: 'Stage map, 5x5 baseline surface, Distill triplets, evaluator rubric, and physical relaxation imagery.',
-    href: '#/system/mlip-flywheel',
-  },
-];
-
 const STATE = {
   manifest: null,          // { categories, articles, version }
   searchIndex: null,       // deterministic metadata from /data/search-index.json
@@ -624,16 +596,16 @@ async function renderReports() {
 
   const heading = el('section', { class: 'hero' });
   heading.append(el('h1', {}, 'Interactive Demos'));
-  heading.append(el('p', {}, 'Theorem demos, compute logs, and live GPU showcases.'));
+  heading.append(el('p', {}, 'Demos and compute logs from May–June 2026. The hyper-ribbon series is archived: its universality reading is no longer supported, and the claim is Open in the Hypothesis Ledger.'));
   VIEW.append(heading);
 
   const grid = el('div', { class: 'cards' });
   const reports = [
-    { href: '/reports/hyper-ribbon-theorem.html', title: 'Theorem Demo', subtitle: 'Projected-ribbon theorem gate' },
-    { href: '/reports/growing-hyper-ribbon.html', title: 'Part 1', subtitle: 'Growing the Hyper-Ribbon framework' },
-    { href: '/reports/growing-hyper-ribbon-part-2.html', title: 'Part 2', subtitle: 'Validation and extensions' },
-    { href: '/reports/growing-hyper-ribbon-experiments.html', title: 'Compute Log', subtitle: 'Raw experiment logs and timings' },
-    { href: '/reports/growing-hyper-ribbon-observatory.html', title: 'Observatory', subtitle: 'Live observatory dashboard' },
+    { href: '/reports/hyper-ribbon-theorem.html', title: 'Theorem Demo', subtitle: 'Projected-ribbon gate · working draft' },
+    { href: '/reports/growing-hyper-ribbon.html', title: 'Part 1', subtitle: 'Growing the Hyper-Ribbon framework · archived' },
+    { href: '/reports/growing-hyper-ribbon-part-2.html', title: 'Part 2', subtitle: 'First tests and extensions · archived' },
+    { href: '/reports/growing-hyper-ribbon-experiments.html', title: 'Compute Log', subtitle: 'Raw experiment logs and timings · archived' },
+    { href: '/reports/growing-hyper-ribbon-observatory.html', title: 'Observatory', subtitle: 'Interactive visualization · archived' },
     { href: '#/read/mlip-cloud-baseline-distill', title: 'MLIP Cloud Run', subtitle: 'Cloud-run baseline distill' },
   ];
   for (const r of reports) {
@@ -682,7 +654,7 @@ function renderSearchResults(q) {
   const list = publicSearch.search(q);
   searchResults.innerHTML = '';
   if (!list.length) {
-    searchHint.textContent = `No results for “${q}” in loaded content. Open Latest research to load older records.`;
+    searchHint.textContent = `No results for “${q}” in loaded content. Open Research activity to load older records.`;
     searchHint.classList.add('err');
     return;
   }
@@ -690,7 +662,7 @@ function renderSearchResults(q) {
   searchHint.textContent = q
     ? (list.length === 1 ? t('search.results.one', STATE.settings.lang) : t('search.results.many', STATE.settings.lang, { count: list.length }))
     : t('search.all', STATE.settings.lang);
-  searchHint.textContent += ' · Public articles and loaded research records. Open Latest research to load the archive.';
+  searchHint.textContent += ' · Public articles and loaded research records. Open Research activity to load the archive.';
   for (const a of list.slice(0, 30)) {
     const li = el('li');
     const link = el('a', { href: a.route,

@@ -9,9 +9,8 @@ const SELF = path.relative(ROOT, fileURLToPath(import.meta.url)).split(path.sep)
 const STALE_NUMBER = /(?<![\d.])(?:77|190|262)(?![\d.])/;
 const COUNT_CONTEXT = /theorems?|lemmas?|declarations?|build[- ]locked|proof layer|Lean 4 corpus|theorem[- ]inventory/i;
 const TEXT_EXTENSIONS = new Set(['.html', '.json', '.js', '.md', '.mjs', '.txt', '.vtt']);
-// The ontology atlas is provenance-hashed and explicitly describes the frozen
-// PP-2 snapshot; current totals live in content/ontology/lean-count.json.
-const HISTORICAL_PATH = /(?:^|\/)(?:CHANGELOG\.md|archive|exports|reviews)(?:\/|$)|ZENODO_DEPOSIT\.md$|\.zenodo\.json$|^content\/ontology\/The-Lupine-Ontological-Atlas\.md$/i;
+// Current totals live in content/ontology/lean-count.json.
+const HISTORICAL_PATH = /(?:^|\/)(?:CHANGELOG\.md|archive|exports|reviews)(?:\/|$)|ZENODO_DEPOSIT\.md$|\.zenodo\.json$/i;
 const CODE_OR_TEST_PATH = /(?:^|\/)(?:tests?|testdata)(?:\/|$)|(?:^|\/)python\/tests\/|\.(?:lean|svg)$/i;
 
 const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: ROOT })

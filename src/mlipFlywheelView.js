@@ -478,8 +478,7 @@ function renderHero(evidence, relaxation) {
     h('h2', {}, evidence.title || 'MLIP Flywheel Visual Review'),
     h('p', { class: 'fly-lede' }, 'The exhibits below are organized as evidence: measured baseline, measured Distill triplets, measured relaxation trajectory, then evaluator status.'),
     h('div', { class: 'fly-actions' },
-      h('a', { class: 'fly-button primary', href: '#/read/mlip-cloud-baseline-distill' }, 'Baseline report'),
-      h('a', { class: 'fly-button', href: '#/read/mlip-flywheel-readiness' }, 'Readiness notes')
+      h('a', { class: 'fly-button primary', href: '#/read/mlip-cloud-baseline-distill' }, 'Baseline report')
     ),
     h('dl', { class: 'fly-statline' },
       stat('Baseline', `${summary.baseline_cells_completed} / ${summary.baseline_cells_total}`),

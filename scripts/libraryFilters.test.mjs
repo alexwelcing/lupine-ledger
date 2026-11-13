@@ -67,7 +67,7 @@ test('library hash state ignores unsupported parameters and sort values', () => 
 
 test('compound facets intersect status, category, group, and tag', () => {
   const matching = filterAndSortArticles(articles, {
-    status: 'supported',
+    status: 'open',
     category: 'conjectures',
     group: 'hypotheses',
     tag: 'hyper-ribbon',
@@ -75,7 +75,7 @@ test('compound facets intersect status, category, group, and tag', () => {
   });
 
   assert.ok(matching.length > 0);
-  assert.ok(matching.every((article) => article.status === 'supported'));
+  assert.ok(matching.every((article) => article.status === 'open'));
   assert.ok(matching.every((article) => article.category === 'conjectures'));
   assert.ok(matching.every((article) => article.group === 'hypotheses'));
   assert.ok(matching.every((article) => article.tags.includes('hyper-ribbon')));

@@ -12,8 +12,9 @@ test('knowledge graph explorer exposes ontology mode, freshness, and epistemic c
   assert.match(view, /id: 'ontology'/);
   assert.match(view, /graph\.mode\.\$\{mode\.id\}/);
   assert.match(view, /atlasDate/);
-  assert.match(view, /nextReverification/);
-  assert.match(view, /proofPackDate/);
+  assert.doesNotMatch(view, /nextReverification/, 'no scheduled re-verification date in the reader');
+  assert.doesNotMatch(view, /proofPack/, 'the retired proof pack is not advertised');
+  assert.match(view, /graph\.freshness\.direction/);
   assert.match(view, /kg-freshness/);
   assert.match(view, /kg-epistemic/);
   assert.match(view, /selected\.marker/);

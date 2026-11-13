@@ -92,9 +92,9 @@ define every public status before release.
 
 ## Build Behavior
 
-`npm run build` reads `content/latest/manifest.json` by default. It refuses to
-fall back to the legacy in-repo catalog unless `ALLOW_LEGACY_CATALOG=1` is set.
-That fallback is only for emergency debugging during the split.
+`npm run build` reads `content/latest/manifest.json` by default (or the bundle
+named by `LIBRARY_CONTENT_BUNDLE`) and fails if it is missing. The legacy
+in-repo catalog used during the split has been removed.
 
 The service worker cache version comes from `LIBRARY_BUILD_VERSION`, then the
 bundle source commit, then the bundle timestamp. Prefer source commit versions

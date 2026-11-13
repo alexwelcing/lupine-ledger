@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Working Papers — Lupine Science</title>
-<meta name="description" content="The Projection Law and The Causal Geometry of Prediction Errors — working papers with figures, replication kit, and machine-checked theory. Web and print editions." />
+<meta name="description" content="Working drafts from June 2026 (The Projection Law; the Layer-2 elastic benchmark; Forty Years of Interatomic Potentials), with a dated status note on what later results changed." />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 <style>
@@ -53,6 +53,13 @@
   .colophon { padding: 48px 0 80px; font-size: 14.5px; color: var(--ink-soft); }
   .colophon code { font-family: var(--mono); font-size: 12.5px; background: var(--panel); border: 1px solid var(--hair); border-radius: 4px; padding: 1px 6px; }
   .printnote { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
+  .status-box { margin: 36px 0 8px; padding: 18px 22px 20px; border: 1px solid rgba(232,180,90,0.5); border-radius: 12px; background: var(--panel); font-size: 15px; }
+  .status-box h3 { margin-top: 0; color: #e8b45a; }
+  .status-box ul { padding-left: 20px; margin: 10px 0; }
+  .status-box li { margin-top: 7px; }
+  .update { display: block; margin-top: 8px; color: #6b4a12; }
+  .kr .update { color: #e8b45a; font-size: 13.5px; }
+  .kr .update b { display: inline; font-family: inherit; font-size: inherit; color: inherit; margin: 0; font-weight: 600; }
 
   @media print {
     :root { --bg: #ffffff; --panel: #f6f5f1; --ink: #16181f; --ink-soft: #555a6b; --hair: rgba(20,22,30,0.18); --accent: #2e3a87; --accent-2: #0b7285; }
@@ -65,6 +72,7 @@
     a { color: var(--accent); }
     .colophon a::after { content: " (" attr(href) ")"; font-family: var(--mono); font-size: 8.5pt; color: var(--ink-soft); }
     .btn-primary { color: var(--accent) !important; }
+    .kr .update { color: #6b4a12; }
   }
 </style>
 </head>
@@ -73,40 +81,53 @@
 <div class="wrap">
 
 <header class="hero">
-  <div class="eyebrow"><span class="badge">Working papers</span> Lupine Science · Error-Geometry Program · June 2026</div>
-  <h1>Two papers, one law, every number traceable.</h1>
-  <p class="deck">The empirical discovery, the law it revealed, and the corrected benchmark that tests the law on modern foundation MLIPs — distributed as working papers with a public replication kit, three pre-registrations, and a machine-checked theory core. Failures reported as failures.</p>
+  <div class="eyebrow"><span class="badge">Working drafts</span> Lupine Science · June 2026 · status note 11 November 2026</div>
+  <h1>Working drafts, every number traceable.</h1>
+  <p class="deck">A proposed law about model-ensemble errors, the elastic benchmark that tests it on foundation MLIPs, and an archived earlier draft — with a public replication kit, three pre-registrations and Lean-checked arithmetic. Failures reported as failures; later corrections are listed below.</p>
   <div class="byline">
     <span><b>Alex Welcing</b> · Lupine Science</span>
-    <span>status: working papers, in preparation</span>
-    <span>{{LEAN_DECLARATION_COUNT}} machine-inventoried Lean declarations · 0 active sorry · build-locked</span>
+    <span>status: Working draft · not peer-reviewed</span>
+    <span>Lean-checked arithmetic</span>
   </div>
   <p class="printnote">This page is the web edition; use your browser's Print for a clean paper copy, or download the typeset PDFs below.</p>
 </header>
+
+<section class="status-box" id="status">
+  <h3>Status and corrections · 11 November 2026</h3>
+  <p>These are working drafts from June 2026, kept as written so the record stays inspectable; they are not for citation. No Lupine paper has been peer-reviewed or accepted yet. Read them with these later results:</p>
+  <ul>
+    <li><b>Elastic correction.</b> On 16 elemental cubic metals with four MatPES MLIPs (128 cases; r2SCAN targets approximate), one bias direction per functional transfers out of sample. When the held-out reference sets how far to correct, MAE falls from 17.84 to 10.36 GPa: a ceiling, not a deployable correction. A correction that works without seeing the answer is still open, and derived moduli are uncertified. The earlier in-sample figures with “zero no-harm violations” are not a usable correction.</li>
+    <li><b>Functional clustering.</b> The p = 0.029 result was not reproduced by the preregistered Round-2 follow-up against DFT targets: the H1 and H2a kill conditions triggered (effect −0.14, permutation p = 0.13); H2b’s cosine was 0.53 against 0.8; conformal coverage was 86.7% against 90%. <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</li>
+    <li><b>Round 4.</b> In four preregistered campaigns in July 2026 (Round 4), no gate passed: three failed and one abstained. <a href="https://lupine.science/articles/four-gates-three-honest-failures-one-live-experiment/">Round 4 results</a>.</li>
+    <li><b>Hyper-ribbon.</b> The universal reading is no longer supported; the claim is Open and descriptive. “559 potentials” are 559 model–element tensors with 423 distinct KIM ids, and the historical counts are not re-verified. <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</li>
+    <li><b>Self-corrections.</b> The BCC/FCC “causal shield” was 1.5% data contamination, and a d-band signal was a sample-size confounder.</li>
+    <li><b>Lean.</b> Lean 4 checks the arithmetic and stated inequalities behind published numbers; it does not check the physics, the reference data or the pipeline.</li>
+  </ul>
+  <p>Retired headlines and the reasons are listed in the <a href="https://lupine.science/corrections/">corrections log</a>.</p>
+</section>
 
 <!-- ════════════════ PAPER 2 — THE LAW ════════════════ -->
 <section class="paper" id="projection-law">
   <div class="papertag">Paper · The law</div>
   <h2>The Projection Law: Model-Ensemble Errors Point at Their Binding Constraint</h2>
-  <p class="sub">Working paper · June 2026 · theory, two pre-registered factorial experiments, replication kit</p>
+  <p class="sub">Working draft · June 2026 · theory, two pre-registered factorial experiments, replication kit</p>
 
   <div class="actions">
     <a class="btn btn-primary" href="/assets/papers/projection-law-v2026-06-16.pdf">Typeset PDF (PRX) ↓</a>
     <a class="btn" href="/assets/papers/projection-law-immi-v2026-06-16.pdf">IMMI format PDF ↓</a>
     <a class="btn" href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">Replication kit →</a>
-    <a class="btn" href="/#/read/academic-review-projection-law">Academic review →</a>
-    <a class="btn" href="/#/read/adversarial-review-projection-law">Adversarial review →</a>
+    <a class="btn" href="/#/read/academic-review-projection-law">Internal review (AI-assisted) →</a>
+    <a class="btn" href="/#/read/adversarial-review-projection-law">Internal adversarial pass →</a>
   </div>
 
-  <h3>Abstract</h3>
-  <p class="abstract">When many independently constructed models agree, the agreement is routinely read as confidence. We formalize and test the opposite reading: a model family is a projection operator, fitting drives every member toward the point of the family's reachable set nearest the truth, and the shared residual — one direction in observable space — is a fingerprint of whatever constraint binds the family. The theory core is machine-checked (Lean&nbsp;4, zero unproven obligations): normal-cone consensus theorem; participation-ratio gauge; ribbon/consensus decoupling; affine decomposition of closed affine reachable sets; local normal-cone theorem for $C^1$ smooth non-convex immersions; and Hoeffding concentration of the empirical second-moment matrix used by the gauge. We then test the law's sharpest consequence — <i>errors organize by constraint, not by implementation</i> — with pre-registered factorial experiments at three layers of one epistemic stack: classical interatomic potentials, foundation machine-learned potentials (4 architectures × 2 training functionals), and DFT implementations (12 methods, 384 crystals). A complete 3×3×3 supercell benchmark on 16 cubic metals shows that a single 1-D correction direction per functional lowers the foundation-MLIP mean MAE from 17.84&nbsp;GPa to 9.92&nbsp;GPa with zero no-harm violations. Each experiment carried an explicit refutation condition; none was triggered, and four of seven registered predictions failed and are reported as failures. The anisotropy persists at every layer — median participation ratio 1.09, ~1.3, and 1.10 out of 3 — while its direction rotates to the next constraint upstream.</p>
+  <h3>Abstract (June 2026; see the status note above)</h3>
+  <p class="abstract">When many independently constructed models agree, the agreement is routinely read as confidence. We formalize and test the opposite reading: a model family is a projection operator, fitting drives every member toward the point of the family's reachable set nearest the truth, and the shared residual — one direction in observable space — is a fingerprint of whatever constraint binds the family. The theory core is stated and checked in Lean&nbsp;4: normal-cone consensus theorem; participation-ratio gauge; ribbon/consensus decoupling; affine decomposition of closed affine reachable sets; local normal-cone theorem for $C^1$ smooth non-convex immersions; and Hoeffding concentration of the empirical second-moment matrix used by the gauge. We then test the law's sharpest consequence — <i>errors organize by constraint, not by implementation</i> — with pre-registered factorial experiments at three layers of one epistemic stack: classical interatomic potentials, foundation machine-learned potentials (4 architectures × 2 training functionals), and DFT implementations (12 methods, 384 crystals). A complete 3×3×3 supercell benchmark on 16 cubic metals shows that one bias direction per functional transfers out of sample; when the held-out reference sets how far to correct, the foundation-MLIP mean MAE falls from 17.84&nbsp;GPa to 10.36&nbsp;GPa, a ceiling rather than a deployable correction [revised 2026-11-11]. Each experiment carried an explicit refutation condition; none was triggered, and four of seven registered predictions failed and are reported as failures. The anisotropy persists at every layer — median participation ratio 1.09, ~1.3, and 1.10 out of 3 — while its direction rotates to the next constraint upstream.</p>
 
   <h3>Key results</h3>
   <div class="kr">
-    <div><b>p = 0.029</b>Foundation-model errors cluster by training functional, not architecture (S = +0.317 vs −0.093; exact permutation over all 70 labelings).</div>
+    <div><b>p = 0.029</b>Foundation-model errors cluster by training functional, not architecture (S = +0.317 vs −0.093; exact permutation over all 70 labelings). <span class="update"><b>Update 2026-11-11:</b> not reproduced by the Round-2 follow-up; see the status note.</span></div>
     <div><b>p = 0.017</b>DFT-implementation errors cluster by pseudopotential table, not simulation code (S = +0.526 vs +0.265); four independent codes sharing one table align at 0.70–0.87.</div>
-    <div><b>69% out-of-sample</b>A correction direction fitted with the corrected model held out removes a median 69% of squared elastic error (154 leave-one-model-out trials).</div>
-    <div><b>17.84 → 9.92 GPa</b>A single 1-D correction per functional applied to the full 3×3×3 MatPES benchmark lowers the mean MAE for every model, with zero no-harm violations across 128 cases.</div>
+    <div><b>17.84 → 10.36 GPa</b>A ceiling, not a deployable correction: the held-out reference sets how far to correct along the transferred direction (128 cases). A correction that works without seeing the answer is still open.</div>
     <div><b>4 of 7 failed</b>Registered predictions that missed their thresholds, reported as failures — including the clustering effect-size component itself.</div>
   </div>
 
@@ -128,7 +149,7 @@
   </figure>
   <figure>
     <img src="assets/papers/fig5_mlip_correction.png" alt="Raw versus 1-D Lupine-corrected MatPES MLIP mean MAE" />
-    <figcaption><b>Fig. 5 — The law as a correction layer.</b> Raw MatPES MLIP predictions versus 1-D Lupine-corrected predictions on the 16-element 3×3×3 benchmark. A single bias vector per functional improves every model: PBE 15.01 → 8.94 GPa and r2SCAN 20.66 → 10.91 GPa.</figcaption>
+    <figcaption><b>Fig. 5 — In-sample bias correction (June 2026).</b> Raw MatPES MLIP predictions versus 1-D corrected predictions on the 16-element 3×3×3 benchmark, fitted in sample: PBE 15.01 → 8.94 GPa and r2SCAN 20.66 → 10.91 GPa. <span class="update"><b>Update 2026-11-11:</b> fitted leave-one-out, with the held-out reference setting how far to correct, the means are PBE 15.01 → 9.39 and r2SCAN 20.66 → 11.32 GPa (17.84 → 10.36 overall): an oracle ceiling, not a deployable correction.</span></figcaption>
   </figure>
 </section>
 
@@ -136,51 +157,47 @@
 <section class="paper" id="layer2-benchmark">
   <div class="papertag">Paper · The benchmark</div>
   <h2>Layer-2: A Sub-Core-Hour 3×3×3 Elastic-Constant Reference Benchmark for MatPES MLIPs</h2>
-  <p class="sub">Working paper · June 2026 · 16 cubic metals, 4 foundation potentials, 2 functionals, 128 cases</p>
+  <p class="sub">Working draft · June 2026, revised · 16 cubic metals, 4 foundation potentials, 2 functionals, 128 cases</p>
 
   <div class="actions">
     <a class="btn btn-primary" href="/#/read/lupine-layer2-3x3x3-final-paper">Read in the Library →</a>
     <a class="btn" href="https://github.com/alexwelcing/lupine/blob/main/data/benchmark_layer2_3x3x3_summary.json">Summary JSON →</a>
   </div>
 
-  <h3>Abstract</h3>
-  <p class="abstract">We present a complete 3×3×3 supercell reference benchmark of cubic-metal elastic constants for four MatPES foundation machine-learned interatomic potentials — CHGNet, M3GNet, QET, and TensorNet — on 16 elements under PBE and approximate r2SCAN targets. The full 128-case matrix costs less than one CPU core-hour. The uncorrected mean C<sub>ij</sub> MAE is 17.84&nbsp;GPa. Applying the Lupine distillation engine as a post-hoc correction layer — a single first-principal-component bias vector per functional, projected onto each residual — lowers the mean MAE to 9.92&nbsp;GPa. The correction improves every model on both functionals and satisfies the no-harm guarantee on every case. The remaining ~10&nbsp;GPa error is concentrated in magnetic and refractory BCC transition metals and in the approximate r2SCAN target, identifying the chemistry-specific errors the next generation of models and training data must address.</p>
+  <h3>Abstract (revised 2026-11-11, from the Library edition)</h3>
+  <p class="abstract">We report a 128-case 3×3×3 elastic-constant reference matrix for four MatPES foundation machine-learned interatomic potential (MLIP) labels on 16 cubic metals, against PBE and approximate r2SCAN targets (scalar bulk-modulus shifts of PBE). The matrix costs less than one CPU core-hour; raw predictions have a mean C<sub>ij</sub> MAE of 17.8 GPa. One bias direction per functional, fitted leave-one-out, transfers out of sample. When the held-out reference sets how far to correct along that direction, the mean MAE falls to 10.4 GPa (PBE 15.0 → 9.4 GPa; r2SCAN 20.7 → 11.3 GPa). Because the held-out target sets the coefficient, this is an oracle ceiling, not a deployable correction, and it cannot increase a held-out residual by construction. A correction that works without seeing the answer is still open. Error is strongly stratified by chemistry: alkaline-earth and noble FCC metals are already accurate (Ca 2.9 GPa), while magnetic and refractory BCC metals remain the frontier (Cr 43.5 GPa).</p>
 
   <h3>Key results</h3>
   <div class="kr">
-    <div><b>17.84 → 9.92 GPa</b>Overall mean C<sub>ij</sub> MAE falls by 44% after the 1-D Lupine correction; zero no-harm violations across all 128 cases.</div>
-    <div><b>Every model improves</b>PBE: CHGNet 17.90 → 10.33, M3GNet 14.13 → 8.18, QET 13.41 → 8.56, TensorNet 14.61 → 8.69 GPa.</div>
-    <div><b>r2SCAN harder</b>r2SCAN: CHGNet 27.94 → 12.47, M3GNet 20.71 → 11.48, QET 15.46 → 8.55, TensorNet 18.54 → 11.14 GPa.</div>
-    <div><b>&lt; 1 core-hour</b>The full factorial matrix runs for under one CPU core-hour, making the reference a practical validation layer for new model releases.</div>
+    <div><b>17.84 GPa</b>Raw mean C<sub>ij</sub> MAE across the 128-case matrix.</div>
+    <div><b>17.84 → 10.36 GPa</b>Oracle ceiling: the held-out reference sets how far to correct. Not a deployable correction; derived moduli are uncertified.</div>
+    <div><b>Ca 2.9 · Cr 43.5 GPa</b>Error is stratified by chemistry: noble and alkaline-earth FCC metals are accurate; magnetic and refractory BCC metals are not.</div>
+    <div><b>&lt; 1 core-hour</b>The full factorial matrix runs in under one CPU core-hour, making the reference practical for new model releases.</div>
   </div>
 
   <figure>
     <img src="assets/papers/fig5_mlip_correction.png" alt="Raw versus 1-D Lupine-corrected MatPES MLIP mean MAE" />
-    <figcaption><b>Fig. 1 — Raw versus corrected MatPES MLIP predictions.</b> Mean C<sub>ij</sub> MAE by model for the PBE target (left) and the approximate r2SCAN target (right). A single first-principal-component projection per functional reduces error for every model.</figcaption>
+    <figcaption><b>Fig. 1 — Raw versus in-sample corrected MatPES MLIP predictions (June 2026).</b> Mean C<sub>ij</sub> MAE by model for the PBE target (left) and the approximate r2SCAN target (right), with the correction fitted in sample. <span class="update"><b>Update 2026-11-11:</b> out of sample, the comparable figure is the oracle ceiling of 17.84 → 10.36 GPa, which needs the held-out answer; see the status note.</span></figcaption>
   </figure>
 </section>
 
 <!-- ════════════════ PAPER 1 — THE INSTANCE ════════════════ -->
 <section class="paper" id="causal-geometry">
-  <div class="papertag">Paper · The discovery substrate</div>
+  <div class="papertag">Archived · superseded working draft</div>
   <h2>Forty Years of Interatomic Potentials, One Error Geometry</h2>
-  <p class="sub">Hyper-Ribbon Universality and Why Pooled Benchmarks Mislead · Working paper · June 2026</p>
+  <p class="sub">Hyper-Ribbon Universality and Why Pooled Benchmarks Mislead · Working draft · June 2026 · archived 2026-11-11</p>
+  <div class="status-box">
+    <p><b>Archived 11 November 2026.</b> Kept for the record; not for citation. The draft's central claim, a universal low-dimensional error geometry across “559 potentials”, is no longer supported: the 559 are model–element tensors with 423 distinct KIM ids, the historical counts are not re-verified, low participation ratios are partly rank-limited, and the hyper-ribbon claim is Open and descriptive. The crystal-structure (BCC/FCC) pattern it mentions was 1.5% data contamination. The draft’s <i>I</i>² and random-effects intervals were computed on dependent C<sub>11</sub>/C<sub>12</sub>/C<sub>44</sub> rows of the same tensors; they are anti-conservative and no longer reported as inference. Current status: <a href="/#/read/conjecture-ledger">Hypothesis Ledger</a>.</p>
+  </div>
 
   <div class="actions">
     <a class="btn btn-primary" href="https://storage.googleapis.com/shed-489901-replication/papers/forty-years-one-geometry-working-paper-v2026-06-11b.pdf">Typeset PDF ↓</a>
     <a class="btn" href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">Replication kit →</a>
   </div>
 
-  <h3>Abstract</h3>
-  <p class="abstract">Prediction errors are not noise. Across 559 interatomic potentials and forty years of development — pair potentials through embedded-atom methods to modern functional forms — elastic-constant errors universally occupy low-dimensional hyper-ribbon manifolds (effective dimensionality 1.0–2.3 out of 3, median 1.09), and the geometry has not moved while accuracy improved: the sloppy-model universality class, observed for the first time in <i>cross-model error space</i> rather than single-model parameter space. The methodological consequence is sharp: between-element heterogeneity is extreme (<i>I</i>² = 98.6%), pooled benchmarks misstate model accuracy (within-family correlation 0.95 vs 0.82 pooled), and the paper demonstrates the repair — stratified evaluation with random-effects meta-analysis. The paper also audits itself: an apparent element-level electronic-structure signal is traced to a fitting-depth confounder, and a Born-screened extension to three foundation MLIPs (with mechanical-stability failures reported, not hidden) provides the proof-of-concept the companion law paper develops. Crystal-structure-dependent correlation patterns are reported among the empirical findings.</p>
+  <h3>Abstract (June 2026, superseded)</h3>
+  <p class="abstract">Prediction errors are not noise. Across 559 interatomic potentials and forty years of development — pair potentials through embedded-atom methods to modern functional forms — elastic-constant errors universally occupy low-dimensional hyper-ribbon manifolds (effective dimensionality 1.0–2.3 out of 3, median 1.09), and the geometry has not moved while accuracy improved: the sloppy-model universality class, observed for the first time in <i>cross-model error space</i> rather than single-model parameter space. The methodological consequence is sharp: between-element heterogeneity is extreme (<i>I</i>² = 98.5%), pooled benchmarks misstate model accuracy (within-family correlation 0.95 vs 0.82 pooled), and the paper demonstrates the repair — stratified evaluation with random-effects meta-analysis. The paper also audits itself: an apparent element-level electronic-structure signal is traced to a fitting-depth confounder, and a Born-screened extension to three foundation MLIPs (with mechanical-stability failures reported, not hidden) provides the proof-of-concept the companion law paper develops. Crystal-structure-dependent correlation patterns are reported among the empirical findings.</p>
 
-  <h3>Key results</h3>
-  <div class="kr">
-    <div><b>40 years, one geometry</b>559 potentials spanning four decades of functional-form evolution; accuracy improved, the error geometry never moved. You cannot fit your way off a constraint surface.</div>
-    <div><b>I² = 98.6%</b>Between-element heterogeneity that makes pooled leaderboards statistically meaningless; random-effects meta-analysis is mandatory.</div>
-    <div><b>r = 0.95 vs 0.82</b>Within-family vs pooled correlation — pooled scores hide real family-level accuracy; stratified evaluation recovers it.</div>
-    <div><b>Self-auditing</b>The paper's own apparent d-band signal is dissolved into a sample-size confounder; 7 of 45 foundation-model tensors fail Born screening and are excluded, not ignored.</div>
-  </div>
 
   <figure>
     <img src="assets/papers/fig1_eigenvalue_spectra.png" alt="Eigenvalue spectra showing the sloppy log-linear hierarchy" />
@@ -199,7 +216,7 @@
 <!-- ════════════════ COLOPHON ════════════════ -->
 <section class="colophon" id="provenance">
   <h3>Provenance &amp; verification</h3>
-  <p>All three papers are <b>working papers, in preparation</b> — not yet submitted to any venue. Every headline statistic is verifiable from committed raw data: the <a href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">replication kit</a> (commit-versioned, public) runs Tier&nbsp;1 verification with NumPy alone in seconds (<code>python tier1_analyze.py</code>) and re-derives the raw elastic constants from public model checkpoints in Tier&nbsp;2. The 3×3×3 MatPES benchmark is reproducible from <code>lupine/data/aggregate_layer2.py</code> and the raw Cloud Run outputs; the corrected MAEs are also generated by <code>atlas-distill mlip-correct</code>. Pre-registrations were committed before execution (<code>dffbe595</code>, <code>ebf39e33</code>); the round-2 registration with symmetric kill conditions is included. The theory core — normal-cone consensus theorem, participation-ratio gauge, ribbon/consensus decoupling, affine decomposition, smooth non-convex local normal cone, and finite-sample concentration — is machine-checked within the program's {{LEAN_DECLARATION_COUNT}}-declaration Lean&nbsp;4 corpus (zero active <code>sorry</code>, zero new axioms, build locked) and builds from the <a href="https://github.com/alexwelcing/lupine">open repository</a>. An <a href="/#/read/academic-review-projection-law">academic review</a> (2026-06-16) lists strengths and six MUST-FIX gates, and a follow-up <a href="/#/read/adversarial-review-projection-law">adversarial review</a> verified the first-pass fixes and caught additional wording/placeholder issues; both are addressed in the current PDFs.</p>
+  <p>All three papers are <b>working drafts</b>: not peer-reviewed and not accepted by any venue; the third is archived. Every headline statistic is verifiable from committed raw data: the <a href="https://storage.googleapis.com/shed-489901-replication/error-geometry/v1-10c18ace/index.html">replication kit</a> (commit-versioned, public) runs Tier&nbsp;1 verification with NumPy alone in seconds (<code>python tier1_analyze.py</code>) and re-derives the raw elastic constants from public model checkpoints in Tier&nbsp;2. The 3×3×3 MatPES benchmark is reproducible from <code>lupine/data/aggregate_layer2.py</code> and the raw Cloud Run outputs; the corrected MAEs are also generated by <code>atlas-distill mlip-correct</code>. Pre-registrations were committed before execution (<code>dffbe595</code>, <code>ebf39e33</code>); the round-2 registration with symmetric kill conditions is included. The theory core — normal-cone consensus theorem, participation-ratio gauge, ribbon/consensus decoupling, affine decomposition, smooth non-convex local normal cone, and finite-sample concentration — is stated in Lean&nbsp;4 in the <a href="https://github.com/alexwelcing/lupine">open repository</a>. Lean 4 checks the arithmetic and stated inequalities behind published numbers; it does not check the physics, the reference data or the pipeline. (Generated count: the lupine-rhizo Lean corpus held {{LEAN_DECLARATION_COUNT}} theorem/lemma declarations on {{LEAN_COUNTED_AT}}. {{LEAN_BREAKDOWN}}) Two internal reviews (AI-assisted) are published: an <a href="/#/read/academic-review-projection-law">academic-style review</a> (2026-06-16) listing strengths and six must-fix items, and a follow-up <a href="/#/read/adversarial-review-projection-law">adversarial pass</a>. Neither is an external peer review.</p>
 </section>
 
 </div>

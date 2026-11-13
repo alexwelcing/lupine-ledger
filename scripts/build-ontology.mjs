@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkLeanBreakdown } from './lean-breakdown.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_SOURCE = path.join(ROOT, 'content', 'ontology', 'lupine-ontology.json');
@@ -68,6 +69,7 @@ function hydrateFormalProofInventory(source) {
     sorryCount: 0,
     inventoryRule: inventory.rule,
     inventoryCommit: inventory.source_commit,
+    inventoryBreakdown: checkLeanBreakdown(inventory.breakdown, inventory.count),
   };
   return hydrated;
 }

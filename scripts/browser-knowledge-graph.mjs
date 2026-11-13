@@ -136,7 +136,7 @@ try {
     };
     window.fetch = async (...args) => {
       const url = String(args[0]);
-      if (url.includes('/data/readme.zh.json')) {
+      if (url.includes('/data/research-index.zh.json')) {
         return new Response('<!DOCTYPE html><title>SPA fallback</title>', {
           status: 200,
           headers: { 'content-type': 'text/html; charset=utf-8' },
@@ -168,7 +168,7 @@ try {
       title: document.querySelector('.kg h1')?.textContent,
       ontology: document.querySelector('.kg-mode.active')?.textContent,
     })`),
-    { requests: 2, lang: 'zh', title: '知识图谱', ontology: '本体' },
+    { requests: 2, lang: 'zh', title: '知识图谱', ontology: '方向图' },
     'a stale English graph request must not overwrite the newer Chinese render',
   );
 
@@ -183,7 +183,7 @@ try {
     hitStroke: getComputedStyle(document.querySelector('.kg-node-hit')).strokeWidth,
   }))()`);
   assert.deepEqual(chromeState.title, '知识图谱');
-  assert.deepEqual(chromeState.ontology, '本体');
+  assert.deepEqual(chromeState.ontology, '方向图');
   assert.match(chromeState.placeholder, /聚焦/);
   assert.deepEqual(chromeState.selected, '已选择');
   assert.ok(chromeState.overflow <= 0, `mobile page overflows by ${chromeState.overflow}px`);
@@ -239,11 +239,11 @@ try {
   await cdp.evaluate('history.back()');
   await waitFor(() => cdp.evaluate(`location.hash === ${JSON.stringify(before.hash)}`), 'restored graph URL');
   await waitFor(
-    () => cdp.evaluate(`document.querySelector('.kg-mode.active')?.textContent === '本体'`),
+    () => cdp.evaluate(`document.querySelector('.kg-mode.active')?.textContent === '方向图'`),
     'restored ontology mode',
   );
 
-  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/readme'`);
+  await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/research-index'`);
   await waitFor(() => cdp.evaluate(`Boolean(document.querySelector('.reader .content'))`), 'reader fallback article');
   const readerFallback = await cdp.evaluate(`({
     notice: document.querySelector('.reader .lang-fallback')?.textContent || '',
@@ -252,8 +252,8 @@ try {
     errors: window.__qaConsoleErrors,
   })`);
   assert.ok(readerFallback.notice, 'missing zh JSON should render the language fallback notice');
-  assert.equal(readerFallback.title, 'Lupine — Project README');
-  assert.match(readerFallback.body, /Lupine Rhizo/);
+  assert.equal(readerFallback.title, 'Research Index');
+  assert.match(readerFallback.body, /what Lupine has investigated/);
   assert.deepEqual(readerFallback.errors, [], `reader fallback console errors: ${readerFallback.errors}`);
 
   await cdp.evaluate(`window.__qaConsoleErrors = []; location.hash = '#/read/glossary'`);

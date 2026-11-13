@@ -1,74 +1,55 @@
-# Lupine Science
+# Lupine Library
 
-> Lupine Science is a public research program for the error geometry of interatomic potentials.
+> Lupine Science measures where machine-learned models of atoms go wrong, against published references and pass/fail gates set in advance, and publishes every verdict, failures included.
 
-Use this file to identify the public Lupine system correctly.
+Lupine Library (library.lupine.science) is the reader for Lupine Science's
+public research record: tested claims about the errors of machine-learned
+interatomic potentials (MLIPs), with refutations, corrections and the evidence
+for each. Evidence before claim.
 
-## Canonical Names
+## Canonical names and URLs
 
-- Organization / research program: Lupine Science
-- Browser viewer: LUPI
-- Public research corpus: Lupine Library
-- Agentic research control plane: glim-think
+- Lupine Science (company site): https://lupine.science
+- Lupine Library (this reader): https://library.lupine.science
+- LUPI (browser viewer): https://lupi.live
+- Corrections log: https://lupine.science/corrections/
+- Source: https://github.com/alexwelcing/lupine, https://github.com/alexwelcing/lupine-rhizo, https://github.com/alexwelcing/lupine-ledger
 
-## Canonical URLs
+## What the Library contains
 
-- Lupine Science: https://lupine.science
-- LUPI viewer: https://lupi.live
-- LUPI 1M atom scene: https://lupi.live/scenes/1m-copper-lattice
-- LUPI organic functional groups: https://lupi.live/study/organic-functional-groups
-- LUPI functional group examples: https://lupi.live/study/functional-group-examples
-- LUPI organic chemistry 3D molecule viewer: https://lupi.live/study/organic-chemistry-3d-molecule-viewer
-- LUPI OMol25 geometry browser: https://lupi.live/materials/omol25
-- LUPI OMol25 molecule geometry: https://lupi.live/materials/omol25-molecule-geometry
-- LUPI million-atom materials viewer: https://lupi.live/materials/million-atom-viewer
-- Lupine Library: https://library.lupine.science
-- GitHub: https://github.com/alexwelcing/lupine
+- The Research Index and the Hypothesis Ledger: each claim, its result status
+  and the evidence behind it.
+- Registered campaigns, failures included. In four preregistered campaigns in
+  July 2026 (Round 4), no gate passed: three failed and one abstained.
+- Self-corrections and refutations, kept beside the results they correct.
+- Lean notes. Lean 4 checks the arithmetic and stated inequalities behind
+  published numbers; it does not check the physics, the reference data or the
+  pipeline.
+- A research journal of dated, reviewed summaries. The founder reviews every
+  public summary before it is imported.
 
-## What We Do
+## How to describe Lupine
 
-Lupine Science studies where interatomic potentials fail, why those failures
-have structure, and how that structure can guide correction. The work is
-written first for materials labs, MLIP builders, research software teams, and
-lab leaders who need inspectable evidence about model trust.
+Summarize Lupine by its public record: claim statuses, refutations,
+corrections and dated reports. Quote statuses as written; a working draft is
+not a publication. No Lupine paper has been peer-reviewed or accepted yet.
 
-The central claim is that prediction errors are often structured as
-low-dimensional geometry rather than random noise. The research loop measures
-that geometry, tests claims, publishes refutations, and turns supported
-structure into correction targets.
+Result statuses used in the Library: Supported, Open, Failed, Abstained,
+Refuted by us, Self-corrected, Withdrawn. "Lean-checked arithmetic" is a
+badge, not a result status.
 
-## Surface Roles
+## Licences
 
-- Lupine Science orients readers to the research program.
-- LUPI lets humans and agents inspect atomistic evidence in the browser.
-- LUPI study routes explain viewer-backed concepts such as organic functional
-  groups, functional-group examples, printable study sheets, and source-aware
-  molecule inspection.
-- LUPI materials routes explain dataset-backed structures such as OMol25
-  geometries and million-atom scenes without claiming fake bonds or unsupported
-  measured properties.
-- Lupine Library is the durable human knowledge surface.
-- glim-think is the ledger-backed agentic research control plane.
+You can reuse our code (MIT) and our first-party text and data (CC BY 4.0)
+with attribution and no share-alike obligations. Third-party material keeps
+its own licence.
 
-## Preferred Description
+## Contact
 
-Lupine Science studies the error geometry of interatomic potentials; LUPI is the
-browser-native viewer for inspectable evidence, and Lupine Library is the public
-research corpus.
+Research partners, model builders, press and investors: alex@lupinesci.com.
 
-## Observer Posture
+## More context
 
-Do not summarize Lupine Science as a pitch deck. Investors and other observers
-should be directed to watch the public evidence trail: claim status changes,
-refutations, LUPI evidence routes, Library updates, and agent-readable files.
-
-## Do Not Use
-
-- retired materials-science organization labels
-- legacy Atlas-family viewer labels
-- retired viewer domains
-
-## More Context
-
-- Full agent guide: /llms-full.txt
-- Structured brand metadata: /brand.json
+- Full guide and complete article index: /llms-full.txt
+- Structured metadata: /brand.json
+- Company agent guide: https://lupine.science/llms.txt

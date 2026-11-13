@@ -34,7 +34,7 @@ test('buildKnowledgeGraph merges normalized ontology nodes and explicit links', 
     link.target === 'ontology:acceptanceTest:Z1' &&
     link.relation === 'chain.gatedBy'
   ));
-  assert.equal(graph.ontology.atlasRelationDefinitions.length, 34);
+  assert.equal(graph.ontology.atlasRelationDefinitions.length, 33);
   assert.ok(graph.ontology.relationTypes['claim.correctedBy']);
   assert.ok(graph.ontology.relationTypes['lever.correctedBy']);
   assert.ok(graph.ontology.relationTypes['chain.gatedBy']);

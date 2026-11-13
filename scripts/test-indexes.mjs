@@ -24,15 +24,16 @@ assert.deepEqual(
   'llms-full must list every manifest article exactly once and in manifest order',
 );
 assert.match(llmsFull, /Atlas date: 2026-07-30/);
-assert.match(llmsFull, /Next scheduled reverification: 2026-11-10/);
-assert.match(llmsFull, /Climate Partnerships Proof Pack: Draft, dated 2026-07-09/);
+assert.doesNotMatch(llmsFull, /scheduled reverification/i, 'llms-full must not publish scheduled dates');
+assert.doesNotMatch(llmsFull, /Proof Pack/, 'the retired proof pack is not advertised');
+assert.match(llmsFull, /Status: Direction map — where the work is aimed, not results\./);
 assert.match(llmsFull, /37 concept classes/);
 assert.match(llmsFull, /figure caption says 33/);
 
 const searchIndex = generateSearchIndex(catalog);
 assert.deepEqual(searchIndex, generateSearchIndex(catalog), 'search-index generation must be deterministic');
 assert.equal(searchIndex.schemaVersion, 'library-search-index.v1');
-assert.equal(searchIndex.articles.length, 94);
+assert.equal(searchIndex.articles.length, articleIds.length);
 assert.deepEqual(searchIndex.articles.map((article) => article.id), articleIds);
 for (const [index, article] of searchIndex.articles.entries()) {
   const source = catalog.entries[index];
@@ -50,4 +51,4 @@ const sitemapArticleIds = [...sitemap.matchAll(/<loc>https:\/\/library\.lupine\.
   .filter((id) => articleIds.includes(id));
 assert.deepEqual(sitemapArticleIds, articleIds, 'sitemap must contain one valid data route per manifest article');
 
-console.log('[ok] deterministic machine indexes cover all 94 manifest articles.');
+console.log(`[ok] deterministic machine indexes cover all ${articleIds.length} manifest articles.`);

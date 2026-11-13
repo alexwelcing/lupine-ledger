@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.2.0",
   "type": "module",
-  "license": "AGPL-3.0-or-later",
-  "description": "Lupine Science research library - mobile-first reader for library.lupine.science",
+  "license": "MIT",
+  "description": "Reader for Lupine Science's public research record at library.lupine.science",
   "scripts": {
     "build": "node scripts/build.js",
     "graph:build": "node scripts/build-knowledge-graph.mjs",
@@ -18,7 +18,7 @@
     "pages:build": "node scripts/pages-build.mjs",
     "pages:deploy": "npx wrangler pages deploy dist --project-name=lupine-ledger --branch=main --commit-dirty=true",
     "pretest": "npm run build",
-    "test": "node scripts/check-stale-lean-counts.mjs && node --test scripts/publicSearch.test.mjs scripts/serviceWorkerPrecache.test.mjs scripts/workspaceState.test.mjs scripts/libraryFilters.test.mjs scripts/researchActivity.test.mjs scripts/reproducibility.test.mjs scripts/test-knowledge-graph*.mjs scripts/test-ontology*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js && node scripts/check-ontology.mjs",
+    "test": "node scripts/check-stale-lean-counts.mjs && node --test scripts/firstScreen.test.mjs scripts/publicSearch.test.mjs scripts/serviceWorkerPrecache.test.mjs scripts/workspaceState.test.mjs scripts/libraryFilters.test.mjs scripts/researchActivity.test.mjs scripts/reproducibility.test.mjs scripts/test-knowledge-graph*.mjs scripts/test-ontology*.mjs && node scripts/test-indexes.mjs && node scripts/test-build.mjs && node scripts/check-graph.js && node scripts/check-ontology.mjs",
     "clean": "rm -rf dist",
     "test:browser": "npm run build && node scripts/browser-knowledge-graph.mjs",
     "test:activity:browser": "npm run build && node scripts/browser-research-activity.mjs"

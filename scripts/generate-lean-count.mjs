@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { checkLeanBreakdown } from './lean-breakdown.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEAN_SPEC = path.resolve(process.argv[2] ?? path.join(ROOT, '..', 'lupine-rhizo', 'lean-spec'));
@@ -114,18 +115,28 @@ for (const file of files) {
 }
 
 const sourceSha256 = sourceHash.digest('hex');
-let countedAt = '';
-try {
-  countedAt = execSync(
-    'git log -1 --format=%cs -- OpenDistillationFactory OpenDistillationFactory.lean',
-    { cwd: LEAN_SPEC, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-  ).trim();
-} catch {
-  const sourceInventory = path.join(LEAN_SPEC, 'theorem-count.json');
-  const prior = fs.existsSync(sourceInventory) ? JSON.parse(fs.readFileSync(sourceInventory, 'utf8')) : {};
-  if (prior.source_sha256 === sourceSha256) countedAt = prior.counted_at;
-  else if (process.env.SOURCE_DATE_EPOCH) {
-    countedAt = new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString().slice(0, 10);
+// When lupine-rhizo's own generated inventory describes exactly these files,
+// take its date, so the Library body and the rhizo export's Lean card agree.
+const sourceInventory = path.join(LEAN_SPEC, 'theorem-count.json');
+const prior = fs.existsSync(sourceInventory) ? JSON.parse(fs.readFileSync(sourceInventory, 'utf8')) : {};
+const priorMatches = prior.source_sha256 === sourceSha256 && prior.count === count;
+let countedAt = priorMatches ? String(prior.counted_at ?? '') : '';
+// The breakdown (single-tactic checks, native_decide, registry grades) is shown
+// beside the total, so it must describe the same bytes. Fail closed otherwise.
+if (!priorMatches || !prior.breakdown) {
+  throw new Error(`${path.relative(ROOT, sourceInventory)} does not carry a breakdown for these Lean files; regenerate it with lupine-rhizo/lean-spec/scripts/generate-lean-count.mjs first`);
+}
+const breakdown = checkLeanBreakdown(prior.breakdown, count);
+if (!countedAt) {
+  try {
+    countedAt = execSync(
+      'git log -1 --format=%cs -- OpenDistillationFactory OpenDistillationFactory.lean',
+      { cwd: LEAN_SPEC, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+    ).trim();
+  } catch {
+    if (process.env.SOURCE_DATE_EPOCH) {
+      countedAt = new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString().slice(0, 10);
+    }
   }
 }
 if (!/^\d{4}-\d{2}-\d{2}$/.test(countedAt)) throw new Error('could not derive Lean source as-of date');
@@ -137,6 +148,7 @@ const inventory = {
   source: 'lupine-rhizo/lean-spec/OpenDistillationFactory{,.lean} (vendored packages excluded)',
   source_sha256: sourceSha256,
   rule: 'theorem/lemma declarations after stripping nested comments and strings; supports attributes, whitespace, and declaration modifiers; every active sorry token fails; regenerate with scripts/generate-lean-count.mjs — never hand-edit',
+  breakdown: { ...breakdown, copied_from: 'lupine-rhizo/lean-spec/theorem-count.json (same source_sha256 and count)' },
 };
 fs.writeFileSync(OUT, `${JSON.stringify(inventory, null, 2)}\n`);
 console.log(`generate-lean-count: ${count} declarations (sorry hits in proof code: ${sorryCount}) → ${path.relative(ROOT, OUT)}`);

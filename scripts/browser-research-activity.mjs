@@ -113,7 +113,7 @@ try {
   // fixture. This does not call or verify the remote production feed.
   await cdp.send('Page.addScriptToEvaluateOnNewDocument', { source: `
     window.__qaFeed = ${JSON.stringify(fixture)};
-    window.__qaMode = 'live'; window.__qaRequests = 0; window.__qaErrors = [];
+    window.__qaMode = sessionStorage.getItem('qaMode') || 'live'; window.__qaRequests = 0; window.__qaErrors = [];
     window.__qaTimers = new Map();
     const originalInterval = window.setInterval.bind(window), originalClear = window.clearInterval.bind(window);
     window.setInterval = (fn, ms, ...args) => { const id = originalInterval(fn, ms, ...args); if (ms === 60000) window.__qaTimers.set(id, fn); return id; };
@@ -138,9 +138,13 @@ try {
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: 1365, height: 1024, deviceScaleFactor: 1, mobile: false });
   console.log('Opening local reader');
   await cdp.send('Page.navigate', { url: `${ORIGIN}/#/` });
+  // The first visit installs the service worker, which reloads the page once on
+  // controllerchange. Wait for control, then load again so checks see a stable page.
+  await waitFor(() => cdp.evaluate(`Boolean(navigator.serviceWorker?.controller)`), 'service worker control');
+  await cdp.send('Page.navigate', { url: `${ORIGIN}/#/` });
   await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity-card') && !document.querySelector('.research-activity-refresh').disabled`), 'reviewed activity');
   console.log('Activity loaded');
-  assert.equal(await cdp.evaluate('window.__qaTimers.size'), 1);
+  assert.equal(await cdp.evaluate('window.__qaTimers.size'), 0, 'the journal must not poll on a timer');
   assert.equal(await cdp.evaluate(`document.querySelectorAll('.research-activity-card').length`), fixture.items.length);
   await cdp.evaluate(`document.querySelector('.research-activity').scrollIntoView({block:'start'})`);
   assert.ok(await cdp.evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth'), 'desktop horizontal overflow');
@@ -155,21 +159,23 @@ try {
   await cdp.evaluate(`Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false }); document.querySelector('.research-activity-refresh').click()`);
   await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity').dataset.freshness === 'offline'`), 'offline state');
   await cdp.evaluate(`Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => true }); window.__qaMode='stale'; document.querySelector('.research-activity-refresh').click()`);
-  await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity').dataset.freshness === 'stale'`), 'stale evidence state');
+  await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity').dataset.freshness === 'live' && document.querySelector('.research-activity-status')?.textContent.includes('Latest entry:')`), 'old evidence shows its date');
   const previousRequests = await cdp.evaluate('window.__qaRequests');
-  await cdp.evaluate(`Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); [...window.__qaTimers.values()][0]()`);
-  assert.equal(await cdp.evaluate('window.__qaRequests'), previousRequests, 'hidden tab must not poll');
+  await cdp.evaluate(`Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange'))`);
+  assert.equal(await cdp.evaluate('window.__qaRequests'), previousRequests, 'hidden tab must not refresh');
   await cdp.evaluate(`Object.defineProperty(document, 'hidden', { configurable: true, get: () => false }); document.dispatchEvent(new Event('visibilitychange'))`);
   await waitFor(() => cdp.evaluate(`window.__qaRequests > ${previousRequests} && !document.querySelector('.research-activity-refresh').disabled`), 'visibility refresh');
   await cdp.evaluate(`window.__qaMode='empty'; document.querySelector('.research-activity-refresh').click()`);
   await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity-empty')?.textContent.includes('No reviewed public')`), 'empty feed');
   await cdp.evaluate(`window.__qaMode='pending'; document.querySelector('.research-activity-refresh').click(); location.hash='#/tags'`);
   await waitFor(() => cdp.evaluate(`document.documentElement.dataset.view === 'tags' && window.__qaTimers.size === 0`), 'navigation cleanup');
-  await cdp.evaluate(`localStorage.clear(); window.__qaMode='fail'; location.hash='#/'`);
+  // The activity store is shared for the life of the page, so a fresh load is
+  // needed to exercise the no-saved-copy snapshot fallback.
+  await cdp.evaluate(`localStorage.clear(); sessionStorage.setItem('qaMode', 'fail'); location.hash='#/'; location.reload()`);
   await waitFor(() => cdp.evaluate(`document.querySelector('.research-activity-status')?.textContent.includes('Reviewed snapshot') && document.querySelector('.research-activity-card')`), 'reviewed snapshot fallback');
-  assert.equal(await cdp.evaluate(`document.querySelector('.research-activity-status').textContent.includes('Last successful live check')`), false, 'snapshot cannot claim live check');
+  assert.equal(await cdp.evaluate(`document.querySelector('.research-activity-status').textContent.includes('Last checked')`), false, 'snapshot cannot claim a live check');
   assert.deepEqual(await cdp.evaluate('window.__qaErrors'), []);
-  console.log(JSON.stringify({ status: 'passed', desktop: '1365x1024', mobile: '390x844', tested: ['live fixture', 'manual refresh', 'failed fetch', 'offline saved evidence', 'stale evidence', 'hidden polling', 'visibility refresh', 'empty feed', 'navigation cleanup', 'snapshot fallback'], screenshots: 'not captured; DOM checks only', productionFeedVerified: false }));
+  console.log(JSON.stringify({ status: 'passed', desktop: '1365x1024', mobile: '390x844', tested: ['live fixture', 'manual refresh', 'failed fetch', 'offline saved evidence', 'old evidence date', 'no timer polling', 'visibility refresh', 'empty feed', 'navigation cleanup', 'snapshot fallback'], screenshots: 'not captured; DOM checks only', productionFeedVerified: false }));
 } catch (error) {
   console.error(error);
   if (!cdp) console.error(chromeDiagnostics);
