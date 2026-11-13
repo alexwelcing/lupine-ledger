@@ -5,14 +5,14 @@
       "id": "formal-proof-ledger-documents-formal-proof",
       "version": 1,
       "articleId": "formal-proof-ledger",
-      "articleSha256": "24589d711eabe1f9f2d84209c9a6e0f926817b1396409590782a1b001b4dd8fc",
+      "articleSha256": "918fff672e57b6f7e04c93c1fb8f055ced26283128a5289e3bb546b56c1aa5d2",
       "passageAnchor": "verdicts",
       "heading": "Verdicts",
       "ontologyId": "formalProof:FP1",
       "ontologySha256": "ac5833ca32c8e0b0d62fd7218d453a8cf9223fc376071abd00e7d6199ed947fe",
       "relation": "documentsVerificationClaims",
       "reviewedBy": "Internal source check (AI-assisted)",
-      "reviewedOn": "2026-11-12",
+      "reviewedOn": "2026-11-13",
       "rationale": "The Verdicts passage documents claimed formal-verification scope. This link asserts subject matter only, not current compilation, proof validity or empirical truth."
     },
     {
